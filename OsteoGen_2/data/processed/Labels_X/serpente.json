@@ -1,0 +1,25 @@
+{
+    "punta_muso": [
+        241.13411896745234,
+        27.246673080006417
+    ],
+    "retro_cranio": [
+        280.5376783710117,
+        15.753968253968196
+    ],
+    "base_collo": [
+        292.851290684624,
+        399.11776495109825
+    ],
+    "spalla": null,
+    "gomito_ant_1": null,
+    "gomito_ant_2": null,
+    "zampa_ant": null,
+    "dorso": null,
+    "anca": null,
+    "ginocchio_post_1": null,
+    "ginocchio_post_2": null,
+    "zampa_post": null,
+    "base_coda": null,
+    "punta_coda": null
+}

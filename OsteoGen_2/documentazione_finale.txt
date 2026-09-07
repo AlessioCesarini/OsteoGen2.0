@@ -1,0 +1,58 @@
+DOCUMENTAZIONE TECNICA: PIPELINE MODULARE "OSTEOGEN"
+Architettura per la Generazione di Chimere Biologiche tramite Estrazione di Keypoint e Warping Spaziale
+
+1. INTRODUZIONE AL SISTEMA E INFRASTRUTTURA
+Il progetto OsteoGen risolve il complesso task di trasposizione scheletro-texture superando i tipici limiti dei modelli generativi globali (es. allucinazioni visive, blending sfocato) attraverso un approccio deterministico e modulare. La pipeline frammenta il problema in tre macro-fasi isolate: 
+1) Rilevamento dei keypoint anatomici tramite Deep Learning (ResNet18).
+2) Retrieval biologico invariante alla scala.
+3) Deformazione spaziale non lineare (Warping e Convex Hull).
+L'infrastruttura è stata ottimizzata per parallelizzare i carichi di lavoro (num_workers=4) saturando i CUDA core e i 32 GB di VRAM dell'acceleratore NVIDIA RTX 5080, garantendo tempi di esecuzione e di training ideali per iterazioni di ricerca.
+
+2. FASE I: DATA PREPARATION E GROUND TRUTH
+L'obiettivo di questa fase è standardizzare gli input e definire le annotazioni spaziali per il training.
+
+A. preprocess_target.py[cite: 7]
+- Obiettivo: Prevenire la distorsione geometrica (schiacciamento delle ossa) sui target di inferenza esterni (es. fotografie raw di scheletri di T-Rex)[cite: 7].
+- Funzionamento: Il modulo calcola un fattore di scala basato sul lato maggiore dell'immagine originale, ridimensionandola preservando l'aspect ratio[cite: 7]. Applica successivamente una tecnica di letterboxing per inserire la sagoma all'interno di un tensore nero quadrato di 512x512 pixel, allineando l'estetica ai 65 campioni del training set[cite: 7].
+
+B. keypoints.py[cite: 5]
+- Obiettivo: Generare la Ground Truth definendo le coordinate (x,y) delle articolazioni[cite: 5].
+- Funzionamento: Tramite Matplotlib, il sistema acquisisce 14 punti sequenziali per ogni scheletro[cite: 5]. Introduce un meccanismo di tolleranza anatomica: cliccando in prossimità dell'origine (x<10, y<10), il sistema mappa il giunto come "Null" (fondamentale per gestire l'assenza della coda in alcuni fenotipi)[cite: 5]. Le coordinate vengono serializzate in formato JSON[cite: 5].
+
+C. heatmap.py[cite: 3]
+- Obiettivo: Convertire le coordinate discrete in target differenziabili per la retropropagazione[cite: 3].
+- Funzionamento: Implementa la classe `SkeletonKeypointDataset`[cite: 3]. Per ogni punto annotato, il modulo calcola una mappa di calore 2D applicando una distribuzione Gaussiana (sigma=5.0)[cite: 3]. Restituisce batch composti dal tensore immagine normalizzato per ImageNet (3x512x512) e dal tensore target delle heatmap (14x512x512)[cite: 3].
+
+D. check_heatmap.py[cite: 2]
+- Obiettivo: Validazione diagnostica preliminare dei tensori generati[cite: 2].
+- Funzionamento: Collassa lungo l'asse dei canali (dim=0) le 14 matrici gaussiane, proiettandole cromaticamente sull'input originale per verificare il perfetto allineamento spaziale ossa-target prima del consumo computazionale[cite: 2].
+
+3. FASE II: ADDESTRAMENTO DELL'ENCODER-DECODER
+Rappresenta il core predittivo, incaricato di mappare le feature scheletriche sulle matrici di attivazione.
+
+E. resnet.py[cite: 8]
+- Obiettivo: Costruire un'architettura neurale capace di estrarre feature ad alto livello e ricostruire la risoluzione nativa[cite: 8].
+- Funzionamento: La classe `ResNet18KeypointDetector` adotta un approccio di Transfer Learning sfruttando l'encoder di una ResNet18 (pesi ImageNet) per ridurre l'input a un volume 16x16x512[cite: 8]. Il decoder implementa layer `ConvTranspose2d` sequenziali con `BatchNorm2d`, culminando in un'attivazione Sigmoide (non visibile nello script grezzo originale ma documentata nell'architettura finale) che comprime rigorosamente l'output nel range [0, 1], eliminando il rumore di fondo[cite: 8].
+
+F. train.py[cite: 9]
+- Obiettivo: Ottimizzare i gradienti prevenendo l'overfitting su un dataset ridotto[cite: 9].
+- Funzionamento: Il loop impiega una "Weighted MSE Loss": al posto di un errore quadratico standard, la funzione infligge una penalità asimmetrica moltiplicata per 50 sui pixel con attivazione gaussiana superiore a 0.05, forzando la rete a non convergere banalmente sullo sfondo vuoto[cite: 9]. La stabilità è garantita dall'ottimizzatore AdamW (weight decay 1e-4), dal Gradient Clipping e da uno scheduler `ReduceLROnPlateau` che dimezza il learning rate dopo 10 epoche di stagnazione[cite: 9]. Un meccanismo di Early Stopping (patience=25) previene il degrado dei pesi, mentre telemetria visiva e checkpoint di stato vengono salvati dinamicamente ad ogni abbattimento della best_loss[cite: 9].
+
+4. FASE III: INFERENZA E COMPOSIZIONE BIOLOGICA
+Il segmento finale elabora l'output della rete per ricreare la chimera tramite algoritmi di Computer Vision.
+
+G. inference.py[cite: 4]
+- Obiettivo: Estrarre le coordinate anatomiche su campioni fuori distribuzione (OOD)[cite: 4].
+- Funzionamento: Disabilita il calcolo dei gradienti (`torch.no_grad()`) ed elabora l'immagine target[cite: 4]. Per ciascuno dei 14 canali predetti, identifica il picco massimo di probabilità tramite `np.argmax`, applicando una soglia di affidabilità (threshold) per scartare allucinazioni[cite: 4]. Le coordinate relative alla mappa 512x512 vengono rimappate matematicamente sulle dimensioni assolute dell'input[cite: 4].
+
+H. build_DB.py[cite: 1]
+- Obiettivo: Vettorializzare la biometria del dataset di addestramento[cite: 1].
+- Funzionamento: Utilizza l'inferenza per tracciare i keypoint sui 65 animali sorgente[cite: 1]. Segmenta l'anatomia in 5 blocchi e calcola una distanza euclidea di base per ogni sezione (es. distanza muso-collo), archiviando i metadati in un database geometrico JSON[cite: 1].
+
+I. match_dinosauro.py[cite: 6]
+- Obiettivo: Determinare i donatori di texture biologicamente e proporzionalmente più affini al target[cite: 6].
+- Funzionamento: Calcola le lunghezze dei segmenti del T-Rex e le divide per la lunghezza del proprio torso, ottenendo un set di proporzioni totalmente invarianti alla scala assoluta dell'immagine[cite: 6]. Attraverso una ricerca per distanza minima monodimensionale contro i record del database, assegna a ciascuna parte del corpo il donatore animale matematicamente più compatibile[cite: 6].
+
+J. warp_dinosauro.py[cite: 10]
+- Obiettivo: Fondere organicamente le texture dei donatori sulla posa del target scheletrico[cite: 10].
+- Funzionamento: Implementa una robusta gestione degli errori scartando le matrici prive di punti omologhi minimi (< 3)[cite: 10]. Invece di ritagliare bounding box rigide che incollerebbero frammenti di sfondo, calcola il `cv2.convexHull` sui keypoint di origine per isolare una maschera poligonale precisa della sola pelle[cite: 10]. Utilizza `cv2.estimateAffine2D` per deformare spazialmente la texture, integrandola sul canvas finale attraverso una fusione basata sulla normalizzazione del canale alpha della maschera, garantendo transizioni pulite e prive di spigoli[cite: 10].

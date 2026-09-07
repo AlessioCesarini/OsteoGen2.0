@@ -1,0 +1,6957 @@
+{
+    "airone.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\airone.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\airone.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                423,
+                32
+            ],
+            "retro_cranio": [
+                322,
+                8
+            ],
+            "base_collo": [
+                171,
+                272
+            ],
+            "spalla": [
+                235,
+                206
+            ],
+            "gomito_ant_1": [
+                177,
+                404
+            ],
+            "gomito_ant_2": [
+                237,
+                212
+            ],
+            "zampa_ant": [
+                109,
+                273
+            ],
+            "dorso": [
+                236,
+                211
+            ],
+            "anca": [
+                238,
+                212
+            ],
+            "ginocchio_post_1": [
+                171,
+                272
+            ],
+            "ginocchio_post_2": [
+                179,
+                404
+            ],
+            "zampa_post": [
+                200,
+                493
+            ],
+            "base_coda": [
+                109,
+                273
+            ],
+            "punta_coda": [
+                178,
+                404
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 348.0
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 62.00806399170998
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 142.70599146496969
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 283.5577542582816
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 148.06079832285116
+            }
+        }
+    },
+    "alcaimpenne.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\alcaimpenne.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\alcaimpenne.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                223,
+                192
+            ],
+            "retro_cranio": [
+                394,
+                356
+            ],
+            "base_collo": [
+                346,
+                352
+            ],
+            "spalla": [
+                259,
+                222
+            ],
+            "gomito_ant_1": [
+                419,
+                452
+            ],
+            "gomito_ant_2": [
+                395,
+                357
+            ],
+            "zampa_ant": [
+                321,
+                415
+            ],
+            "dorso": [
+                321,
+                414
+            ],
+            "anca": [
+                394,
+                358
+            ],
+            "ginocchio_post_1": [
+                347,
+                352
+            ],
+            "ginocchio_post_2": [
+                419,
+                452
+            ],
+            "zampa_post": [
+                376,
+                465
+            ],
+            "base_coda": [
+                393,
+                404
+            ],
+            "punta_coda": [
+                420,
+                451
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 201.8142710513803
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 70.09279563550022
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 202.71408436514716
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 108.50345616615168
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 54.20332093147061
+            }
+        }
+    },
+    "aquila.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\aquila.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\aquila.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                269,
+                382
+            ],
+            "retro_cranio": [
+                308,
+                131
+            ],
+            "base_collo": [
+                283,
+                327
+            ],
+            "spalla": [
+                283,
+                327
+            ],
+            "gomito_ant_1": [
+                267,
+                384
+            ],
+            "gomito_ant_2": [
+                307,
+                132
+            ],
+            "zampa_ant": [
+                206,
+                72
+            ],
+            "dorso": [
+                207,
+                71
+            ],
+            "anca": [
+                306,
+                132
+            ],
+            "ginocchio_post_1": [
+                283,
+                328
+            ],
+            "ginocchio_post_2": [
+                268,
+                382
+            ],
+            "zampa_post": [
+                276,
+                445
+            ],
+            "base_coda": [
+                253,
+                280
+            ],
+            "punta_coda": [
+                268,
+                382
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 56.753854494650845
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 55.758407437802596
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 266.3719204420766
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 314.4344128749269
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 103.0970416646375
+            }
+        }
+    },
+    "armadillo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\armadillo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\armadillo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                43,
+                21
+            ],
+            "retro_cranio": [
+                400,
+                373
+            ],
+            "base_collo": [
+                200,
+                205
+            ],
+            "spalla": [
+                259,
+                248
+            ],
+            "gomito_ant_1": [
+                400,
+                478
+            ],
+            "gomito_ant_2": [
+                400,
+                373
+            ],
+            "zampa_ant": [
+                296,
+                436
+            ],
+            "dorso": [
+                295,
+                435
+            ],
+            "anca": [
+                399,
+                374
+            ],
+            "ginocchio_post_1": [
+                200,
+                205
+            ],
+            "ginocchio_post_2": [
+                43,
+                22
+            ],
+            "zampa_post": [
+                400,
+                477
+            ],
+            "base_coda": [
+                296,
+                436
+            ],
+            "punta_coda": [
+                356,
+                303
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 241.8780684559888
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 250.15395259719563
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 191.60636732634956
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 103.00485425454472
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 145.90750494748377
+            }
+        }
+    },
+    "axolotl.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\axolotl.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\axolotl.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                501,
+                272
+            ],
+            "retro_cranio": [
+                356,
+                181
+            ],
+            "base_collo": [
+                140,
+                297
+            ],
+            "spalla": [
+                140,
+                297
+            ],
+            "gomito_ant_1": [
+                499,
+                272
+            ],
+            "gomito_ant_2": [
+                355,
+                182
+            ],
+            "zampa_ant": [
+                374,
+                195
+            ],
+            "dorso": [
+                375,
+                195
+            ],
+            "anca": [
+                356,
+                182
+            ],
+            "ginocchio_post_1": [
+                140,
+                297
+            ],
+            "ginocchio_post_2": [
+                501,
+                272
+            ],
+            "zampa_post": [
+                168,
+                323
+            ],
+            "base_coda": [
+                112,
+                245
+            ],
+            "punta_coda": [
+                76,
+                244
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 361.86461556775623
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 59.0592922409336
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 255.26456863419176
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 235.0
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 36.013886210738214
+            }
+        }
+    },
+    "balaenicepsrex.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\balaenicepsrex.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\balaenicepsrex.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                119,
+                64
+            ],
+            "retro_cranio": [
+                238,
+                180
+            ],
+            "base_collo": [
+                245,
+                150
+            ],
+            "spalla": [
+                245,
+                151
+            ],
+            "gomito_ant_1": [
+                323,
+                370
+            ],
+            "gomito_ant_2": [
+                237,
+                180
+            ],
+            "zampa_ant": [
+                273,
+                245
+            ],
+            "dorso": [
+                328,
+                190
+            ],
+            "anca": [
+                238,
+                180
+            ],
+            "ginocchio_post_1": [
+                292,
+                232
+            ],
+            "ginocchio_post_2": [
+                321,
+                370
+            ],
+            "zampa_post": [
+                260,
+                472
+            ],
+            "base_coda": [
+                369,
+                259
+            ],
+            "punta_coda": [
+                322,
+                370
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 152.55163060419906
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 165.0969412193939
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 98.08159868191383
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 292.8275943281302
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 120.5404496424333
+            }
+        }
+    },
+    "balena.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\balena.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\balena.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                11,
+                284
+            ],
+            "retro_cranio": [
+                150,
+                181
+            ],
+            "base_collo": [
+                208,
+                192
+            ],
+            "spalla": [
+                208,
+                192
+            ],
+            "gomito_ant_1": [
+                256,
+                228
+            ],
+            "gomito_ant_2": [
+                306,
+                172
+            ],
+            "zampa_ant": [
+                310,
+                264
+            ],
+            "dorso": [
+                311,
+                263
+            ],
+            "anca": [
+                151,
+                182
+            ],
+            "ginocchio_post_1": [
+                208,
+                192
+            ],
+            "ginocchio_post_2": [
+                11,
+                284
+            ],
+            "zampa_post": [
+                254,
+                227
+            ],
+            "base_coda": [
+                309,
+                265
+            ],
+            "punta_coda": [
+                373,
+                186
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 217.4235497824465
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 124.61942063739504
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 124.85191228010886
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 112.40106761058811
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 101.67103815738285
+            }
+        }
+    },
+    "bassotto.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\bassotto.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\bassotto.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                15,
+                218
+            ],
+            "retro_cranio": [
+                70,
+                145
+            ],
+            "base_collo": [
+                480,
+                242
+            ],
+            "spalla": [
+                481,
+                243
+            ],
+            "gomito_ant_1": [
+                479,
+                320
+            ],
+            "gomito_ant_2": [
+                207,
+                296
+            ],
+            "zampa_ant": [
+                499,
+                233
+            ],
+            "dorso": [
+                208,
+                295
+            ],
+            "anca": [
+                208,
+                296
+            ],
+            "ginocchio_post_1": [
+                481,
+                241
+            ],
+            "ginocchio_post_2": [
+                480,
+                320
+            ],
+            "zampa_post": [
+                448,
+                367
+            ],
+            "base_coda": [
+                500,
+                232
+            ],
+            "punta_coda": [
+                480,
+                320
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 465.6189429136233
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 22.360679774997898
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 20.591260281974
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 250.28184113115358
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 90.24411338142782
+            }
+        }
+    },
+    "bradipo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\bradipo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\bradipo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                323,
+                56
+            ],
+            "retro_cranio": [
+                32,
+                155
+            ],
+            "base_collo": [
+                195,
+                87
+            ],
+            "spalla": [
+                57,
+                247
+            ],
+            "gomito_ant_1": [
+                184,
+                339
+            ],
+            "gomito_ant_2": [
+                31,
+                155
+            ],
+            "zampa_ant": [
+                308,
+                443
+            ],
+            "dorso": [
+                120,
+                102
+            ],
+            "anca": [
+                32,
+                156
+            ],
+            "ginocchio_post_1": [
+                195,
+                88
+            ],
+            "ginocchio_post_2": [
+                323,
+                56
+            ],
+            "zampa_post": [
+                66,
+                355
+            ],
+            "base_coda": [
+                17,
+                164
+            ],
+            "punta_coda": [
+                6,
+                168
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 131.70041761513136
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 193.94071259021402
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 318.4603586005643
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 201.8836298465034
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 11.704699910719626
+            }
+        }
+    },
+    "camaleonte.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\camaleonte.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\camaleonte.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                328,
+                270
+            ],
+            "retro_cranio": [
+                218,
+                12
+            ],
+            "base_collo": [
+                365,
+                264
+            ],
+            "spalla": [
+                366,
+                265
+            ],
+            "gomito_ant_1": [
+                327,
+                272
+            ],
+            "gomito_ant_2": [
+                388,
+                206
+            ],
+            "zampa_ant": [
+                173,
+                285
+            ],
+            "dorso": [
+                389,
+                206
+            ],
+            "anca": [
+                413,
+                240
+            ],
+            "ginocchio_post_1": [
+                364,
+                264
+            ],
+            "ginocchio_post_2": [
+                327,
+                270
+            ],
+            "zampa_post": [
+                252,
+                367
+            ],
+            "base_coda": [
+                411,
+                254
+            ],
+            "punta_coda": [
+                329,
+                270
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 37.48332962798263
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 47.07440918375928
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 194.03350226185168
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 205.0609665440988
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 83.54639429682169
+            }
+        }
+    },
+    "cane.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\cane.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\cane.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                107,
+                252
+            ],
+            "retro_cranio": [
+                252,
+                297
+            ],
+            "base_collo": [
+                330,
+                167
+            ],
+            "spalla": [
+                329,
+                167
+            ],
+            "gomito_ant_1": [
+                105,
+                252
+            ],
+            "gomito_ant_2": [
+                251,
+                298
+            ],
+            "zampa_ant": [
+                276,
+                464
+            ],
+            "dorso": [
+                252,
+                297
+            ],
+            "anca": [
+                252,
+                297
+            ],
+            "ginocchio_post_1": [
+                330,
+                166
+            ],
+            "ginocchio_post_2": [
+                107,
+                252
+            ],
+            "zampa_post": [
+                43,
+                334
+            ],
+            "base_coda": [
+                97,
+                156
+            ],
+            "punta_coda": [
+                105,
+                254
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 238.65037188322168
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 233.25951213187426
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 301.69189581425616
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 212.24985276791125
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 98.32598842625484
+            }
+        }
+    },
+    "canguro.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\canguro.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\canguro.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                27,
+                52
+            ],
+            "retro_cranio": [
+                242,
+                298
+            ],
+            "base_collo": [
+                174,
+                304
+            ],
+            "spalla": [
+                175,
+                303
+            ],
+            "gomito_ant_1": [
+                96,
+                212
+            ],
+            "gomito_ant_2": [
+                243,
+                299
+            ],
+            "zampa_ant": [
+                51,
+                344
+            ],
+            "dorso": [
+                195,
+                216
+            ],
+            "anca": [
+                75,
+                12
+            ],
+            "ginocchio_post_1": [
+                175,
+                304
+            ],
+            "ginocchio_post_2": [
+                27,
+                52
+            ],
+            "zampa_post": [
+                205,
+                460
+            ],
+            "base_coda": [
+                234,
+                328
+            ],
+            "punta_coda": [
+                460,
+                387
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 291.7413237784459
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 64.62197768561404
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 130.60245020672468
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 466.4804390325494
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 233.57439928211312
+            }
+        }
+    },
+    "casuario.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\casuario.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\casuario.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                443,
+                378
+            ],
+            "retro_cranio": [
+                81,
+                46
+            ],
+            "base_collo": [
+                234,
+                200
+            ],
+            "spalla": [
+                302,
+                206
+            ],
+            "gomito_ant_1": [
+                441,
+                380
+            ],
+            "gomito_ant_2": [
+                435,
+                215
+            ],
+            "zampa_ant": [
+                306,
+                280
+            ],
+            "dorso": [
+                369,
+                180
+            ],
+            "anca": [
+                435,
+                216
+            ],
+            "ginocchio_post_1": [
+                303,
+                204
+            ],
+            "ginocchio_post_2": [
+                443,
+                378
+            ],
+            "zampa_post": [
+                412,
+                485
+            ],
+            "base_coda": [
+                479,
+                250
+            ],
+            "punta_coda": [
+                442,
+                378
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 274.5268657162719
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 250.04999500099976
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 74.10802925459562
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 269.9814808463721
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 133.24038426843418
+            }
+        }
+    },
+    "cavallo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\cavallo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\cavallo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                71,
+                114
+            ],
+            "retro_cranio": [
+                254,
+                386
+            ],
+            "base_collo": [
+                208,
+                171
+            ],
+            "spalla": [
+                259,
+                126
+            ],
+            "gomito_ant_1": [
+                451,
+                336
+            ],
+            "gomito_ant_2": [
+                255,
+                387
+            ],
+            "zampa_ant": [
+                250,
+                496
+            ],
+            "dorso": [
+                331,
+                136
+            ],
+            "anca": [
+                254,
+                386
+            ],
+            "ginocchio_post_1": [
+                207,
+                171
+            ],
+            "ginocchio_post_2": [
+                453,
+                336
+            ],
+            "zampa_post": [
+                446,
+                435
+            ],
+            "base_coda": [
+                390,
+                124
+            ],
+            "punta_coda": [
+                453,
+                336
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 148.38463532320318
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 187.97074240423694
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 370.10944327320266
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 198.15398053029367
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 221.16283593768642
+            }
+        }
+    },
+    "celacanto.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\celacanto.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\celacanto.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                12,
+                259
+            ],
+            "retro_cranio": [
+                75,
+                221
+            ],
+            "base_collo": [
+                120,
+                247
+            ],
+            "spalla": [
+                121,
+                247
+            ],
+            "gomito_ant_1": [
+                11,
+                260
+            ],
+            "gomito_ant_2": [
+                75,
+                223
+            ],
+            "zampa_ant": [
+                218,
+                336
+            ],
+            "dorso": [
+                247,
+                251
+            ],
+            "anca": [
+                75,
+                224
+            ],
+            "ginocchio_post_1": [
+                120,
+                246
+            ],
+            "ginocchio_post_2": [
+                11,
+                260
+            ],
+            "zampa_post": [
+                501,
+                254
+            ],
+            "base_coda": [
+                315,
+                250
+            ],
+            "punta_coda": [
+                501,
+                253
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 108.664621657649
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 195.0230755577401
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 131.64345787011217
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 427.0550315825819
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 186.02419197512995
+            }
+        }
+    },
+    "cervo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\cervo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\cervo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                413,
+                390
+            ],
+            "retro_cranio": [
+                242,
+                410
+            ],
+            "base_collo": [
+                206,
+                253
+            ],
+            "spalla": [
+                218,
+                293
+            ],
+            "gomito_ant_1": [
+                411,
+                392
+            ],
+            "gomito_ant_2": [
+                243,
+                412
+            ],
+            "zampa_ant": [
+                227,
+                503
+            ],
+            "dorso": [
+                227,
+                504
+            ],
+            "anca": [
+                242,
+                412
+            ],
+            "ginocchio_post_1": [
+                217,
+                293
+            ],
+            "ginocchio_post_2": [
+                412,
+                391
+            ],
+            "zampa_post": [
+                404,
+                491
+            ],
+            "base_coda": [
+                397,
+                256
+            ],
+            "punta_coda": [
+                412,
+                390
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 248.22973230457305
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 191.02355875650522
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 210.1927686672403
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 180.23595645708434
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 134.8369385591352
+            }
+        }
+    },
+    "cinghiale.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\cinghiale.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\cinghiale.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                493,
+                303
+            ],
+            "retro_cranio": [
+                250,
+                291
+            ],
+            "base_collo": [
+                449,
+                252
+            ],
+            "spalla": [
+                450,
+                253
+            ],
+            "gomito_ant_1": [
+                491,
+                304
+            ],
+            "gomito_ant_2": [
+                251,
+                292
+            ],
+            "zampa_ant": [
+                214,
+                435
+            ],
+            "dorso": [
+                329,
+                108
+            ],
+            "anca": [
+                250,
+                292
+            ],
+            "ginocchio_post_1": [
+                448,
+                253
+            ],
+            "ginocchio_post_2": [
+                491,
+                304
+            ],
+            "zampa_post": [
+                458,
+                375
+            ],
+            "base_coda": [
+                477,
+                152
+            ],
+            "punta_coda": [
+                491,
+                304
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 67.35725647619564
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 103.84603988597736
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 298.0268444284843
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 223.9486548296283
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 152.64337522473747
+            }
+        }
+    },
+    "coccodrillo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\coccodrillo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\coccodrillo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                19,
+                204
+            ],
+            "retro_cranio": [
+                286,
+                271
+            ],
+            "base_collo": [
+                368,
+                226
+            ],
+            "spalla": [
+                370,
+                227
+            ],
+            "gomito_ant_1": [
+                407,
+                272
+            ],
+            "gomito_ant_2": [
+                284,
+                273
+            ],
+            "zampa_ant": [
+                206,
+                332
+            ],
+            "dorso": [
+                332,
+                194
+            ],
+            "anca": [
+                285,
+                272
+            ],
+            "ginocchio_post_1": [
+                172,
+                209
+            ],
+            "ginocchio_post_2": [
+                407,
+                272
+            ],
+            "zampa_post": [
+                238,
+                251
+            ],
+            "base_coda": [
+                401,
+                200
+            ],
+            "punta_coda": [
+                407,
+                272
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 349.6927222576987
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 42.01190307520001
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 194.7331507473753
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 51.478150704935004
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 72.24956747275377
+            }
+        }
+    },
+    "colibri.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\colibri.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\colibri.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                117,
+                422
+            ],
+            "retro_cranio": [
+                96,
+                371
+            ],
+            "base_collo": [
+                120,
+                337
+            ],
+            "spalla": [
+                167,
+                198
+            ],
+            "gomito_ant_1": [
+                115,
+                422
+            ],
+            "gomito_ant_2": [
+                91,
+                88
+            ],
+            "zampa_ant": [
+                62,
+                40
+            ],
+            "dorso": [
+                128,
+                264
+            ],
+            "anca": [
+                93,
+                88
+            ],
+            "ginocchio_post_1": [
+                119,
+                336
+            ],
+            "ginocchio_post_2": [
+                115,
+                422
+            ],
+            "zampa_post": [
+                156,
+                495
+            ],
+            "base_coda": [
+                81,
+                375
+            ],
+            "punta_coda": [
+                115,
+                422
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 85.05292469985967
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 54.45181356024793
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 189.70766985021982
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 411.847058991563
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 58.008620049092706
+            }
+        }
+    },
+    "delfino.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\delfino.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\delfino.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                21,
+                294
+            ],
+            "retro_cranio": [
+                172,
+                188
+            ],
+            "base_collo": [
+                230,
+                222
+            ],
+            "spalla": [
+                296,
+                263
+            ],
+            "gomito_ant_1": [
+                310,
+                284
+            ],
+            "gomito_ant_2": [
+                171,
+                189
+            ],
+            "zampa_ant": [
+                366,
+                352
+            ],
+            "dorso": [
+                365,
+                351
+            ],
+            "anca": [
+                171,
+                190
+            ],
+            "ginocchio_post_1": [
+                231,
+                222
+            ],
+            "ginocchio_post_2": [
+                19,
+                294
+            ],
+            "zampa_post": [
+                310,
+                283
+            ],
+            "base_coda": [
+                381,
+                192
+            ],
+            "punta_coda": [
+                503,
+                251
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 221.05429197371402
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 153.95129099815955
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 113.22985472038724
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 167.2423391369542
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 135.51752654177244
+            }
+        }
+    },
+    "dodo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\dodo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\dodo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                469,
+                61
+            ],
+            "retro_cranio": [
+                280,
+                293
+            ],
+            "base_collo": [
+                312,
+                210
+            ],
+            "spalla": [
+                312,
+                211
+            ],
+            "gomito_ant_1": [
+                39,
+                268
+            ],
+            "gomito_ant_2": [
+                279,
+                294
+            ],
+            "zampa_ant": [
+                200,
+                324
+            ],
+            "dorso": [
+                235,
+                168
+            ],
+            "anca": [
+                280,
+                294
+            ],
+            "ginocchio_post_1": [
+                312,
+                209
+            ],
+            "ginocchio_post_2": [
+                467,
+                60
+            ],
+            "zampa_post": [
+                157,
+                489
+            ],
+            "base_coda": [
+                120,
+                216
+            ],
+            "punta_coda": [
+                40,
+                268
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 216.44860821913363
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 192.09372712298546
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 159.10059710761615
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 230.5515126820902
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 95.4148835350125
+            }
+        }
+    },
+    "dragodicommodo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\dragodicommodo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\dragodicommodo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                11,
+                170
+            ],
+            "retro_cranio": [
+                422,
+                183
+            ],
+            "base_collo": [
+                274,
+                208
+            ],
+            "spalla": [
+                274,
+                209
+            ],
+            "gomito_ant_1": [
+                247,
+                266
+            ],
+            "gomito_ant_2": [
+                216,
+                160
+            ],
+            "zampa_ant": [
+                228,
+                344
+            ],
+            "dorso": [
+                229,
+                343
+            ],
+            "anca": [
+                421,
+                184
+            ],
+            "ginocchio_post_1": [
+                273,
+                209
+            ],
+            "ginocchio_post_2": [
+                11,
+                170
+            ],
+            "zampa_post": [
+                248,
+                265
+            ],
+            "base_coda": [
+                93,
+                168
+            ],
+            "punta_coda": [
+                248,
+                265
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 265.73106705840775
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 185.3672031401456
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 142.6218777046495
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 191.02355875650522
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 182.84966502567076
+            }
+        }
+    },
+    "echidna.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\echidna.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\echidna.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                495,
+                235
+            ],
+            "retro_cranio": [
+                46,
+                180
+            ],
+            "base_collo": [
+                269,
+                192
+            ],
+            "spalla": [
+                90,
+                229
+            ],
+            "gomito_ant_1": [
+                196,
+                292
+            ],
+            "gomito_ant_2": [
+                176,
+                140
+            ],
+            "zampa_ant": [
+                294,
+                384
+            ],
+            "dorso": [
+                177,
+                140
+            ],
+            "anca": [
+                47,
+                180
+            ],
+            "ginocchio_post_1": [
+                268,
+                193
+            ],
+            "ginocchio_post_2": [
+                13,
+                164
+            ],
+            "zampa_post": [
+                72,
+                323
+            ],
+            "base_coda": [
+                67,
+                138
+            ],
+            "punta_coda": [
+                14,
+                164
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 230.05434140654683
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 209.093280618962
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 256.20499604808646
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 145.16886718577092
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 59.033888572581766
+            }
+        }
+    },
+    "elefante.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\elefante.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\elefante.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                31,
+                288
+            ],
+            "retro_cranio": [
+                142,
+                60
+            ],
+            "base_collo": [
+                270,
+                139
+            ],
+            "spalla": [
+                468,
+                303
+            ],
+            "gomito_ant_1": [
+                31,
+                288
+            ],
+            "gomito_ant_2": [
+                483,
+                189
+            ],
+            "zampa_ant": [
+                298,
+                448
+            ],
+            "dorso": [
+                385,
+                120
+            ],
+            "anca": [
+                141,
+                60
+            ],
+            "ginocchio_post_1": [
+                271,
+                140
+            ],
+            "ginocchio_post_2": [
+                31,
+                288
+            ],
+            "zampa_post": [
+                470,
+                399
+            ],
+            "base_coda": [
+                443,
+                134
+            ],
+            "punta_coda": [
+                504,
+                268
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 281.64161624305456
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 173.07223925286226
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 223.4390297150433
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 472.4002540219469
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 147.2311108427835
+            }
+        }
+    },
+    "fagiano.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\fagiano.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\fagiano.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                62,
+                62
+            ],
+            "retro_cranio": [
+                306,
+                248
+            ],
+            "base_collo": [
+                399,
+                371
+            ],
+            "spalla": [
+                400,
+                371
+            ],
+            "gomito_ant_1": [
+                459,
+                272
+            ],
+            "gomito_ant_2": [
+                307,
+                247
+            ],
+            "zampa_ant": [
+                407,
+                243
+            ],
+            "dorso": [
+                327,
+                171
+            ],
+            "anca": [
+                306,
+                248
+            ],
+            "ginocchio_post_1": [
+                399,
+                372
+            ],
+            "ginocchio_post_2": [
+                61,
+                64
+            ],
+            "zampa_post": [
+                270,
+                478
+            ],
+            "base_coda": [
+                421,
+                272
+            ],
+            "punta_coda": [
+                460,
+                270
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 457.21985958617324
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 101.41498903022176
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 128.191263352851
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 232.80034364235806
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 39.05124837953327
+            }
+        }
+    },
+    "foca.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\foca.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\foca.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                25,
+                203
+            ],
+            "retro_cranio": [
+                78,
+                123
+            ],
+            "base_collo": [
+                158,
+                199
+            ],
+            "spalla": [
+                433,
+                271
+            ],
+            "gomito_ant_1": [
+                408,
+                358
+            ],
+            "gomito_ant_2": [
+                447,
+                251
+            ],
+            "zampa_ant": [
+                166,
+                340
+            ],
+            "dorso": [
+                300,
+                217
+            ],
+            "anca": [
+                448,
+                252
+            ],
+            "ginocchio_post_1": [
+                432,
+                272
+            ],
+            "ginocchio_post_2": [
+                23,
+                204
+            ],
+            "zampa_post": [
+                408,
+                357
+            ],
+            "base_coda": [
+                451,
+                235
+            ],
+            "punta_coda": [
+                502,
+                268
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 133.06013678032951
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 295.2033197645311
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 275.77164466275354
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 112.36102527122117
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 60.74537019394976
+            }
+        }
+    },
+    "formichiere.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\formichiere.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\formichiere.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                499,
+                342
+            ],
+            "retro_cranio": [
+                430,
+                199
+            ],
+            "base_collo": [
+                306,
+                137
+            ],
+            "spalla": [
+                282,
+                161
+            ],
+            "gomito_ant_1": [
+                238,
+                246
+            ],
+            "gomito_ant_2": [
+                147,
+                175
+            ],
+            "zampa_ant": [
+                276,
+                411
+            ],
+            "dorso": [
+                238,
+                97
+            ],
+            "anca": [
+                429,
+                200
+            ],
+            "ginocchio_post_1": [
+                306,
+                137
+            ],
+            "ginocchio_post_2": [
+                31,
+                236
+            ],
+            "zampa_post": [
+                126,
+                363
+            ],
+            "base_coda": [
+                148,
+                156
+            ],
+            "punta_coda": [
+                497,
+                342
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 281.55638866841576
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 159.13830462839547
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 250.0719896349849
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 344.06104109590785
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 395.47060573448437
+            }
+        }
+    },
+    "gallina.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\gallina.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\gallina.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                103,
+                206
+            ],
+            "retro_cranio": [
+                254,
+                35
+            ],
+            "base_collo": [
+                290,
+                185
+            ],
+            "spalla": [
+                255,
+                196
+            ],
+            "gomito_ant_1": [
+                147,
+                396
+            ],
+            "gomito_ant_2": [
+                253,
+                35
+            ],
+            "zampa_ant": [
+                83,
+                41
+            ],
+            "dorso": [
+                83,
+                41
+            ],
+            "anca": [
+                254,
+                36
+            ],
+            "ginocchio_post_1": [
+                159,
+                312
+            ],
+            "ginocchio_post_2": [
+                147,
+                396
+            ],
+            "zampa_post": [
+                184,
+                473
+            ],
+            "base_coda": [
+                119,
+                215
+            ],
+            "punta_coda": [
+                101,
+                208
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 188.1754500459611
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 173.61163555476344
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 231.53617427952807
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 442.57089827506735
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 19.313207915827967
+            }
+        }
+    },
+    "gatto.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\gatto.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\gatto.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                17,
+                130
+            ],
+            "retro_cranio": [
+                70,
+                75
+            ],
+            "base_collo": [
+                182,
+                121
+            ],
+            "spalla": [
+                195,
+                178
+            ],
+            "gomito_ant_1": [
+                214,
+                269
+            ],
+            "gomito_ant_2": [
+                467,
+                133
+            ],
+            "zampa_ant": [
+                198,
+                388
+            ],
+            "dorso": [
+                470,
+                131
+            ],
+            "anca": [
+                467,
+                133
+            ],
+            "ginocchio_post_1": [
+                423,
+                228
+            ],
+            "ginocchio_post_2": [
+                467,
+                268
+            ],
+            "zampa_post": [
+                434,
+                391
+            ],
+            "base_coda": [
+                472,
+                130
+            ],
+            "punta_coda": [
+                470,
+                268
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 165.24527224704494
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 290.13962156175774
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 210.02142747824567
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 260.1019031072245
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 138.01449199268893
+            }
+        }
+    },
+    "giraffa.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\giraffa.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\giraffa.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                111,
+                43
+            ],
+            "retro_cranio": [
+                256,
+                369
+            ],
+            "base_collo": [
+                354,
+                320
+            ],
+            "spalla": [
+                231,
+                242
+            ],
+            "gomito_ant_1": [
+                375,
+                372
+            ],
+            "gomito_ant_2": [
+                257,
+                370
+            ],
+            "zampa_ant": [
+                249,
+                495
+            ],
+            "dorso": [
+                256,
+                371
+            ],
+            "anca": [
+                258,
+                372
+            ],
+            "ginocchio_post_1": [
+                353,
+                321
+            ],
+            "ginocchio_post_2": [
+                374,
+                374
+            ],
+            "zampa_post": [
+                396,
+                485
+            ],
+            "base_coda": [
+                356,
+                252
+            ],
+            "punta_coda": [
+                374,
+                372
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 368.4806643502478
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 68.0294054067798
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 253.63950796356627
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 178.36199146679206
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 121.3424904969401
+            }
+        }
+    },
+    "gorilla.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\gorilla.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\gorilla.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                79,
+                106
+            ],
+            "retro_cranio": [
+                142,
+                18
+            ],
+            "base_collo": [
+                392,
+                337
+            ],
+            "spalla": [
+                391,
+                338
+            ],
+            "gomito_ant_1": [
+                79,
+                108
+            ],
+            "gomito_ant_2": [
+                141,
+                19
+            ],
+            "zampa_ant": [
+                392,
+                337
+            ],
+            "dorso": [
+                191,
+                503
+            ],
+            "anca": [
+                429,
+                232
+            ],
+            "ginocchio_post_1": [
+                392,
+                336
+            ],
+            "ginocchio_post_2": [
+                79,
+                108
+            ],
+            "zampa_post": [
+                429,
+                450
+            ],
+            "base_coda": [
+                191,
+                503
+            ],
+            "punta_coda": [
+                77,
+                106
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 389.0115679513914
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 260.6856344335069
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 1.4142135623730951
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 218.0
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 413.0435812356851
+            }
+        }
+    },
+    "gufo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\gufo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\gufo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                369,
+                70
+            ],
+            "retro_cranio": [
+                198,
+                68
+            ],
+            "base_collo": [
+                289,
+                164
+            ],
+            "spalla": [
+                212,
+                387
+            ],
+            "gomito_ant_1": [
+                184,
+                149
+            ],
+            "gomito_ant_2": [
+                198,
+                69
+            ],
+            "zampa_ant": [
+                140,
+                11
+            ],
+            "dorso": [
+                139,
+                11
+            ],
+            "anca": [
+                198,
+                68
+            ],
+            "ginocchio_post_1": [
+                288,
+                164
+            ],
+            "ginocchio_post_2": [
+                367,
+                72
+            ],
+            "zampa_post": [
+                230,
+                451
+            ],
+            "base_coda": [
+                189,
+                285
+            ],
+            "punta_coda": [
+                369,
+                70
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 123.43419299367578
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 156.97452022541748
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 382.83155564817275
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 384.33448973517847
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 280.40149785619906
+            }
+        }
+    },
+    "iguana.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\iguana.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\iguana.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                15,
+                170
+            ],
+            "retro_cranio": [
+                188,
+                249
+            ],
+            "base_collo": [
+                338,
+                235
+            ],
+            "spalla": [
+                155,
+                194
+            ],
+            "gomito_ant_1": [
+                319,
+                244
+            ],
+            "gomito_ant_2": [
+                187,
+                250
+            ],
+            "zampa_ant": [
+                139,
+                297
+            ],
+            "dorso": [
+                139,
+                295
+            ],
+            "anca": [
+                188,
+                251
+            ],
+            "ginocchio_post_1": [
+                136,
+                161
+            ],
+            "ginocchio_post_2": [
+                318,
+                246
+            ],
+            "zampa_post": [
+                375,
+                274
+            ],
+            "base_coda": [
+                353,
+                208
+            ],
+            "punta_coda": [
+                318,
+                244
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 329.4753405036559
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 30.886890422961002
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 104.23531071570709
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 188.40912929048847
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 50.20956084253277
+            }
+        }
+    },
+    "ippopotamo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\ippopotamo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\ippopotamo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                26,
+                190
+            ],
+            "retro_cranio": [
+                470,
+                210
+            ],
+            "base_collo": [
+                470,
+                266
+            ],
+            "spalla": [
+                470,
+                267
+            ],
+            "gomito_ant_1": [
+                503,
+                236
+            ],
+            "gomito_ant_2": [
+                469,
+                211
+            ],
+            "zampa_ant": [
+                473,
+                174
+            ],
+            "dorso": [
+                345,
+                140
+            ],
+            "anca": [
+                103,
+                102
+            ],
+            "ginocchio_post_1": [
+                468,
+                268
+            ],
+            "ginocchio_post_2": [
+                27,
+                190
+            ],
+            "zampa_post": [
+                453,
+                377
+            ],
+            "base_coda": [
+                475,
+                174
+            ],
+            "punta_coda": [
+                503,
+                235
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 450.45754516935335
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 92.13576938409967
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 93.04837451562494
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 445.1123453691214
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 67.11929677819934
+            }
+        }
+    },
+    "kiwi.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\kiwi.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\kiwi.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                103,
+                386
+            ],
+            "retro_cranio": [
+                220,
+                272
+            ],
+            "base_collo": [
+                212,
+                170
+            ],
+            "spalla": [
+                280,
+                243
+            ],
+            "gomito_ant_1": [
+                103,
+                388
+            ],
+            "gomito_ant_2": [
+                219,
+                272
+            ],
+            "zampa_ant": [
+                198,
+                296
+            ],
+            "dorso": [
+                220,
+                273
+            ],
+            "anca": [
+                220,
+                272
+            ],
+            "ginocchio_post_1": [
+                279,
+                244
+            ],
+            "ginocchio_post_2": [
+                103,
+                388
+            ],
+            "zampa_post": [
+                194,
+                491
+            ],
+            "base_coda": [
+                89,
+                244
+            ],
+            "punta_coda": [
+                101,
+                386
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 241.9442084448396
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 143.54441821262157
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 97.63708311906906
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 220.5379785887229
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 142.50614021858848
+            }
+        }
+    },
+    "levriero.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\levriero.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\levriero.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                500,
+                179
+            ],
+            "retro_cranio": [
+                426,
+                144
+            ],
+            "base_collo": [
+                331,
+                189
+            ],
+            "spalla": [
+                319,
+                230
+            ],
+            "gomito_ant_1": [
+                115,
+                322
+            ],
+            "gomito_ant_2": [
+                425,
+                143
+            ],
+            "zampa_ant": [
+                194,
+                352
+            ],
+            "dorso": [
+                221,
+                154
+            ],
+            "anca": [
+                425,
+                144
+            ],
+            "ginocchio_post_1": [
+                192,
+                232
+            ],
+            "ginocchio_post_2": [
+                115,
+                322
+            ],
+            "zampa_post": [
+                242,
+                243
+            ],
+            "base_coda": [
+                103,
+                190
+            ],
+            "punta_coda": [
+                114,
+                320
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 169.29559947027565
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 228.0021929719098
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 174.6682569902156
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 208.06249061279644
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 130.4645545732633
+            }
+        }
+    },
+    "lupo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\lupo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\lupo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                23,
+                130
+            ],
+            "retro_cranio": [
+                216,
+                379
+            ],
+            "base_collo": [
+                438,
+                268
+            ],
+            "spalla": [
+                438,
+                270
+            ],
+            "gomito_ant_1": [
+                475,
+                340
+            ],
+            "gomito_ant_2": [
+                215,
+                379
+            ],
+            "zampa_ant": [
+                192,
+                444
+            ],
+            "dorso": [
+                327,
+                136
+            ],
+            "anca": [
+                216,
+                380
+            ],
+            "ginocchio_post_1": [
+                439,
+                269
+            ],
+            "ginocchio_post_2": [
+                475,
+                340
+            ],
+            "zampa_post": [
+                431,
+                422
+            ],
+            "base_coda": [
+                435,
+                147
+            ],
+            "punta_coda": [
+                476,
+                341
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 437.34311472801306
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 121.03718436910205
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 301.3171087077533
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 219.06391761310215
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 198.28514820833152
+            }
+        }
+    },
+    "mammut.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\mammut.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\mammut.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                507,
+                262
+            ],
+            "retro_cranio": [
+                488,
+                231
+            ],
+            "base_collo": [
+                286,
+                144
+            ],
+            "spalla": [
+                287,
+                143
+            ],
+            "gomito_ant_1": [
+                367,
+                296
+            ],
+            "gomito_ant_2": [
+                486,
+                233
+            ],
+            "zampa_ant": [
+                497,
+                242
+            ],
+            "dorso": [
+                397,
+                136
+            ],
+            "anca": [
+                486,
+                234
+            ],
+            "ginocchio_post_1": [
+                287,
+                144
+            ],
+            "ginocchio_post_2": [
+                506,
+                264
+            ],
+            "zampa_post": [
+                438,
+                422
+            ],
+            "base_coda": [
+                498,
+                240
+            ],
+            "punta_coda": [
+                506,
+                264
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 250.52943938786913
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 232.7230113246217
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 232.16588896735024
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 194.03092537015846
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 25.298221281347036
+            }
+        }
+    },
+    "mucca.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\mucca.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\mucca.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                473,
+                370
+            ],
+            "retro_cranio": [
+                460,
+                211
+            ],
+            "base_collo": [
+                120,
+                189
+            ],
+            "spalla": [
+                411,
+                271
+            ],
+            "gomito_ant_1": [
+                473,
+                372
+            ],
+            "gomito_ant_2": [
+                178,
+                300
+            ],
+            "zampa_ant": [
+                273,
+                199
+            ],
+            "dorso": [
+                275,
+                200
+            ],
+            "anca": [
+                461,
+                212
+            ],
+            "ginocchio_post_1": [
+                411,
+                272
+            ],
+            "ginocchio_post_2": [
+                475,
+                372
+            ],
+            "zampa_post": [
+                142,
+                254
+            ],
+            "base_coda": [
+                443,
+                163
+            ],
+            "punta_coda": [
+                473,
+                372
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 396.6988782439396
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 324.04474999604605
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 155.65346125287417
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 321.7530108639234
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 211.14213222377006
+            }
+        }
+    },
+    "opossum.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\opossum.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\opossum.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                13,
+                318
+            ],
+            "retro_cranio": [
+                170,
+                343
+            ],
+            "base_collo": [
+                135,
+                213
+            ],
+            "spalla": [
+                298,
+                245
+            ],
+            "gomito_ant_1": [
+                202,
+                277
+            ],
+            "gomito_ant_2": [
+                169,
+                344
+            ],
+            "zampa_ant": [
+                146,
+                344
+            ],
+            "dorso": [
+                246,
+                174
+            ],
+            "anca": [
+                170,
+                344
+            ],
+            "ginocchio_post_1": [
+                136,
+                213
+            ],
+            "ginocchio_post_2": [
+                11,
+                316
+            ],
+            "zampa_post": [
+                305,
+                321
+            ],
+            "base_coda": [
+                375,
+                227
+            ],
+            "punta_coda": [
+                501,
+                328
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 160.96272860510285
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 240.40798655618744
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 181.39735389470266
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 136.94524453225822
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 161.48374531202822
+            }
+        }
+    },
+    "ornitorinco.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\ornitorinco.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\ornitorinco.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                7,
+                291
+            ],
+            "retro_cranio": [
+                350,
+                229
+            ],
+            "base_collo": [
+                400,
+                302
+            ],
+            "spalla": [
+                401,
+                303
+            ],
+            "gomito_ant_1": [
+                7,
+                292
+            ],
+            "gomito_ant_2": [
+                349,
+                231
+            ],
+            "zampa_ant": [
+                148,
+                322
+            ],
+            "dorso": [
+                347,
+                211
+            ],
+            "anca": [
+                351,
+                230
+            ],
+            "ginocchio_post_1": [
+                400,
+                301
+            ],
+            "ginocchio_post_2": [
+                7,
+                292
+            ],
+            "zampa_post": [
+                362,
+                323
+            ],
+            "base_coda": [
+                347,
+                210
+            ],
+            "punta_coda": [
+                506,
+                296
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 393.15391388106514
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 106.17438485811914
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 253.71243564319033
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 93.64827814754524
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 180.76780686836912
+            }
+        }
+    },
+    "pappagallo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\pappagallo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\pappagallo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                93,
+                78
+            ],
+            "retro_cranio": [
+                250,
+                191
+            ],
+            "base_collo": [
+                306,
+                247
+            ],
+            "spalla": [
+                307,
+                247
+            ],
+            "gomito_ant_1": [
+                331,
+                388
+            ],
+            "gomito_ant_2": [
+                247,
+                190
+            ],
+            "zampa_ant": [
+                290,
+                256
+            ],
+            "dorso": [
+                345,
+                202
+            ],
+            "anca": [
+                248,
+                190
+            ],
+            "ginocchio_post_1": [
+                307,
+                248
+            ],
+            "ginocchio_post_2": [
+                331,
+                390
+            ],
+            "zampa_post": [
+                276,
+                405
+            ],
+            "base_coda": [
+                407,
+                269
+            ],
+            "punta_coda": [
+                332,
+                389
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 271.9007171744863
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 103.36827366266692
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 19.235384061671343
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 216.8155898453799
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 141.50971698084905
+            }
+        }
+    },
+    "pellicano.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\pellicano.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\pellicano.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                215,
+                466
+            ],
+            "retro_cranio": [
+                308,
+                357
+            ],
+            "base_collo": [
+                305,
+                256
+            ],
+            "spalla": [
+                287,
+                264
+            ],
+            "gomito_ant_1": [
+                215,
+                466
+            ],
+            "gomito_ant_2": [
+                308,
+                357
+            ],
+            "zampa_ant": [
+                192,
+                370
+            ],
+            "dorso": [
+                207,
+                263
+            ],
+            "anca": [
+                140,
+                304
+            ],
+            "ginocchio_post_1": [
+                304,
+                257
+            ],
+            "ginocchio_post_2": [
+                216,
+                467
+            ],
+            "zampa_post": [
+                268,
+                493
+            ],
+            "base_coda": [
+                127,
+                289
+            ],
+            "punta_coda": [
+                215,
+                466
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 228.47319317591726
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 181.0331461362808
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 142.3411395205195
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 228.26519664635694
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 197.6689151080665
+            }
+        }
+    },
+    "picchio.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\picchio.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\picchio.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                419,
+                67
+            ],
+            "retro_cranio": [
+                227,
+                173
+            ],
+            "base_collo": [
+                192,
+                214
+            ],
+            "spalla": [
+                191,
+                215
+            ],
+            "gomito_ant_1": [
+                191,
+                320
+            ],
+            "gomito_ant_2": [
+                227,
+                174
+            ],
+            "zampa_ant": [
+                176,
+                203
+            ],
+            "dorso": [
+                217,
+                196
+            ],
+            "anca": [
+                228,
+                176
+            ],
+            "ginocchio_post_1": [
+                191,
+                216
+            ],
+            "ginocchio_post_2": [
+                191,
+                320
+            ],
+            "zampa_post": [
+                226,
+                399
+            ],
+            "base_coda": [
+                148,
+                248
+            ],
+            "punta_coda": [
+                192,
+                320
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 270.44038160008574
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 55.60575509783138
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 19.209372712298546
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 223.00896842952304
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 84.38009243891595
+            }
+        }
+    },
+    "piccione.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\piccione.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\piccione.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                77,
+                90
+            ],
+            "retro_cranio": [
+                192,
+                269
+            ],
+            "base_collo": [
+                184,
+                170
+            ],
+            "spalla": [
+                247,
+                255
+            ],
+            "gomito_ant_1": [
+                251,
+                408
+            ],
+            "gomito_ant_2": [
+                192,
+                269
+            ],
+            "zampa_ant": [
+                238,
+                368
+            ],
+            "dorso": [
+                293,
+                204
+            ],
+            "anca": [
+                192,
+                268
+            ],
+            "ginocchio_post_1": [
+                184,
+                169
+            ],
+            "ginocchio_post_2": [
+                251,
+                408
+            ],
+            "zampa_post": [
+                224,
+                499
+            ],
+            "base_coda": [
+                363,
+                270
+            ],
+            "punta_coda": [
+                252,
+                408
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 133.60014970051492
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 205.03902067655318
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 113.35784048754634
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 233.20591759215716
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 177.1016657177453
+            }
+        }
+    },
+    "pinguino.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\pinguino.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\pinguino.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                343,
+                442
+            ],
+            "retro_cranio": [
+                290,
+                334
+            ],
+            "base_collo": [
+                338,
+                335
+            ],
+            "spalla": [
+                338,
+                337
+            ],
+            "gomito_ant_1": [
+                343,
+                444
+            ],
+            "gomito_ant_2": [
+                291,
+                334
+            ],
+            "zampa_ant": [
+                300,
+                436
+            ],
+            "dorso": [
+                346,
+                234
+            ],
+            "anca": [
+                290,
+                336
+            ],
+            "ginocchio_post_1": [
+                339,
+                336
+            ],
+            "ginocchio_post_2": [
+                344,
+                443
+            ],
+            "zampa_post": [
+                306,
+                259
+            ],
+            "base_coda": [
+                359,
+                354
+            ],
+            "punta_coda": [
+                343,
+                442
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 107.11675872616759
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 28.319604517012593
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 106.04244433244644
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 78.64477096412705
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 89.44271909999159
+            }
+        }
+    },
+    "pipistrello.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\pipistrello.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\pipistrello.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                275,
+                136
+            ],
+            "retro_cranio": [
+                132,
+                123
+            ],
+            "base_collo": [
+                218,
+                261
+            ],
+            "spalla": [
+                91,
+                263
+            ],
+            "gomito_ant_1": [
+                186,
+                206
+            ],
+            "gomito_ant_2": [
+                131,
+                124
+            ],
+            "zampa_ant": [
+                244,
+                194
+            ],
+            "dorso": [
+                245,
+                192
+            ],
+            "anca": [
+                131,
+                124
+            ],
+            "ginocchio_post_1": [
+                91,
+                265
+            ],
+            "ginocchio_post_2": [
+                275,
+                136
+            ],
+            "zampa_post": [
+                210,
+                323
+            ],
+            "base_coda": [
+                92,
+                266
+            ],
+            "punta_coda": [
+                273,
+                138
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 137.38267721950973
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 126.09916732476864
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 167.83920876839238
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 214.1074496602115
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 221.68671588527806
+            }
+        }
+    },
+    "rana.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\rana.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\rana.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                481,
+                254
+            ],
+            "retro_cranio": [
+                370,
+                248
+            ],
+            "base_collo": [
+                210,
+                149
+            ],
+            "spalla": [
+                372,
+                341
+            ],
+            "gomito_ant_1": [
+                479,
+                256
+            ],
+            "gomito_ant_2": [
+                372,
+                249
+            ],
+            "zampa_ant": [
+                94,
+                400
+            ],
+            "dorso": [
+                323,
+                164
+            ],
+            "anca": [
+                371,
+                250
+            ],
+            "ginocchio_post_1": [
+                372,
+                340
+            ],
+            "ginocchio_post_2": [
+                479,
+                256
+            ],
+            "zampa_post": [
+                454,
+                347
+            ],
+            "base_coda": [
+                93,
+                401
+            ],
+            "punta_coda": [
+                479,
+                256
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 290.6303494131334
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 277.83628272779634
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 284.1918366174511
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 127.66362050325849
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 412.336028015986
+            }
+        }
+    },
+    "razza.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\razza.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\razza.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                266,
+                420
+            ],
+            "retro_cranio": [
+                60,
+                208
+            ],
+            "base_collo": [
+                255,
+                136
+            ],
+            "spalla": [
+                180,
+                431
+            ],
+            "gomito_ant_1": [
+                265,
+                420
+            ],
+            "gomito_ant_2": [
+                60,
+                209
+            ],
+            "zampa_ant": [
+                256,
+                287
+            ],
+            "dorso": [
+                255,
+                368
+            ],
+            "anca": [
+                60,
+                208
+            ],
+            "ginocchio_post_1": [
+                179,
+                432
+            ],
+            "ginocchio_post_2": [
+                266,
+                419
+            ],
+            "zampa_post": [
+                397,
+                496
+            ],
+            "base_coda": [
+                437,
+                499
+            ],
+            "punta_coda": [
+                263,
+                420
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 284.2129483327598
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 406.07019097688027
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 162.82505949638096
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 443.29786825564594
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 191.09421759959145
+            }
+        }
+    },
+    "rinoceronte.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\rinoceronte.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\rinoceronte.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                87,
+                294
+            ],
+            "retro_cranio": [
+                278,
+                316
+            ],
+            "base_collo": [
+                86,
+                240
+            ],
+            "spalla": [
+                86,
+                241
+            ],
+            "gomito_ant_1": [
+                87,
+                296
+            ],
+            "gomito_ant_2": [
+                278,
+                317
+            ],
+            "zampa_ant": [
+                276,
+                355
+            ],
+            "dorso": [
+                233,
+                206
+            ],
+            "anca": [
+                278,
+                316
+            ],
+            "ginocchio_post_1": [
+                412,
+                209
+            ],
+            "ginocchio_post_2": [
+                87,
+                293
+            ],
+            "zampa_post": [
+                26,
+                351
+            ],
+            "base_coda": [
+                95,
+                211
+            ],
+            "punta_coda": [
+                87,
+                294
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 54.00925846556311
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 30.364452901377952
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 221.57617200412142
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 254.41894583540747
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 83.38465086573187
+            }
+        }
+    },
+    "rinocerontelanoso.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\rinocerontelanoso.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\rinocerontelanoso.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                5,
+                184
+            ],
+            "retro_cranio": [
+                200,
+                297
+            ],
+            "base_collo": [
+                415,
+                251
+            ],
+            "spalla": [
+                151,
+                242
+            ],
+            "gomito_ant_1": [
+                355,
+                284
+            ],
+            "gomito_ant_2": [
+                201,
+                298
+            ],
+            "zampa_ant": [
+                200,
+                341
+            ],
+            "dorso": [
+                254,
+                193
+            ],
+            "anca": [
+                202,
+                298
+            ],
+            "ginocchio_post_1": [
+                415,
+                252
+            ],
+            "ginocchio_post_2": [
+                355,
+                284
+            ],
+            "zampa_post": [
+                329,
+                355
+            ],
+            "base_coda": [
+                411,
+                210
+            ],
+            "punta_coda": [
+                355,
+                284
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 415.43832273876706
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 41.19465984809196
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 110.46266337545913
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 139.20488497175666
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 92.80086206496145
+            }
+        }
+    },
+    "rondine.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\rondine.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\rondine.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                243,
+                268
+            ],
+            "retro_cranio": [
+                240,
+                173
+            ],
+            "base_collo": [
+                242,
+                207
+            ],
+            "spalla": [
+                242,
+                209
+            ],
+            "gomito_ant_1": [
+                241,
+                268
+            ],
+            "gomito_ant_2": [
+                239,
+                174
+            ],
+            "zampa_ant": [
+                216,
+                127
+            ],
+            "dorso": [
+                215,
+                127
+            ],
+            "anca": [
+                240,
+                174
+            ],
+            "ginocchio_post_1": [
+                244,
+                209
+            ],
+            "ginocchio_post_2": [
+                243,
+                268
+            ],
+            "zampa_post": [
+                240,
+                145
+            ],
+            "base_coda": [
+                275,
+                275
+            ],
+            "punta_coda": [
+                242,
+                268
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 61.00819617067857
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 75.58438992278762
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 86.02325267042627
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 29.0
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 33.734255586866
+            }
+        }
+    },
+    "salamandra.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\salamandra.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\salamandra.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                39,
+                400
+            ],
+            "retro_cranio": [
+                280,
+                221
+            ],
+            "base_collo": [
+                85,
+                288
+            ],
+            "spalla": [
+                86,
+                289
+            ],
+            "gomito_ant_1": [
+                177,
+                284
+            ],
+            "gomito_ant_2": [
+                279,
+                222
+            ],
+            "zampa_ant": [
+                192,
+                366
+            ],
+            "dorso": [
+                160,
+                192
+            ],
+            "anca": [
+                280,
+                222
+            ],
+            "ginocchio_post_1": [
+                87,
+                288
+            ],
+            "ginocchio_post_2": [
+                39,
+                400
+            ],
+            "zampa_post": [
+                386,
+                303
+            ],
+            "base_coda": [
+                295,
+                178
+            ],
+            "punta_coda": [
+                490,
+                108
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 121.07848694132248
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 237.06539182259397
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 131.01526628603247
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 133.4053971921676
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 207.18349355100662
+            }
+        }
+    },
+    "scimpanze.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\scimpanze.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\scimpanze.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                47,
+                112
+            ],
+            "retro_cranio": [
+                436,
+                179
+            ],
+            "base_collo": [
+                398,
+                316
+            ],
+            "spalla": [
+                398,
+                317
+            ],
+            "gomito_ant_1": [
+                233,
+                233
+            ],
+            "gomito_ant_2": [
+                435,
+                179
+            ],
+            "zampa_ant": [
+                128,
+                475
+            ],
+            "dorso": [
+                297,
+                76
+            ],
+            "anca": [
+                435,
+                181
+            ],
+            "ginocchio_post_1": [
+                398,
+                317
+            ],
+            "ginocchio_post_2": [
+                45,
+                112
+            ],
+            "zampa_post": [
+                457,
+                465
+            ],
+            "base_coda": [
+                129,
+                477
+            ],
+            "punta_coda": [
+                234,
+                233
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 405.97660031090464
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 313.4996012756635
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 312.8322234041755
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 284.85083815920217
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 265.6332057556058
+            }
+        }
+    },
+    "serpente.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\serpente.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\serpente.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                241,
+                27
+            ],
+            "retro_cranio": [
+                280,
+                16
+            ],
+            "base_collo": [
+                292,
+                398
+            ],
+            "spalla": [
+                293,
+                399
+            ],
+            "gomito_ant_1": [
+                239,
+                28
+            ],
+            "gomito_ant_2": [
+                279,
+                17
+            ],
+            "zampa_ant": [
+                293,
+                400
+            ],
+            "dorso": [
+                280,
+                16
+            ],
+            "anca": [
+                281,
+                16
+            ],
+            "ginocchio_post_1": [
+                292,
+                400
+            ],
+            "ginocchio_post_2": [
+                239,
+                28
+            ],
+            "zampa_post": [
+                242,
+                26
+            ],
+            "base_coda": [
+                294,
+                400
+            ],
+            "punta_coda": [
+                241,
+                26
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 374.4889851517665
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 2.8284271247461903
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 1.0
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 40.26164427839479
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 377.73668077114246
+            }
+        }
+    },
+    "squalo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\squalo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\squalo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                27,
+                280
+            ],
+            "retro_cranio": [
+                48,
+                241
+            ],
+            "base_collo": [
+                112,
+                259
+            ],
+            "spalla": [
+                199,
+                331
+            ],
+            "gomito_ant_1": [
+                467,
+                251
+            ],
+            "gomito_ant_2": [
+                272,
+                236
+            ],
+            "zampa_ant": [
+                200,
+                331
+            ],
+            "dorso": [
+                273,
+                236
+            ],
+            "anca": [
+                47,
+                242
+            ],
+            "ginocchio_post_1": [
+                112,
+                261
+            ],
+            "ginocchio_post_2": [
+                27,
+                280
+            ],
+            "zampa_post": [
+                469,
+                250
+            ],
+            "base_coda": [
+                359,
+                263
+            ],
+            "punta_coda": [
+                469,
+                249
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 87.55569655939013
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 247.0323865407125
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 1.0
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 422.0758225722009
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 110.8873302050329
+            }
+        }
+    },
+    "struzzo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\struzzo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\struzzo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                302,
+                396
+            ],
+            "retro_cranio": [
+                144,
+                9
+            ],
+            "base_collo": [
+                208,
+                197
+            ],
+            "spalla": [
+                209,
+                199
+            ],
+            "gomito_ant_1": [
+                303,
+                396
+            ],
+            "gomito_ant_2": [
+                276,
+                221
+            ],
+            "zampa_ant": [
+                207,
+                198
+            ],
+            "dorso": [
+                276,
+                221
+            ],
+            "anca": [
+                276,
+                222
+            ],
+            "ginocchio_post_1": [
+                208,
+                197
+            ],
+            "ginocchio_post_2": [
+                303,
+                396
+            ],
+            "zampa_post": [
+                250,
+                499
+            ],
+            "base_coda": [
+                327,
+                261
+            ],
+            "punta_coda": [
+                302,
+                396
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 220.0840748441377
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 135.1184665395519
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 2.23606797749979
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 278.21754078418564
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 137.2953021774598
+            }
+        }
+    },
+    "tacchino.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\tacchino.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\tacchino.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                195,
+                368
+            ],
+            "retro_cranio": [
+                240,
+                165
+            ],
+            "base_collo": [
+                273,
+                136
+            ],
+            "spalla": [
+                195,
+                247
+            ],
+            "gomito_ant_1": [
+                195,
+                368
+            ],
+            "gomito_ant_2": [
+                239,
+                168
+            ],
+            "zampa_ant": [
+                173,
+                229
+            ],
+            "dorso": [
+                240,
+                167
+            ],
+            "anca": [
+                240,
+                166
+            ],
+            "ginocchio_post_1": [
+                195,
+                247
+            ],
+            "ginocchio_post_2": [
+                195,
+                368
+            ],
+            "zampa_post": [
+                154,
+                495
+            ],
+            "base_coda": [
+                81,
+                188
+            ],
+            "punta_coda": [
+                194,
+                368
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 244.76110802167898
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 198.9170681465017
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 28.42534080710379
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 340.05440741151995
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 212.52999788265186
+            }
+        }
+    },
+    "tartaruga.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\tartaruga.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\tartaruga.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                15,
+                235
+            ],
+            "retro_cranio": [
+                134,
+                271
+            ],
+            "base_collo": [
+                408,
+                246
+            ],
+            "spalla": [
+                211,
+                239
+            ],
+            "gomito_ant_1": [
+                435,
+                246
+            ],
+            "gomito_ant_2": [
+                131,
+                270
+            ],
+            "zampa_ant": [
+                211,
+                240
+            ],
+            "dorso": [
+                211,
+                239
+            ],
+            "anca": [
+                133,
+                272
+            ],
+            "ginocchio_post_1": [
+                408,
+                245
+            ],
+            "ginocchio_post_2": [
+                435,
+                245
+            ],
+            "zampa_post": [
+                501,
+                257
+            ],
+            "base_coda": [
+                212,
+                238
+            ],
+            "punta_coda": [
+                436,
+                245
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 393.15391388106514
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 196.16319736382766
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 1.0
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 368.3055796482046
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 224.1093483101497
+            }
+        }
+    },
+    "thylacine.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\thylacine.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\thylacine.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                503,
+                170
+            ],
+            "retro_cranio": [
+                412,
+                138
+            ],
+            "base_collo": [
+                194,
+                161
+            ],
+            "spalla": [
+                195,
+                162
+            ],
+            "gomito_ant_1": [
+                208,
+                251
+            ],
+            "gomito_ant_2": [
+                413,
+                139
+            ],
+            "zampa_ant": [
+                194,
+                160
+            ],
+            "dorso": [
+                135,
+                367
+            ],
+            "anca": [
+                413,
+                140
+            ],
+            "ginocchio_post_1": [
+                193,
+                161
+            ],
+            "ginocchio_post_2": [
+                502,
+                170
+            ],
+            "zampa_post": [
+                210,
+                251
+            ],
+            "base_coda": [
+                467,
+                119
+            ],
+            "punta_coda": [
+                208,
+                249
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 309.13104017552166
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 276.21187519728403
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 2.23606797749979
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 231.36551169091732
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 289.79475495598604
+            }
+        }
+    },
+    "topo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\topo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\topo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                179,
+                294
+            ],
+            "retro_cranio": [
+                334,
+                261
+            ],
+            "base_collo": [
+                410,
+                223
+            ],
+            "spalla": [
+                371,
+                218
+            ],
+            "gomito_ant_1": [
+                177,
+                292
+            ],
+            "gomito_ant_2": [
+                334,
+                261
+            ],
+            "zampa_ant": [
+                371,
+                303
+            ],
+            "dorso": [
+                290,
+                193
+            ],
+            "anca": [
+                336,
+                262
+            ],
+            "ginocchio_post_1": [
+                226,
+                246
+            ],
+            "ginocchio_post_2": [
+                179,
+                294
+            ],
+            "zampa_post": [
+                246,
+                307
+            ],
+            "base_coda": [
+                197,
+                224
+            ],
+            "punta_coda": [
+                177,
+                294
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 241.66505746590673
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 213.00234740490538
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 85.0
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 100.62305898749054
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 72.80109889280519
+            }
+        }
+    },
+    "tricheco.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\tricheco.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\tricheco.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                77,
+                202
+            ],
+            "retro_cranio": [
+                466,
+                126
+            ],
+            "base_collo": [
+                201,
+                96
+            ],
+            "spalla": [
+                484,
+                191
+            ],
+            "gomito_ant_1": [
+                495,
+                124
+            ],
+            "gomito_ant_2": [
+                465,
+                127
+            ],
+            "zampa_ant": [
+                323,
+                355
+            ],
+            "dorso": [
+                346,
+                47
+            ],
+            "anca": [
+                464,
+                127
+            ],
+            "ginocchio_post_1": [
+                200,
+                96
+            ],
+            "ginocchio_post_2": [
+                495,
+                124
+            ],
+            "zampa_post": [
+                454,
+                285
+            ],
+            "base_coda": [
+                441,
+                52
+            ],
+            "punta_coda": [
+                494,
+                124
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 163.1318485152424
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 244.0
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 229.8194943863553
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 158.3161394173064
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 89.40357934669059
+            }
+        }
+    },
+    "trota.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\trota.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\trota.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                17,
+                262
+            ],
+            "retro_cranio": [
+                104,
+                192
+            ],
+            "base_collo": [
+                182,
+                224
+            ],
+            "spalla": [
+                193,
+                251
+            ],
+            "gomito_ant_1": [
+                15,
+                260
+            ],
+            "gomito_ant_2": [
+                105,
+                193
+            ],
+            "zampa_ant": [
+                274,
+                320
+            ],
+            "dorso": [
+                275,
+                319
+            ],
+            "anca": [
+                105,
+                192
+            ],
+            "ginocchio_post_1": [
+                183,
+                224
+            ],
+            "ginocchio_post_2": [
+                16,
+                261
+            ],
+            "zampa_post": [
+                501,
+                226
+            ],
+            "base_coda": [
+                401,
+                220
+            ],
+            "punta_coda": [
+                502,
+                224
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 169.31922513406445
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 219.03652663425797
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 106.4048871058092
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 397.4569159041015
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 101.07917688624102
+            }
+        }
+    },
+    "tuatara.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\tuatara.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\tuatara.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                256,
+                408
+            ],
+            "retro_cranio": [
+                152,
+                319
+            ],
+            "base_collo": [
+                174,
+                209
+            ],
+            "spalla": [
+                174,
+                209
+            ],
+            "gomito_ant_1": [
+                255,
+                408
+            ],
+            "gomito_ant_2": [
+                151,
+                321
+            ],
+            "zampa_ant": [
+                83,
+                391
+            ],
+            "dorso": [
+                83,
+                391
+            ],
+            "anca": [
+                152,
+                320
+            ],
+            "ginocchio_post_1": [
+                174,
+                210
+            ],
+            "ginocchio_post_2": [
+                255,
+                408
+            ],
+            "zampa_post": [
+                150,
+                267
+            ],
+            "base_coda": [
+                373,
+                313
+            ],
+            "punta_coda": [
+                256,
+                408
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 215.23243250030885
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 224.5373020235168
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 203.48218595248088
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 53.03772242470448
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 150.71164520368026
+            }
+        }
+    },
+    "uomo.png": {
+        "path_scheletro": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\input_x\\uomo.png",
+        "path_texture": "C:\\Users\\alexc\\Desktop\\OsteoGen_2\\data\\processed\\target_y\\uomo.png",
+        "coordinate_grezze": {
+            "punta_muso": [
+                251,
+                16
+            ],
+            "retro_cranio": [
+                256,
+                49
+            ],
+            "base_collo": [
+                255,
+                91
+            ],
+            "spalla": [
+                220,
+                361
+            ],
+            "gomito_ant_1": [
+                186,
+                196
+            ],
+            "gomito_ant_2": [
+                225,
+                257
+            ],
+            "zampa_ant": [
+                166,
+                315
+            ],
+            "dorso": [
+                254,
+                174
+            ],
+            "anca": [
+                226,
+                258
+            ],
+            "ginocchio_post_1": [
+                220,
+                361
+            ],
+            "ginocchio_post_2": [
+                251,
+                18
+            ],
+            "zampa_post": [
+                186,
+                195
+            ],
+            "base_coda": [
+                166,
+                314
+            ],
+            "punta_coda": [
+                186,
+                195
+            ]
+        },
+        "segmentazione": {
+            "testa": {
+                "punti": [
+                    "punta_muso",
+                    "retro_cranio",
+                    "base_collo"
+                ],
+                "lunghezza_base": 75.1065909225016
+            },
+            "torso": {
+                "punti": [
+                    "base_collo",
+                    "spalla",
+                    "dorso",
+                    "anca",
+                    "base_coda"
+                ],
+                "lunghezza_base": 240.10414407085938
+            },
+            "arto_anteriore": {
+                "punti": [
+                    "spalla",
+                    "gomito_ant_1",
+                    "gomito_ant_2",
+                    "zampa_ant"
+                ],
+                "lunghezza_base": 70.9365914038728
+            },
+            "arto_posteriore": {
+                "punti": [
+                    "anca",
+                    "ginocchio_post_1",
+                    "ginocchio_post_2",
+                    "zampa_post"
+                ],
+                "lunghezza_base": 74.62573282722254
+            },
+            "coda": {
+                "punti": [
+                    "base_coda",
+                    "punta_coda"
+                ],
+                "lunghezza_base": 120.66896867049125
+            }
+        }
+    }
+}
