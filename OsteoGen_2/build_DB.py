@@ -10,10 +10,10 @@ def calcola_distanza(p1, p2):
     return float(np.linalg.norm(np.array(p1) - np.array(p2)))
 
 def costruisci_database():
-    img_dir_x = r"C:\Users\alexc\Desktop\OsteoGen_2\data\processed\input_x"
-    img_dir_y = r"C:\Users\alexc\Desktop\OsteoGen_2\data\processed\target_y"
-    pesi_modello = r"C:\Users\alexc\Desktop\OsteoGen_2\training_outputs_2\Weights\best_keypoint_detector.pth"
-    out_json = r"C:\Users\alexc\Desktop\OsteoGen_2\data\processed\geometric_database.json"
+    img_dir_x = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\data\processed\input_x"
+    img_dir_y = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\data\processed\target_y"
+    pesi_modello = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\training_outputs_2\Weights\best_keypoint_detector.pth"
+    out_json = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\data\processed\geometric_database.json"
 
     immagini = [f for f in os.listdir(img_dir_x) if f.endswith(('.png', '.jpg'))]
     database = {}
