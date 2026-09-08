@@ -1,52 +1,52 @@
 {
   "ranking_specie": [
     {
-      "animale": "balena.png",
-      "compatibilita_pct": 42.05,
-      "distanza": 0.751,
+      "animale": "airone.png",
+      "compatibilita_pct": 1.54,
+      "distanza": 125.8342,
+      "punti_comuni": 14
+    },
+    {
+      "animale": "alcaimpenne.png",
+      "compatibilita_pct": 1.54,
+      "distanza": 118.373,
+      "punti_comuni": 12
+    },
+    {
+      "animale": "aquila.png",
+      "compatibilita_pct": 1.54,
+      "distanza": 125.7947,
+      "punti_comuni": 14
+    },
+    {
+      "animale": "armadillo.png",
+      "compatibilita_pct": 1.54,
+      "distanza": 81.8648,
       "punti_comuni": 9
     },
     {
       "animale": "axolotl.png",
-      "compatibilita_pct": 20.13,
-      "distanza": 0.8099,
+      "compatibilita_pct": 1.54,
+      "distanza": 113.4578,
       "punti_comuni": 13
     },
     {
-      "animale": "dragodicommodo.png",
-      "compatibilita_pct": 5.42,
-      "distanza": 0.9148,
-      "punti_comuni": 12
+      "animale": "balaenicepsrex.png",
+      "compatibilita_pct": 1.54,
+      "distanza": 126.0128,
+      "punti_comuni": 14
+    },
+    {
+      "animale": "balena.png",
+      "compatibilita_pct": 1.54,
+      "distanza": 111.9376,
+      "punti_comuni": 9
     },
     {
       "animale": "bassotto.png",
-      "compatibilita_pct": 2.91,
-      "distanza": 0.9647,
+      "compatibilita_pct": 1.54,
+      "distanza": 126.2536,
       "punti_comuni": 14
-    },
-    {
-      "animale": "rinoceronte.png",
-      "compatibilita_pct": 2.49,
-      "distanza": 0.9772,
-      "punti_comuni": 14
-    },
-    {
-      "animale": "levriero.png",
-      "compatibilita_pct": 2.42,
-      "distanza": 0.9794,
-      "punti_comuni": 13
-    },
-    {
-      "animale": "topo.png",
-      "compatibilita_pct": 1.97,
-      "distanza": 0.996,
-      "punti_comuni": 14
-    },
-    {
-      "animale": "foca.png",
-      "compatibilita_pct": 1.71,
-      "distanza": 1.007,
-      "punti_comuni": 12
     }
   ],
   "n_animali_confrontati": 65,
@@ -55,329 +55,329 @@
       "presente_nel_target": true,
       "donatori": [
         {
-          "animale": "dodo.png",
-          "compatibilita_pct": 26.7,
-          "diff_proporzione": 0.0143
-        },
-        {
-          "animale": "struzzo.png",
-          "compatibilita_pct": 18.6,
-          "diff_proporzione": 0.036
-        },
-        {
-          "animale": "colibri.png",
-          "compatibilita_pct": 16.86,
-          "diff_proporzione": 0.0419
-        },
-        {
-          "animale": "delfino.png",
-          "compatibilita_pct": 12.59,
-          "diff_proporzione": 0.0594
-        },
-        {
-          "animale": "camaleonte.png",
-          "compatibilita_pct": 8.25,
-          "diff_proporzione": 0.0848
-        },
-        {
-          "animale": "balaenicepsrex.png",
-          "compatibilita_pct": 8.09,
-          "diff_proporzione": 0.086
-        },
-        {
-          "animale": "cavallo.png",
-          "compatibilita_pct": 2.21,
-          "diff_proporzione": 0.1637
-        },
-        {
-          "animale": "giraffa.png",
-          "compatibilita_pct": 1.96,
-          "diff_proporzione": 0.171
-        },
-        {
-          "animale": "gallina.png",
-          "compatibilita_pct": 1.28,
-          "diff_proporzione": 0.1966
-        },
-        {
-          "animale": "formichiere.png",
-          "compatibilita_pct": 1.17,
-          "diff_proporzione": 0.2019
-        },
-        {
-          "animale": "mammut.png",
-          "compatibilita_pct": 0.85,
-          "diff_proporzione": 0.221
-        },
-        {
-          "animale": "gufo.png",
-          "compatibilita_pct": 0.65,
-          "diff_proporzione": 0.2376
-        },
-        {
-          "animale": "pinguino.png",
-          "compatibilita_pct": 0.18,
-          "diff_proporzione": 0.313
-        },
-        {
-          "animale": "pappagallo.png",
-          "compatibilita_pct": 0.14,
-          "diff_proporzione": 0.3295
-        },
-        {
-          "animale": "tartaruga.png",
-          "compatibilita_pct": 0.12,
-          "diff_proporzione": 0.3375
-        },
-        {
           "animale": "airone.png",
-          "compatibilita_pct": 0.08,
-          "diff_proporzione": 0.361
-        },
-        {
-          "animale": "piccione.png",
-          "compatibilita_pct": 0.05,
-          "diff_proporzione": 0.3895
-        },
-        {
-          "animale": "tricheco.png",
-          "compatibilita_pct": 0.04,
-          "diff_proporzione": 0.399
-        },
-        {
-          "animale": "echidna.png",
-          "compatibilita_pct": 0.03,
-          "diff_proporzione": 0.4231
-        },
-        {
-          "animale": "tacchino.png",
-          "compatibilita_pct": 0.03,
-          "diff_proporzione": 0.4237
-        },
-        {
-          "animale": "rana.png",
-          "compatibilita_pct": 0.03,
-          "diff_proporzione": 0.4321
-        },
-        {
-          "animale": "cervo.png",
-          "compatibilita_pct": 0.02,
-          "diff_proporzione": 0.4411
-        },
-        {
-          "animale": "pipistrello.png",
-          "compatibilita_pct": 0.02,
-          "diff_proporzione": 0.4561
-        },
-        {
-          "animale": "casuario.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.4736
-        },
-        {
-          "animale": "aquila.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.4867
-        },
-        {
-          "animale": "uomo.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.4936
-        },
-        {
-          "animale": "picchio.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5395
-        },
-        {
-          "animale": "cane.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5566
-        },
-        {
-          "animale": "armadillo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5712
-        },
-        {
-          "animale": "gorilla.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5938
-        },
-        {
-          "animale": "fagiano.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6275
-        },
-        {
-          "animale": "scimpanze.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.63
-        },
-        {
-          "animale": "lupo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6416
-        },
-        {
-          "animale": "elefante.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6437
-        },
-        {
-          "animale": "kiwi.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6438
-        },
-        {
-          "animale": "ippopotamo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6928
-        },
-        {
-          "animale": "ornitorinco.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7311
-        },
-        {
-          "animale": "trota.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7844
-        },
-        {
-          "animale": "bradipo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7917
-        },
-        {
-          "animale": "cinghiale.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.8094
-        },
-        {
-          "animale": "balena.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.8196
-        },
-        {
-          "animale": "rondine.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.8466
-        },
-        {
-          "animale": "levriero.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.8474
-        },
-        {
-          "animale": "thylacine.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.87
-        },
-        {
-          "animale": "tuatara.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.8943
-        },
-        {
-          "animale": "opossum.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.9084
-        },
-        {
-          "animale": "coccodrillo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.9246
-        },
-        {
-          "animale": "mucca.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.9688
-        },
-        {
-          "animale": "foca.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.9738
-        },
-        {
-          "animale": "gatto.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.9928
-        },
-        {
-          "animale": "canguro.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.9965
-        },
-        {
-          "animale": "bassotto.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.0098
-        },
-        {
-          "animale": "dragodicommodo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.0145
-        },
-        {
-          "animale": "celacanto.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.0293
-        },
-        {
-          "animale": "iguana.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.0612
-        },
-        {
-          "animale": "salamandra.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.1165
-        },
-        {
-          "animale": "rinocerontelanoso.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.1884
-        },
-        {
-          "animale": "topo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.2166
-        },
-        {
-          "animale": "squalo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.2253
-        },
-        {
-          "animale": "pellicano.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.2987
-        },
-        {
-          "animale": "rinoceronte.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.3263
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.3358
         },
         {
           "animale": "alcaimpenne.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.3363
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 319.0331
+        },
+        {
+          "animale": "aquila.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.2101
+        },
+        {
+          "animale": "armadillo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.268
         },
         {
           "animale": "axolotl.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.3549
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 319.0517
+        },
+        {
+          "animale": "balaenicepsrex.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.7828
+        },
+        {
+          "animale": "balena.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.5164
+        },
+        {
+          "animale": "bassotto.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.7067
+        },
+        {
+          "animale": "bradipo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.4885
+        },
+        {
+          "animale": "camaleonte.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.7816
+        },
+        {
+          "animale": "cane.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.2534
+        },
+        {
+          "animale": "canguro.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.6934
+        },
+        {
+          "animale": "casuario.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.1705
+        },
+        {
+          "animale": "cavallo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.8606
+        },
+        {
+          "animale": "celacanto.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.7261
+        },
+        {
+          "animale": "cervo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.138
+        },
+        {
+          "animale": "cinghiale.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.5062
+        },
+        {
+          "animale": "coccodrillo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.6214
+        },
+        {
+          "animale": "colibri.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.6549
+        },
+        {
+          "animale": "delfino.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.7562
+        },
+        {
+          "animale": "dodo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.7111
+        },
+        {
+          "animale": "dragodicommodo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.7113
+        },
+        {
+          "animale": "echidna.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.1199
+        },
+        {
+          "animale": "elefante.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.0532
+        },
+        {
+          "animale": "fagiano.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.3243
+        },
+        {
+          "animale": "foca.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.6706
+        },
+        {
+          "animale": "formichiere.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.495
+        },
+        {
+          "animale": "gallina.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.8934
+        },
+        {
+          "animale": "gatto.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.6897
+        },
+        {
+          "animale": "giraffa.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.5258
+        },
+        {
+          "animale": "gorilla.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.2906
+        },
+        {
+          "animale": "gufo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.9344
+        },
+        {
+          "animale": "iguana.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.758
+        },
+        {
+          "animale": "ippopotamo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.3896
+        },
+        {
+          "animale": "kiwi.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.053
+        },
+        {
+          "animale": "levriero.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.5442
+        },
+        {
+          "animale": "lupo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.3384
+        },
+        {
+          "animale": "mammut.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.9179
+        },
+        {
+          "animale": "mucca.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.6657
+        },
+        {
+          "animale": "opossum.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.6053
+        },
+        {
+          "animale": "ornitorinco.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.4279
+        },
+        {
+          "animale": "pappagallo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.0263
+        },
+        {
+          "animale": "pellicano.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 316.3981
+        },
+        {
+          "animale": "picchio.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.1573
+        },
+        {
+          "animale": "piccione.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.0863
+        },
+        {
+          "animale": "pinguino.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.0098
+        },
+        {
+          "animale": "pipistrello.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.1529
+        },
+        {
+          "animale": "rana.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.1289
         },
         {
           "animale": "razza.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.5109
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 319.2078
+        },
+        {
+          "animale": "rinoceronte.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 319.0231
+        },
+        {
+          "animale": "rinocerontelanoso.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.8852
+        },
+        {
+          "animale": "rondine.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.5434
+        },
+        {
+          "animale": "salamandra.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.8134
+        },
+        {
+          "animale": "scimpanze.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.3268
         },
         {
           "animale": "serpente.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 3.6706
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 314.0263
+        },
+        {
+          "animale": "squalo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.9221
+        },
+        {
+          "animale": "struzzo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 317.6608
+        },
+        {
+          "animale": "tacchino.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.1206
+        },
+        {
+          "animale": "tartaruga.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.0343
+        },
+        {
+          "animale": "thylacine.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.5668
+        },
+        {
+          "animale": "topo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.9134
+        },
+        {
+          "animale": "tricheco.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.0958
+        },
+        {
+          "animale": "trota.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.4812
+        },
+        {
+          "animale": "tuatara.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.5912
+        },
+        {
+          "animale": "uomo.png",
+          "compatibilita_pct": 1.54,
+          "diff_proporzione": 318.1904
         }
       ]
     },
@@ -385,324 +385,324 @@
       "presente_nel_target": true,
       "donatori": [
         {
-          "animale": "lupo.png",
-          "compatibilita_pct": 26.7,
-          "diff_proporzione": 0.0134
-        },
-        {
-          "animale": "pipistrello.png",
-          "compatibilita_pct": 26.02,
-          "diff_proporzione": 0.015
-        },
-        {
-          "animale": "echidna.png",
-          "compatibilita_pct": 18.08,
-          "diff_proporzione": 0.0368
-        },
-        {
-          "animale": "cavallo.png",
-          "compatibilita_pct": 13.51,
-          "diff_proporzione": 0.0543
-        },
-        {
-          "animale": "scimpanze.png",
-          "compatibilita_pct": 7.31,
-          "diff_proporzione": 0.0912
-        },
-        {
-          "animale": "rana.png",
-          "compatibilita_pct": 4.97,
-          "diff_proporzione": 0.1144
-        },
-        {
-          "animale": "giraffa.png",
-          "compatibilita_pct": 1.53,
-          "diff_proporzione": 0.1849
-        },
-        {
-          "animale": "formichiere.png",
-          "compatibilita_pct": 0.85,
-          "diff_proporzione": 0.2202
-        },
-        {
-          "animale": "elefante.png",
-          "compatibilita_pct": 0.26,
-          "diff_proporzione": 0.2923
-        },
-        {
-          "animale": "fagiano.png",
-          "compatibilita_pct": 0.19,
-          "diff_proporzione": 0.3102
-        },
-        {
-          "animale": "cinghiale.png",
-          "compatibilita_pct": 0.11,
-          "diff_proporzione": 0.3408
-        },
-        {
-          "animale": "camaleonte.png",
-          "compatibilita_pct": 0.1,
-          "diff_proporzione": 0.3493
-        },
-        {
-          "animale": "ippopotamo.png",
-          "compatibilita_pct": 0.08,
-          "diff_proporzione": 0.3655
-        },
-        {
-          "animale": "dodo.png",
-          "compatibilita_pct": 0.07,
-          "diff_proporzione": 0.3729
-        },
-        {
-          "animale": "salamandra.png",
-          "compatibilita_pct": 0.05,
-          "diff_proporzione": 0.3872
-        },
-        {
-          "animale": "cervo.png",
-          "compatibilita_pct": 0.04,
-          "diff_proporzione": 0.4111
-        },
-        {
-          "animale": "gatto.png",
-          "compatibilita_pct": 0.02,
-          "diff_proporzione": 0.4433
-        },
-        {
-          "animale": "topo.png",
-          "compatibilita_pct": 0.02,
-          "diff_proporzione": 0.4443
-        },
-        {
-          "animale": "levriero.png",
-          "compatibilita_pct": 0.02,
-          "diff_proporzione": 0.4561
-        },
-        {
-          "animale": "armadillo.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.4738
+          "animale": "tricheco.png",
+          "compatibilita_pct": 51.08,
+          "diff_proporzione": 0.1264
         },
         {
           "animale": "kiwi.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.4812
-        },
-        {
-          "animale": "ornitorinco.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.4918
-        },
-        {
-          "animale": "gorilla.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.5013
-        },
-        {
-          "animale": "tricheco.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.5056
-        },
-        {
-          "animale": "razza.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.5263
-        },
-        {
-          "animale": "piccione.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.5283
-        },
-        {
-          "animale": "mammut.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5475
-        },
-        {
-          "animale": "mucca.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5719
-        },
-        {
-          "animale": "canguro.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5776
-        },
-        {
-          "animale": "gufo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5801
-        },
-        {
-          "animale": "alcaimpenne.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5845
-        },
-        {
-          "animale": "rondine.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5856
-        },
-        {
-          "animale": "aquila.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5885
-        },
-        {
-          "animale": "bradipo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5939
-        },
-        {
-          "animale": "balaenicepsrex.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6
-        },
-        {
-          "animale": "opossum.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6089
-        },
-        {
-          "animale": "iguana.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6164
-        },
-        {
-          "animale": "pinguino.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6299
-        },
-        {
-          "animale": "rinocerontelanoso.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6596
-        },
-        {
-          "animale": "thylacine.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6639
-        },
-        {
-          "animale": "foca.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6705
-        },
-        {
-          "animale": "delfino.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6765
-        },
-        {
-          "animale": "tuatara.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6839
-        },
-        {
-          "animale": "tacchino.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6842
-        },
-        {
-          "animale": "pappagallo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6854
-        },
-        {
-          "animale": "pellicano.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6964
-        },
-        {
-          "animale": "casuario.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6994
-        },
-        {
-          "animale": "cane.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7006
-        },
-        {
-          "animale": "airone.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7168
-        },
-        {
-          "animale": "picchio.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7202
-        },
-        {
-          "animale": "colibri.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7226
-        },
-        {
-          "animale": "dragodicommodo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7228
-        },
-        {
-          "animale": "struzzo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7441
-        },
-        {
-          "animale": "rinoceronte.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7472
-        },
-        {
-          "animale": "axolotl.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7476
-        },
-        {
-          "animale": "coccodrillo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7565
-        },
-        {
-          "animale": "gallina.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7569
-        },
-        {
-          "animale": "bassotto.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7654
+          "compatibilita_pct": 33.99,
+          "diff_proporzione": 0.1508
         },
         {
           "animale": "tartaruga.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.8392
+          "compatibilita_pct": 13.3,
+          "diff_proporzione": 0.2072
         },
         {
-          "animale": "celacanto.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.9047
+          "animale": "elefante.png",
+          "compatibilita_pct": 1.46,
+          "diff_proporzione": 0.3398
         },
         {
-          "animale": "trota.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.0795
+          "animale": "rana.png",
+          "compatibilita_pct": 0.08,
+          "diff_proporzione": 0.5177
         },
         {
-          "animale": "squalo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.0855
+          "animale": "scimpanze.png",
+          "compatibilita_pct": 0.05,
+          "diff_proporzione": 0.5409
         },
         {
-          "animale": "balena.png",
+          "animale": "echidna.png",
+          "compatibilita_pct": 0.02,
+          "diff_proporzione": 0.5952
+        },
+        {
+          "animale": "lupo.png",
+          "compatibilita_pct": 0.01,
+          "diff_proporzione": 0.6186
+        },
+        {
+          "animale": "pipistrello.png",
+          "compatibilita_pct": 0.01,
+          "diff_proporzione": 0.647
+        },
+        {
+          "animale": "cavallo.png",
           "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.3941
+          "diff_proporzione": 0.6863
+        },
+        {
+          "animale": "giraffa.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 0.817
+        },
+        {
+          "animale": "formichiere.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 0.8522
+        },
+        {
+          "animale": "fagiano.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 0.9422
+        },
+        {
+          "animale": "cinghiale.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 0.9729
+        },
+        {
+          "animale": "camaleonte.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 0.9814
+        },
+        {
+          "animale": "ippopotamo.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 0.9975
+        },
+        {
+          "animale": "dodo.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.005
+        },
+        {
+          "animale": "salamandra.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.0193
+        },
+        {
+          "animale": "cervo.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.0432
         },
         {
           "animale": "uomo.png",
           "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.6936
+          "diff_proporzione": 1.0616
+        },
+        {
+          "animale": "gatto.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.0754
+        },
+        {
+          "animale": "topo.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.0763
+        },
+        {
+          "animale": "levriero.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.0882
+        },
+        {
+          "animale": "armadillo.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.1059
+        },
+        {
+          "animale": "ornitorinco.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.1239
+        },
+        {
+          "animale": "gorilla.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.1334
+        },
+        {
+          "animale": "razza.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.1584
+        },
+        {
+          "animale": "piccione.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.1604
+        },
+        {
+          "animale": "mammut.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.1796
+        },
+        {
+          "animale": "mucca.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.204
+        },
+        {
+          "animale": "canguro.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.2097
+        },
+        {
+          "animale": "gufo.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.2122
+        },
+        {
+          "animale": "alcaimpenne.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.2166
+        },
+        {
+          "animale": "rondine.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.2176
+        },
+        {
+          "animale": "aquila.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.2206
+        },
+        {
+          "animale": "bradipo.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.226
+        },
+        {
+          "animale": "balaenicepsrex.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.2321
+        },
+        {
+          "animale": "opossum.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.241
+        },
+        {
+          "animale": "iguana.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.2485
+        },
+        {
+          "animale": "pinguino.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.262
+        },
+        {
+          "animale": "rinocerontelanoso.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.2916
+        },
+        {
+          "animale": "thylacine.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.296
+        },
+        {
+          "animale": "foca.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3026
+        },
+        {
+          "animale": "delfino.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3085
+        },
+        {
+          "animale": "tuatara.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.316
+        },
+        {
+          "animale": "tacchino.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3162
+        },
+        {
+          "animale": "pappagallo.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3175
+        },
+        {
+          "animale": "pellicano.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3284
+        },
+        {
+          "animale": "casuario.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3315
+        },
+        {
+          "animale": "cane.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3326
+        },
+        {
+          "animale": "airone.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3488
+        },
+        {
+          "animale": "picchio.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3523
+        },
+        {
+          "animale": "colibri.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3546
+        },
+        {
+          "animale": "dragodicommodo.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3549
+        },
+        {
+          "animale": "struzzo.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3762
+        },
+        {
+          "animale": "rinoceronte.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3792
+        },
+        {
+          "animale": "axolotl.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3797
+        },
+        {
+          "animale": "coccodrillo.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3886
+        },
+        {
+          "animale": "gallina.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3889
+        },
+        {
+          "animale": "bassotto.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.3974
+        },
+        {
+          "animale": "celacanto.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.5368
+        },
+        {
+          "animale": "trota.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.7116
+        },
+        {
+          "animale": "squalo.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 1.7176
+        },
+        {
+          "animale": "balena.png",
+          "compatibilita_pct": 0.0,
+          "diff_proporzione": 2.0261
         }
       ]
     },
@@ -710,309 +710,309 @@
       "presente_nel_target": true,
       "donatori": [
         {
-          "animale": "gallina.png",
-          "compatibilita_pct": 58.35,
-          "diff_proporzione": 0.0832
-        },
-        {
           "animale": "airone.png",
-          "compatibilita_pct": 21.18,
-          "diff_proporzione": 0.144
-        },
-        {
-          "animale": "balaenicepsrex.png",
-          "compatibilita_pct": 20.28,
-          "diff_proporzione": 0.1466
-        },
-        {
-          "animale": "pellicano.png",
-          "compatibilita_pct": 0.15,
-          "diff_proporzione": 0.442
-        },
-        {
-          "animale": "picchio.png",
-          "compatibilita_pct": 0.02,
-          "diff_proporzione": 0.5553
-        },
-        {
-          "animale": "cavallo.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.6443
-        },
-        {
-          "animale": "giraffa.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6467
-        },
-        {
-          "animale": "tartaruga.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6847
-        },
-        {
-          "animale": "pappagallo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.8769
-        },
-        {
-          "animale": "aquila.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.9363
-        },
-        {
-          "animale": "gufo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.9603
-        },
-        {
-          "animale": "piccione.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.9964
-        },
-        {
-          "animale": "cane.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.0722
-        },
-        {
-          "animale": "tacchino.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.2326
-        },
-        {
-          "animale": "uomo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.2335
-        },
-        {
-          "animale": "struzzo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.2576
-        },
-        {
-          "animale": "pinguino.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.3685
-        },
-        {
-          "animale": "cervo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.4608
-        },
-        {
-          "animale": "dodo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.4777
-        },
-        {
-          "animale": "lupo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.4952
-        },
-        {
-          "animale": "fagiano.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.4959
-        },
-        {
-          "animale": "bradipo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.5227
-        },
-        {
-          "animale": "kiwi.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.6256
-        },
-        {
-          "animale": "razza.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.6346
-        },
-        {
-          "animale": "scimpanze.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.6635
-        },
-        {
-          "animale": "tuatara.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.7349
-        },
-        {
-          "animale": "cinghiale.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.7417
-        },
-        {
-          "animale": "colibri.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.756
-        },
-        {
-          "animale": "mucca.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.7579
-        },
-        {
-          "animale": "coccodrillo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.8003
-        },
-        {
-          "animale": "gorilla.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.8004
-        },
-        {
-          "animale": "topo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.8285
-        },
-        {
-          "animale": "elefante.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.8892
-        },
-        {
-          "animale": "iguana.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.937
-        },
-        {
-          "animale": "rana.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.9508
-        },
-        {
-          "animale": "opossum.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.9579
-        },
-        {
-          "animale": "rondine.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.9706
-        },
-        {
-          "animale": "formichiere.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.9921
-        },
-        {
-          "animale": "mammut.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.0454
-        },
-        {
-          "animale": "bassotto.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.0545
-        },
-        {
-          "animale": "rinoceronte.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.1597
-        },
-        {
-          "animale": "rinocerontelanoso.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.1665
-        },
-        {
-          "animale": "armadillo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.1687
-        },
-        {
-          "animale": "levriero.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.2507
-        },
-        {
-          "animale": "canguro.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.2609
-        },
-        {
-          "animale": "thylacine.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.2689
-        },
-        {
-          "animale": "axolotl.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.2714
-        },
-        {
-          "animale": "camaleonte.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.2772
-        },
-        {
-          "animale": "tricheco.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.2784
-        },
-        {
-          "animale": "gatto.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.2819
-        },
-        {
-          "animale": "salamandra.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.2994
-        },
-        {
-          "animale": "echidna.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.3135
-        },
-        {
-          "animale": "ippopotamo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.3138
-        },
-        {
-          "animale": "casuario.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.3424
-        },
-        {
-          "animale": "dragodicommodo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.3531
-        },
-        {
-          "animale": "foca.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.3928
-        },
-        {
-          "animale": "ornitorinco.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.4204
-        },
-        {
-          "animale": "delfino.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.4316
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 119.223
         },
         {
           "animale": "alcaimpenne.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.4387
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.5177
+        },
+        {
+          "animale": "aquila.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 118.1427
+        },
+        {
+          "animale": "armadillo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.2476
+        },
+        {
+          "animale": "axolotl.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.3504
+        },
+        {
+          "animale": "balaenicepsrex.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 119.2256
         },
         {
           "animale": "balena.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.4876
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.5665
+        },
+        {
+          "animale": "bassotto.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.1334
+        },
+        {
+          "animale": "bradipo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.6016
+        },
+        {
+          "animale": "camaleonte.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.3562
+        },
+        {
+          "animale": "cane.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.1511
+        },
+        {
+          "animale": "canguro.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.3398
+        },
+        {
+          "animale": "casuario.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.4214
+        },
+        {
+          "animale": "cavallo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 119.7232
+        },
+        {
+          "animale": "cervo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.5398
+        },
+        {
+          "animale": "cinghiale.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.8207
+        },
+        {
+          "animale": "coccodrillo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.8792
+        },
+        {
+          "animale": "colibri.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.8349
+        },
+        {
+          "animale": "delfino.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.5105
+        },
+        {
+          "animale": "dodo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.5567
+        },
+        {
+          "animale": "dragodicommodo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.4321
+        },
+        {
+          "animale": "echidna.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.3924
+        },
+        {
+          "animale": "elefante.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.9681
+        },
+        {
+          "animale": "fagiano.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.5748
+        },
+        {
+          "animale": "foca.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.4718
+        },
+        {
+          "animale": "formichiere.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.071
+        },
+        {
+          "animale": "gallina.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 119.1622
+        },
+        {
+          "animale": "gatto.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.3608
+        },
+        {
+          "animale": "giraffa.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 119.7257
+        },
+        {
+          "animale": "gorilla.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.8794
+        },
+        {
+          "animale": "gufo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.0393
+        },
+        {
+          "animale": "iguana.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.0159
+        },
+        {
+          "animale": "ippopotamo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.3927
+        },
+        {
+          "animale": "kiwi.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.7046
+        },
+        {
+          "animale": "levriero.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.3296
+        },
+        {
+          "animale": "lupo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.5742
+        },
+        {
+          "animale": "mammut.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.1244
+        },
+        {
+          "animale": "mucca.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.8368
+        },
+        {
+          "animale": "opossum.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.0369
+        },
+        {
+          "animale": "ornitorinco.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.4994
+        },
+        {
+          "animale": "pappagallo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 119.9559
+        },
+        {
+          "animale": "pellicano.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 118.6369
+        },
+        {
+          "animale": "picchio.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 119.6343
+        },
+        {
+          "animale": "piccione.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.0754
+        },
+        {
+          "animale": "pinguino.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.4474
         },
         {
           "animale": "pipistrello.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 2.7612
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 116.3177
+        },
+        {
+          "animale": "rana.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.0297
+        },
+        {
+          "animale": "razza.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.7135
+        },
+        {
+          "animale": "rinoceronte.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.2387
+        },
+        {
+          "animale": "rinocerontelanoso.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.2455
+        },
+        {
+          "animale": "rondine.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.0495
+        },
+        {
+          "animale": "salamandra.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.3783
+        },
+        {
+          "animale": "scimpanze.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.7424
+        },
+        {
+          "animale": "struzzo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.3365
+        },
+        {
+          "animale": "tacchino.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.3116
+        },
+        {
+          "animale": "tartaruga.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 119.7636
+        },
+        {
+          "animale": "thylacine.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.3478
+        },
+        {
+          "animale": "topo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.9075
+        },
+        {
+          "animale": "tricheco.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 121.3574
+        },
+        {
+          "animale": "tuatara.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.8139
+        },
+        {
+          "animale": "uomo.png",
+          "compatibilita_pct": 1.64,
+          "diff_proporzione": 120.3125
         }
       ]
     },
@@ -1020,294 +1020,294 @@
       "presente_nel_target": true,
       "donatori": [
         {
-          "animale": "picchio.png",
-          "compatibilita_pct": 24.64,
-          "diff_proporzione": 0.021
-        },
-        {
-          "animale": "aquila.png",
-          "compatibilita_pct": 22.39,
-          "diff_proporzione": 0.0268
-        },
-        {
-          "animale": "piccione.png",
-          "compatibilita_pct": 13.18,
-          "diff_proporzione": 0.0586
-        },
-        {
-          "animale": "dodo.png",
-          "compatibilita_pct": 9.92,
-          "diff_proporzione": 0.0756
-        },
-        {
-          "animale": "uomo.png",
-          "compatibilita_pct": 9.4,
-          "diff_proporzione": 0.0788
-        },
-        {
-          "animale": "gallina.png",
-          "compatibilita_pct": 7.19,
-          "diff_proporzione": 0.095
-        },
-        {
-          "animale": "giraffa.png",
-          "compatibilita_pct": 5.62,
-          "diff_proporzione": 0.1097
-        },
-        {
           "animale": "airone.png",
-          "compatibilita_pct": 3.82,
-          "diff_proporzione": 0.1328
-        },
-        {
-          "animale": "tacchino.png",
-          "compatibilita_pct": 2.55,
-          "diff_proporzione": 0.1571
-        },
-        {
-          "animale": "pellicano.png",
-          "compatibilita_pct": 0.56,
-          "diff_proporzione": 0.2478
-        },
-        {
-          "animale": "cavallo.png",
-          "compatibilita_pct": 0.21,
-          "diff_proporzione": 0.3069
-        },
-        {
-          "animale": "pappagallo.png",
-          "compatibilita_pct": 0.2,
-          "diff_proporzione": 0.3094
-        },
-        {
-          "animale": "balaenicepsrex.png",
-          "compatibilita_pct": 0.16,
-          "diff_proporzione": 0.3247
-        },
-        {
-          "animale": "tuatara.png",
-          "compatibilita_pct": 0.05,
-          "diff_proporzione": 0.3912
-        },
-        {
-          "animale": "levriero.png",
-          "compatibilita_pct": 0.03,
-          "diff_proporzione": 0.4179
-        },
-        {
-          "animale": "pinguino.png",
-          "compatibilita_pct": 0.03,
-          "diff_proporzione": 0.4218
-        },
-        {
-          "animale": "casuario.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.4691
-        },
-        {
-          "animale": "struzzo.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.4905
-        },
-        {
-          "animale": "cervo.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.5052
-        },
-        {
-          "animale": "rana.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5766
-        },
-        {
-          "animale": "kiwi.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6323
-        },
-        {
-          "animale": "camaleonte.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6562
-        },
-        {
-          "animale": "tartaruga.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6691
-        },
-        {
-          "animale": "lupo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.6799
-        },
-        {
-          "animale": "colibri.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.751
-        },
-        {
-          "animale": "cane.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7907
-        },
-        {
-          "animale": "thylacine.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.7984
-        },
-        {
-          "animale": "topo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.8087
-        },
-        {
-          "animale": "scimpanze.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.8584
-        },
-        {
-          "animale": "mucca.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.8665
-        },
-        {
-          "animale": "rondine.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.8917
-        },
-        {
-          "animale": "razza.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.9233
-        },
-        {
-          "animale": "formichiere.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.0011
-        },
-        {
-          "animale": "cinghiale.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.0034
-        },
-        {
-          "animale": "rinocerontelanoso.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.006
-        },
-        {
-          "animale": "elefante.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.026
-        },
-        {
-          "animale": "fagiano.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.0759
-        },
-        {
-          "animale": "rinoceronte.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.1136
-        },
-        {
-          "animale": "bassotto.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.1189
-        },
-        {
-          "animale": "iguana.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.1476
-        },
-        {
-          "animale": "pipistrello.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.1481
-        },
-        {
-          "animale": "gorilla.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.15
-        },
-        {
-          "animale": "gufo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.1616
-        },
-        {
-          "animale": "ornitorinco.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.2323
-        },
-        {
-          "animale": "mammut.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.2644
-        },
-        {
-          "animale": "coccodrillo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.2963
-        },
-        {
-          "animale": "gatto.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.323
-        },
-        {
-          "animale": "echidna.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.3728
-        },
-        {
-          "animale": "opossum.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.3801
-        },
-        {
-          "animale": "canguro.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.4104
-        },
-        {
-          "animale": "tricheco.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.4142
-        },
-        {
-          "animale": "salamandra.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.4525
-        },
-        {
-          "animale": "ippopotamo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.4681
-        },
-        {
-          "animale": "dragodicommodo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.4811
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.5522
         },
         {
           "animale": "alcaimpenne.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.4916
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 509.1766
+        },
+        {
+          "animale": "aquila.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.7118
         },
         {
           "animale": "axolotl.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.577
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 509.262
         },
         {
-          "animale": "foca.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.5961
+          "animale": "balaenicepsrex.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.3603
+        },
+        {
+          "animale": "bassotto.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.8039
         },
         {
           "animale": "bradipo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 1.923
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 505.762
+        },
+        {
+          "animale": "camaleonte.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.3412
+        },
+        {
+          "animale": "cane.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.4757
+        },
+        {
+          "animale": "canguro.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 509.0954
+        },
+        {
+          "animale": "casuario.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.1541
+        },
+        {
+          "animale": "cavallo.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.9919
+        },
+        {
+          "animale": "cervo.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.1902
+        },
+        {
+          "animale": "cinghiale.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.6883
+        },
+        {
+          "animale": "coccodrillo.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.9813
+        },
+        {
+          "animale": "colibri.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.436
+        },
+        {
+          "animale": "dodo.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.6094
+        },
+        {
+          "animale": "dragodicommodo.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 509.1661
+        },
+        {
+          "animale": "echidna.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 509.0578
+        },
+        {
+          "animale": "elefante.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.711
+        },
+        {
+          "animale": "fagiano.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.7609
+        },
+        {
+          "animale": "foca.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 509.2811
+        },
+        {
+          "animale": "formichiere.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.6861
+        },
+        {
+          "animale": "gallina.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.78
+        },
+        {
+          "animale": "gatto.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 509.008
+        },
+        {
+          "animale": "giraffa.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.7946
+        },
+        {
+          "animale": "gorilla.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.835
+        },
+        {
+          "animale": "gufo.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.8466
+        },
+        {
+          "animale": "iguana.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.8326
+        },
+        {
+          "animale": "ippopotamo.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 509.1531
+        },
+        {
+          "animale": "kiwi.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.0527
+        },
+        {
+          "animale": "levriero.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.1028
+        },
+        {
+          "animale": "lupo.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.3649
+        },
+        {
+          "animale": "mammut.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.9493
+        },
+        {
+          "animale": "mucca.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.5515
+        },
+        {
+          "animale": "opossum.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 509.0651
+        },
+        {
+          "animale": "ornitorinco.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.9173
+        },
+        {
+          "animale": "pappagallo.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.9944
+        },
+        {
+          "animale": "pellicano.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.9328
+        },
+        {
+          "animale": "picchio.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.664
+        },
+        {
+          "animale": "piccione.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.6264
+        },
+        {
+          "animale": "pinguino.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.1068
+        },
+        {
+          "animale": "pipistrello.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.8331
+        },
+        {
+          "animale": "rana.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.1084
+        },
+        {
+          "animale": "razza.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.6083
+        },
+        {
+          "animale": "rinoceronte.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.7986
+        },
+        {
+          "animale": "rinocerontelanoso.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.691
+        },
+        {
+          "animale": "rondine.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.5767
+        },
+        {
+          "animale": "salamandra.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 509.1375
+        },
+        {
+          "animale": "scimpanze.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.5434
+        },
+        {
+          "animale": "struzzo.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.1945
+        },
+        {
+          "animale": "tacchino.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.5279
+        },
+        {
+          "animale": "tartaruga.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.354
+        },
+        {
+          "animale": "thylacine.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.4834
+        },
+        {
+          "animale": "topo.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.4937
+        },
+        {
+          "animale": "tricheco.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 509.0992
+        },
+        {
+          "animale": "tuatara.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 508.0762
+        },
+        {
+          "animale": "uomo.png",
+          "compatibilita_pct": 1.72,
+          "diff_proporzione": 507.7638
         }
       ]
     },
@@ -1315,289 +1315,289 @@
       "presente_nel_target": true,
       "donatori": [
         {
-          "animale": "cane.png",
-          "compatibilita_pct": 20.2,
-          "diff_proporzione": 0.011
-        },
-        {
-          "animale": "opossum.png",
-          "compatibilita_pct": 16.33,
-          "diff_proporzione": 0.0238
-        },
-        {
-          "animale": "giraffa.png",
-          "compatibilita_pct": 15.12,
-          "diff_proporzione": 0.0284
-        },
-        {
-          "animale": "struzzo.png",
-          "compatibilita_pct": 8.63,
-          "diff_proporzione": 0.062
-        },
-        {
-          "animale": "cavallo.png",
-          "compatibilita_pct": 8.62,
-          "diff_proporzione": 0.0621
-        },
-        {
-          "animale": "tuatara.png",
-          "compatibilita_pct": 6.98,
-          "diff_proporzione": 0.0748
-        },
-        {
-          "animale": "levriero.png",
-          "compatibilita_pct": 4.35,
-          "diff_proporzione": 0.1032
-        },
-        {
-          "animale": "lupo.png",
-          "compatibilita_pct": 2.65,
-          "diff_proporzione": 0.1328
-        },
-        {
-          "animale": "dodo.png",
-          "compatibilita_pct": 2.2,
-          "diff_proporzione": 0.1439
-        },
-        {
-          "animale": "iguana.png",
-          "compatibilita_pct": 1.91,
-          "diff_proporzione": 0.1524
-        },
-        {
-          "animale": "gatto.png",
-          "compatibilita_pct": 1.44,
-          "diff_proporzione": 0.1696
-        },
-        {
-          "animale": "coccodrillo.png",
-          "compatibilita_pct": 1.32,
-          "diff_proporzione": 0.1747
-        },
-        {
-          "animale": "rinocerontelanoso.png",
-          "compatibilita_pct": 1.29,
-          "diff_proporzione": 0.1762
-        },
-        {
-          "animale": "rondine.png",
-          "compatibilita_pct": 1.17,
-          "diff_proporzione": 0.1818
-        },
-        {
-          "animale": "trota.png",
-          "compatibilita_pct": 1.03,
-          "diff_proporzione": 0.1894
-        },
-        {
-          "animale": "squalo.png",
-          "compatibilita_pct": 0.87,
-          "diff_proporzione": 0.2
-        },
-        {
-          "animale": "elefante.png",
-          "compatibilita_pct": 0.85,
-          "diff_proporzione": 0.2014
-        },
-        {
-          "animale": "delfino.png",
-          "compatibilita_pct": 0.63,
-          "diff_proporzione": 0.2189
-        },
-        {
-          "animale": "picchio.png",
-          "compatibilita_pct": 0.59,
-          "diff_proporzione": 0.2228
-        },
-        {
-          "animale": "salamandra.png",
-          "compatibilita_pct": 0.56,
-          "diff_proporzione": 0.2258
-        },
-        {
-          "animale": "formichiere.png",
-          "compatibilita_pct": 0.33,
-          "diff_proporzione": 0.2574
-        },
-        {
-          "animale": "piccione.png",
-          "compatibilita_pct": 0.29,
-          "diff_proporzione": 0.2651
-        },
-        {
-          "animale": "ornitorinco.png",
-          "compatibilita_pct": 0.26,
-          "diff_proporzione": 0.2711
-        },
-        {
-          "animale": "pellicano.png",
-          "compatibilita_pct": 0.26,
-          "diff_proporzione": 0.2715
-        },
-        {
-          "animale": "tricheco.png",
-          "compatibilita_pct": 0.23,
-          "diff_proporzione": 0.2799
-        },
-        {
-          "animale": "cinghiale.png",
-          "compatibilita_pct": 0.22,
-          "diff_proporzione": 0.2809
-        },
-        {
-          "animale": "topo.png",
-          "compatibilita_pct": 0.22,
-          "diff_proporzione": 0.2827
-        },
-        {
-          "animale": "canguro.png",
-          "compatibilita_pct": 0.19,
-          "diff_proporzione": 0.29
-        },
-        {
-          "animale": "pinguino.png",
-          "compatibilita_pct": 0.17,
-          "diff_proporzione": 0.2975
-        },
-        {
-          "animale": "kiwi.png",
-          "compatibilita_pct": 0.16,
-          "diff_proporzione": 0.302
-        },
-        {
-          "animale": "camaleonte.png",
-          "compatibilita_pct": 0.12,
-          "diff_proporzione": 0.3174
-        },
-        {
-          "animale": "celacanto.png",
-          "compatibilita_pct": 0.11,
-          "diff_proporzione": 0.3234
-        },
-        {
-          "animale": "dragodicommodo.png",
-          "compatibilita_pct": 0.11,
-          "diff_proporzione": 0.3265
-        },
-        {
-          "animale": "cervo.png",
-          "compatibilita_pct": 0.09,
-          "diff_proporzione": 0.3382
-        },
-        {
-          "animale": "aquila.png",
-          "compatibilita_pct": 0.07,
-          "diff_proporzione": 0.3475
-        },
-        {
-          "animale": "rinoceronte.png",
-          "compatibilita_pct": 0.07,
-          "diff_proporzione": 0.3494
-        },
-        {
-          "animale": "echidna.png",
-          "compatibilita_pct": 0.07,
-          "diff_proporzione": 0.3533
-        },
-        {
-          "animale": "ippopotamo.png",
-          "compatibilita_pct": 0.04,
-          "diff_proporzione": 0.381
-        },
-        {
-          "animale": "balaenicepsrex.png",
-          "compatibilita_pct": 0.04,
-          "diff_proporzione": 0.3832
-        },
-        {
-          "animale": "mucca.png",
-          "compatibilita_pct": 0.03,
-          "diff_proporzione": 0.3999
-        },
-        {
-          "animale": "thylacine.png",
-          "compatibilita_pct": 0.02,
-          "diff_proporzione": 0.417
-        },
-        {
-          "animale": "gufo.png",
-          "compatibilita_pct": 0.02,
-          "diff_proporzione": 0.4313
+          "animale": "airone.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.0941
         },
         {
           "animale": "alcaimpenne.png",
-          "compatibilita_pct": 0.02,
-          "diff_proporzione": 0.4315
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.045
         },
         {
-          "animale": "pappagallo.png",
-          "compatibilita_pct": 0.02,
-          "diff_proporzione": 0.4335
-        },
-        {
-          "animale": "tacchino.png",
-          "compatibilita_pct": 0.02,
-          "diff_proporzione": 0.4393
-        },
-        {
-          "animale": "foca.png",
-          "compatibilita_pct": 0.02,
-          "diff_proporzione": 0.4432
-        },
-        {
-          "animale": "bassotto.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.4511
-        },
-        {
-          "animale": "fagiano.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.4773
-        },
-        {
-          "animale": "airone.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.4806
-        },
-        {
-          "animale": "casuario.png",
-          "compatibilita_pct": 0.01,
-          "diff_proporzione": 0.4986
+          "animale": "aquila.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.961
         },
         {
           "animale": "axolotl.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5232
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.1367
         },
         {
-          "animale": "gallina.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5306
-        },
-        {
-          "animale": "mammut.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5416
-        },
-        {
-          "animale": "razza.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5453
-        },
-        {
-          "animale": "bradipo.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5723
-        },
-        {
-          "animale": "colibri.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.5913
+          "animale": "balaenicepsrex.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.9966
         },
         {
           "animale": "balena.png",
-          "compatibilita_pct": 0.0,
-          "diff_proporzione": 0.8513
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 231.7621
+        },
+        {
+          "animale": "bassotto.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.0646
+        },
+        {
+          "animale": "bradipo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.1858
+        },
+        {
+          "animale": "camaleonte.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.2961
+        },
+        {
+          "animale": "cane.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.6245
+        },
+        {
+          "animale": "canguro.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.3235
+        },
+        {
+          "animale": "casuario.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.1121
+        },
+        {
+          "animale": "cavallo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.6756
+        },
+        {
+          "animale": "celacanto.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.29
+        },
+        {
+          "animale": "cervo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.9517
+        },
+        {
+          "animale": "cinghiale.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.8943
+        },
+        {
+          "animale": "coccodrillo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.7881
+        },
+        {
+          "animale": "colibri.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.2048
+        },
+        {
+          "animale": "delfino.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.3946
+        },
+        {
+          "animale": "dodo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.7574
+        },
+        {
+          "animale": "dragodicommodo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.9399
+        },
+        {
+          "animale": "echidna.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.9667
+        },
+        {
+          "animale": "elefante.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.412
+        },
+        {
+          "animale": "fagiano.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.0908
+        },
+        {
+          "animale": "foca.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.0567
+        },
+        {
+          "animale": "formichiere.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.3561
+        },
+        {
+          "animale": "gallina.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.1441
+        },
+        {
+          "animale": "gatto.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.783
+        },
+        {
+          "animale": "giraffa.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.6419
+        },
+        {
+          "animale": "gufo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.0447
+        },
+        {
+          "animale": "iguana.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.7659
+        },
+        {
+          "animale": "ippopotamo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.9945
+        },
+        {
+          "animale": "kiwi.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.9155
+        },
+        {
+          "animale": "levriero.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.7167
+        },
+        {
+          "animale": "lupo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.4806
+        },
+        {
+          "animale": "mammut.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.1551
+        },
+        {
+          "animale": "mucca.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.0133
+        },
+        {
+          "animale": "opossum.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.5897
+        },
+        {
+          "animale": "ornitorinco.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.3423
+        },
+        {
+          "animale": "pappagallo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.047
+        },
+        {
+          "animale": "pellicano.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.8849
+        },
+        {
+          "animale": "picchio.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.8363
+        },
+        {
+          "animale": "piccione.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.8785
+        },
+        {
+          "animale": "pinguino.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.911
+        },
+        {
+          "animale": "razza.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.1588
+        },
+        {
+          "animale": "rinoceronte.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.9629
+        },
+        {
+          "animale": "rinocerontelanoso.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.7897
+        },
+        {
+          "animale": "rondine.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.4317
+        },
+        {
+          "animale": "salamandra.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.3877
+        },
+        {
+          "animale": "squalo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.8134
+        },
+        {
+          "animale": "struzzo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.6755
+        },
+        {
+          "animale": "tacchino.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.0528
+        },
+        {
+          "animale": "thylacine.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 233.0304
+        },
+        {
+          "animale": "topo.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.3308
+        },
+        {
+          "animale": "tricheco.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.8934
+        },
+        {
+          "animale": "trota.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.8029
+        },
+        {
+          "animale": "tuatara.png",
+          "compatibilita_pct": 1.75,
+          "diff_proporzione": 232.5387
         }
       ]
     }

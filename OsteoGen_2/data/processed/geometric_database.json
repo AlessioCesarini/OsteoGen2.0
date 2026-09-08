@@ -4,8 +4,8 @@
     },
     "animali": {
         "airone.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/airone.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/airone.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\airone.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\airone.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     424.1964886964887,
@@ -170,8 +170,8 @@
             }
         },
         "alcaimpenne.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/alcaimpenne.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/alcaimpenne.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\alcaimpenne.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\alcaimpenne.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     223.07415424082095,
@@ -324,8 +324,8 @@
             }
         },
         "aquila.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/aquila.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/aquila.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\aquila.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\aquila.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     460.3164181497515,
@@ -490,8 +490,8 @@
             }
         },
         "armadillo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/armadillo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/armadillo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\armadillo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\armadillo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     43.29541446208114,
@@ -626,8 +626,8 @@
             }
         },
         "axolotl.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/axolotl.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/axolotl.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\axolotl.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\axolotl.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     501.3617925284592,
@@ -786,8 +786,8 @@
             }
         },
         "balaenicepsrex.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/balaenicepsrex.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/balaenicepsrex.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\balaenicepsrex.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\balaenicepsrex.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     118.81890331890335,
@@ -952,8 +952,8 @@
             }
         },
         "balena.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/balena.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/balena.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\balena.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\balena.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     10.45911495911497,
@@ -1088,8 +1088,8 @@
             }
         },
         "bassotto.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/bassotto.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/bassotto.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\bassotto.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\bassotto.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     15.384559884559906,
@@ -1254,8 +1254,8 @@
             }
         },
         "bradipo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/bradipo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/bradipo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\bradipo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\bradipo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     323.22486772486775,
@@ -1414,8 +1414,8 @@
             }
         },
         "camaleonte.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/camaleonte.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/camaleonte.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\camaleonte.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\camaleonte.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     67.92263908930576,
@@ -1574,8 +1574,8 @@
             }
         },
         "cane.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/cane.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/cane.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\cane.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\cane.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     484.94364277697616,
@@ -1740,8 +1740,8 @@
             }
         },
         "canguro.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/canguro.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/canguro.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\canguro.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\canguro.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     26.87726471059804,
@@ -1894,8 +1894,8 @@
             }
         },
         "casuario.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/casuario.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/casuario.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\casuario.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\casuario.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     43.29541446208114,
@@ -2054,8 +2054,8 @@
             }
         },
         "cavallo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/cavallo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/cavallo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\cavallo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\cavallo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     72.02717652717655,
@@ -2220,8 +2220,8 @@
             }
         },
         "celacanto.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/celacanto.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/celacanto.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\celacanto.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\celacanto.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     12.100929934263263,
@@ -2350,8 +2350,8 @@
             }
         },
         "cervo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/cervo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/cervo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\cervo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\cervo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     92.54986371653038,
@@ -2516,8 +2516,8 @@
             }
         },
         "cinghiale.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/cinghiale.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/cinghiale.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\cinghiale.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\cinghiale.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     20.310004810004813,
@@ -2682,8 +2682,8 @@
             }
         },
         "coccodrillo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/coccodrillo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/coccodrillo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\coccodrillo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\coccodrillo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     20.310004810004813,
@@ -2842,8 +2842,8 @@
             }
         },
         "colibri.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/colibri.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/colibri.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\colibri.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\colibri.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     445.5400833734167,
@@ -3008,8 +3008,8 @@
             }
         },
         "delfino.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/delfino.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/delfino.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\delfino.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\delfino.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     20.310004810004813,
@@ -3144,8 +3144,8 @@
             }
         },
         "dodo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/dodo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/dodo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\dodo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\dodo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     470.16730800064136,
@@ -3310,8 +3310,8 @@
             }
         },
         "dragodicommodo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/dragodicommodo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/dragodicommodo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\dragodicommodo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\dragodicommodo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     489.869087702421,
@@ -3464,8 +3464,8 @@
             }
         },
         "echidna.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/echidna.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/echidna.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\echidna.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\echidna.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     496.43634760301427,
@@ -3618,8 +3618,8 @@
             }
         },
         "elefante.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/elefante.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/elefante.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\elefante.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\elefante.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     31.802709636042977,
@@ -3772,8 +3772,8 @@
             }
         },
         "fagiano.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/fagiano.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/fagiano.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\fagiano.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\fagiano.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     62.17628667628668,
@@ -3932,8 +3932,8 @@
             }
         },
         "foca.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/foca.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/foca.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\foca.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\foca.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     25.23544973544975,
@@ -4086,8 +4086,8 @@
             }
         },
         "formichiere.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/formichiere.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/formichiere.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\formichiere.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\formichiere.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     498.89907006573674,
@@ -4240,8 +4240,8 @@
             }
         },
         "gallina.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/gallina.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/gallina.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\gallina.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\gallina.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     443.89826839826844,
@@ -4406,8 +4406,8 @@
             }
         },
         "gatto.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/gatto.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/gatto.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\gatto.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\gatto.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     17.0263748597082,
@@ -4560,8 +4560,8 @@
             }
         },
         "giraffa.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/giraffa.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/giraffa.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\giraffa.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\giraffa.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     112.25164341831012,
@@ -4726,8 +4726,8 @@
             }
         },
         "gorilla.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/gorilla.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/gorilla.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\gorilla.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\gorilla.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     79.23526341905784,
@@ -4868,8 +4868,8 @@
             }
         },
         "gufo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/gufo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/gufo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\gufo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\gufo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     368.3747795414462,
@@ -5028,8 +5028,8 @@
             }
         },
         "iguana.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/iguana.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/iguana.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\iguana.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\iguana.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     13.742744909411584,
@@ -5194,8 +5194,8 @@
             }
         },
         "ippopotamo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/ippopotamo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/ippopotamo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\ippopotamo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\ippopotamo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     26.87726471059804,
@@ -5348,8 +5348,8 @@
             }
         },
         "kiwi.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/kiwi.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/kiwi.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\kiwi.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\kiwi.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     433.22647105980434,
@@ -5514,8 +5514,8 @@
             }
         },
         "levriero.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/levriero.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/levriero.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\levriero.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\levriero.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     500.5408850408851,
@@ -5674,8 +5674,8 @@
             }
         },
         "lupo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/lupo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/lupo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\lupo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\lupo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     23.593634760301427,
@@ -5840,8 +5840,8 @@
             }
         },
         "mammut.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/mammut.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/mammut.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\mammut.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\mammut.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     17.0263748597082,
@@ -5994,8 +5994,8 @@
             }
         },
         "mucca.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/mucca.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/mucca.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\mucca.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\mucca.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     12.921837421837438,
@@ -6160,8 +6160,8 @@
             }
         },
         "opossum.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/opossum.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/opossum.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\opossum.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\opossum.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     12.921837421837438,
@@ -6320,8 +6320,8 @@
             }
         },
         "ornitorinco.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/ornitorinco.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/ornitorinco.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\ornitorinco.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\ornitorinco.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     7.175485008818356,
@@ -6474,8 +6474,8 @@
             }
         },
         "pappagallo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/pappagallo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/pappagallo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\pappagallo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\pappagallo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     93.37077120410456,
@@ -6640,8 +6640,8 @@
             }
         },
         "pellicano.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/pellicano.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/pellicano.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\pellicano.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\pellicano.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     450.68778981229576,
@@ -6806,8 +6806,8 @@
             }
         },
         "picchio.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/picchio.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/picchio.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\picchio.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\picchio.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     419.27104377104376,
@@ -6972,8 +6972,8 @@
             }
         },
         "piccione.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/piccione.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/piccione.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\piccione.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\piccione.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     76.13171396504731,
@@ -7138,8 +7138,8 @@
             }
         },
         "pinguino.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/pinguino.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/pinguino.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\pinguino.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\pinguino.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     105.68438351771684,
@@ -7304,8 +7304,8 @@
             }
         },
         "pipistrello.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/pipistrello.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/pipistrello.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\pipistrello.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\pipistrello.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     274.7913259579926,
@@ -7452,8 +7452,8 @@
             }
         },
         "rana.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/rana.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/rana.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\rana.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\rana.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     79.41534391534393,
@@ -7600,8 +7600,8 @@
             }
         },
         "razza.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/razza.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/razza.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\razza.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\razza.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     250.16410133076803,
@@ -7766,8 +7766,8 @@
             }
         },
         "rinoceronte.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/rinoceronte.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/rinoceronte.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\rinoceronte.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\rinoceronte.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     498.0781625781626,
@@ -7932,8 +7932,8 @@
             }
         },
         "rinocerontelanoso.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/rinocerontelanoso.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/rinocerontelanoso.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\rinocerontelanoso.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\rinocerontelanoso.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     5.533670033670035,
@@ -8098,8 +8098,8 @@
             }
         },
         "rondine.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/rondine.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/rondine.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\rondine.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\rondine.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     316.65760782427446,
@@ -8264,8 +8264,8 @@
             }
         },
         "salamandra.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/salamandra.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/salamandra.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\salamandra.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\salamandra.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     39.19087702421038,
@@ -8418,8 +8418,8 @@
             }
         },
         "scimpanze.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/scimpanze.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/scimpanze.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\scimpanze.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\scimpanze.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     46.579044412377755,
@@ -8560,8 +8560,8 @@
             }
         },
         "serpente.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/serpente.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/serpente.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\serpente.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\serpente.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     241.13411896745234,
@@ -8660,8 +8660,8 @@
             }
         },
         "squalo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/squalo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/squalo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\squalo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\squalo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     26.671226665297752,
@@ -8790,8 +8790,8 @@
             }
         },
         "struzzo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/struzzo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/struzzo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\struzzo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\struzzo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     122.10253326919994,
@@ -8956,8 +8956,8 @@
             }
         },
         "tacchino.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/tacchino.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/tacchino.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\tacchino.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\tacchino.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     470.9882154882155,
@@ -9122,8 +9122,8 @@
             }
         },
         "tartaruga.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/tartaruga.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/tartaruga.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\tartaruga.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\tartaruga.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     13.742744909411584,
@@ -9276,8 +9276,8 @@
             }
         },
         "thylacine.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/thylacine.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/thylacine.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\thylacine.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\thylacine.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     9.638207471540824,
@@ -9430,8 +9430,8 @@
             }
         },
         "topo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/topo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/topo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\topo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\topo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     497.2572550905884,
@@ -9596,8 +9596,8 @@
             }
         },
         "tricheco.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/tricheco.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/tricheco.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\tricheco.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\tricheco.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     77.77352894019563,
@@ -9750,8 +9750,8 @@
             }
         },
         "trota.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/trota.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/trota.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\trota.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\trota.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     17.0263748597082,
@@ -9880,8 +9880,8 @@
             }
         },
         "tuatara.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/tuatara.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/tuatara.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\tuatara.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\tuatara.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     58.892656725990065,
@@ -10046,8 +10046,8 @@
             }
         },
         "uomo.png": {
-            "path_scheletro": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/input_x/uomo.png",
-            "path_texture": "/home/marco/cod/OsteoGen2.0/OsteoGen_2/data/processed/target_y/uomo.png",
+            "path_scheletro": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\input_x\\uomo.png",
+            "path_texture": "c:\\Users\\alexc\\Desktop\\OsteoGen2.0\\OsteoGen2.0\\OsteoGen_2\\data\\processed\\target_y\\uomo.png",
             "coordinate_grezze": {
                 "punta_muso": [
                     250.98500881834215,

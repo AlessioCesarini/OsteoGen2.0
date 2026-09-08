@@ -157,7 +157,7 @@ def genera_render(coords_target, report, db, pipeline=None, device="cuda",
         generator=generator,
     )
     if immagini_riferimento:
-        kwargs["ip_adapter_image"] = immagini_riferimento
+        kwargs["ip_adapter_image"] = [immagini_riferimento]  
 
     risultato = pipe(**kwargs)
     return risultato.images[0], control_image
