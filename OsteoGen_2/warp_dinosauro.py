@@ -1,69 +1,67 @@
-import os
-import json
 import cv2
 import numpy as np
+import os
+import json
 import matplotlib.pyplot as plt
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
-
 def applica_texture_parte(img_src, canvas_dst, punti_src_raw, punti_dst_raw):
-    # 0. FILTRO PUNTI MANCANTI
-    punti_src_puliti = []
-    punti_dst_puliti = []
-    
-    for p_src, p_dst in zip(punti_src_raw, punti_dst_raw):
-        if p_src is not None and p_dst is not None:
-            punti_src_puliti.append(p_src)
-            punti_dst_puliti.append(p_dst)
+    # Filtro punti mancanti
+    p_src_clean = [p for p, d in zip(punti_src_raw, punti_dst_raw) if p is not None and d is not None]
+    p_dst_clean = [d for p, d in zip(punti_src_raw, punti_dst_raw) if p is not None and d is not None]
             
-    if len(punti_src_puliti) < 2:
+    if len(p_src_clean) < 2:
         return canvas_dst
 
-    # 1. ACQUISIZIONE DIRETTA COORDINATE
     h_dst, w_dst = canvas_dst.shape[:2]
     h_src, w_src = img_src.shape[:2]
     
-    punti_src = np.array(punti_src_puliti, dtype=np.float32)
-    punti_dst = np.array(punti_dst_puliti, dtype=np.float32)
-    punti_src_int = np.int32(punti_src)
+    pt_src = np.array(p_src_clean, dtype=np.float32)
+    pt_dst = np.array(p_dst_clean, dtype=np.float32)
+    pt_src_int = np.int32(pt_src)
     
-    # 2. ISOLAMENTO ANATOMICO (Maschera Dinamica)
+    # MASCHERA TUBOLARE (Segue l'anatomia A -> B)
     mask_src = np.zeros((h_src, w_src), dtype=np.uint8)
     
-    if len(punti_src_int) >= 3:
-        hull_src = cv2.convexHull(punti_src_int)
-        cv2.fillConvexPoly(mask_src, hull_src, 255)
-    else:
-        # Calcola uno spessore dinamico (es. 15% della lunghezza della coda)
-        pt1 = tuple(punti_src_int[0])
-        pt2 = tuple(punti_src_int[1])
-        distanza = np.linalg.norm(punti_src[0] - punti_src[1])
-        spessore_dinamico = max(5, int(distanza * 0.15))
-        cv2.line(mask_src, pt1, pt2, 255, thickness=spessore_dinamico) 
+    # Traccia una linea spessa per ogni segmento osseo
+    for i in range(len(pt_src_int) - 1):
+        pt1 = tuple(pt_src_int[i])
+        pt2 = tuple(pt_src_int[i+1])
+        
+        # Calcola la distanza tra giuntura A e B
+        distanza = np.linalg.norm(pt_src[i] - pt_src[i+1])
+        
+        # Lo spessore della maschera (es. 40% della lunghezza dell'osso)
+        spessore = max(15, int(distanza * 0.40)) 
+        
+        # Disegna il "tubo" di carne attorno all'osso
+        cv2.line(mask_src, pt1, pt2, 255, thickness=spessore)
+        
+        # Disegna cerchi sulle giunture per smussare le articolazioni (gomiti, ginocchia)
+        cv2.circle(mask_src, pt1, spessore // 2, 255, -1)
+        cv2.circle(mask_src, pt2, spessore // 2, 255, -1)
     
+    # Ritaglia i pixel esatti che seguono le ossa
     texture_isolata = cv2.bitwise_and(img_src, img_src, mask=mask_src)
     
-    # 3. DEFORMAZIONE SPAZIALE (Warping Rigido Forzato)
-    # Rimuoviamo estimateAffine2D per impedire lo stretching infinito.
-    # estimateAffinePartial2D esegue SOLO rotazione, scala e traslazione.
-    matrix, inliers = cv2.estimateAffinePartial2D(punti_src, punti_dst)
+    # Warping Rigido (assembla i blocchi sul dinosauro)
+    matrix, inliers = cv2.estimateAffinePartial2D(pt_src, pt_dst)
     
     if matrix is None:
         return canvas_dst
         
-    texture_warped = cv2.warpAffine(texture_isolata, matrix, (w_dst, h_dst), 
-                                    flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
-    mask_warped = cv2.warpAffine(mask_src, matrix, (w_dst, h_dst), 
-                                 flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
+    texture_warped = cv2.warpAffine(texture_isolata, matrix, (w_dst, h_dst), borderMode=cv2.BORDER_CONSTANT)
+    mask_warped = cv2.warpAffine(mask_src, matrix, (w_dst, h_dst), borderMode=cv2.BORDER_CONSTANT)
     
-    # 4. FUSIONE (Blending)
-    mask_warped_3c = cv2.cvtColor(mask_warped, cv2.COLOR_GRAY2BGR) / 255.0
-    canvas_aggiornato = (texture_warped * mask_warped_3c + canvas_dst * (1.0 - mask_warped_3c)).astype(np.uint8)
+    # Fusione
+    mask_3c = cv2.cvtColor(mask_warped, cv2.COLOR_GRAY2BGR) / 255.0
+    canvas_aggiornato = (texture_warped * mask_3c + canvas_dst * (1.0 - mask_3c)).astype(np.uint8)
     
     return canvas_aggiornato
 
+
 def genera_chimera(match_dict, db_json_path, trex_coords, trex_path):
-    # Legge il file del target e crea un canvas dinamico basato sulle sue dimensioni reali
+    # Canvas dinamico basato sulle dimensioni reali del T-Rex
     img_trex = cv2.imread(trex_path)
     h_t, w_t = img_trex.shape[:2]
     canvas = np.zeros((h_t, w_t, 3), dtype=np.uint8)
@@ -85,36 +83,37 @@ def genera_chimera(match_dict, db_json_path, trex_coords, trex_path):
         img_animale = cv2.imread(img_path_y)
         nomi_punti_parte = dati_animale["segmentazione"][parte.lower()]["punti"]
         
-        punti_src = [dati_animale["coordinate_grezze"].get(p) for p in nomi_punti_parte]
-        punti_dst = [trex_coords.get(p) for p in nomi_punti_parte]
+        punti_src_raw = [dati_animale["coordinate_grezze"].get(p) for p in nomi_punti_parte]
+        punti_dst_raw = [trex_coords.get(p) for p in nomi_punti_parte]
         
-        canvas = applica_texture_parte(img_animale, canvas, punti_src, punti_dst)
+        # La nuova funzione applica_texture_parte gestisce tutto internamente (sia >=3 punti che ==2 punti)
+        canvas = applica_texture_parte(img_animale, canvas, punti_src_raw, punti_dst_raw)
 
-    output_dir = r"C:\Users\alexc\Desktop\OsteoGen_2\outputs"
+    output_dir = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\outputs"
     os.makedirs(output_dir, exist_ok=True)
-    output_file_path = os.path.join(output_dir, "trex_chimera_render.jpg")
+    output_file_path = os.path.join(output_dir, "trex_chimera_rigida.jpg")
     cv2.imwrite(output_file_path, canvas)
-    print(f"Immagine salvata con successo in: {output_file_path}")
+    print(f"Render salvato in: {output_file_path}")
 
     canvas_rgb = cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB)
-    
     plt.figure(figsize=(8, 8))
     plt.imshow(canvas_rgb)
-    plt.title("Dinosauro Renderizzato (Composizione Texture)")
+    plt.title("Chimera (Assemblaggio Rigido)")
     plt.axis("off")
     plt.show()
 
 if __name__ == "__main__":
     match_trovati = {
-        "testa": "salamandra.png",
+        "testa": None,
         "torso": "airone.png",
-        "arto_anteriore": "scimpanze.png",
+        "arto_anteriore": None,
         "arto_posteriore": "echidna.png",
         "coda": "mucca.png"
     }
+    
     from inference import estrai_coordinate
     
-    # ASSICURATI CHE QUESTO FILE SIA LO SCHELETRO DEL T-REX, NON LA FOTO DI UN KIWI
+    # Percorsi aggiornati alla cartella OsteoGen2.0
     trex_path = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\tests\t-rex.jpg"
     pesi = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\training_outputs_2\Weights\best_keypoint_detector.pth"
     db_path = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\data\processed\geometric_database.json"
@@ -122,5 +121,5 @@ if __name__ == "__main__":
     print("Estrazione coordinate T-Rex...")
     coords_trex = estrai_coordinate(trex_path, pesi, threshold=0.02)
     
-    print("Generazione render in corso...")
+    print("Generazione render ad assemblaggio rigido in corso...")
     genera_chimera(match_trovati, db_path, coords_trex, trex_path)

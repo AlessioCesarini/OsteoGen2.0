@@ -22,7 +22,7 @@ def calcola_proporzioni(coords):
 
 def esegui_retrieval(trex_img_path, pesi_modello, db_json_path):
     print("Estrazione coordinate del target in corso...")
-    coords_trex = estrai_coordinate(trex_img_path, pesi, threshold=0.02)
+    coords_trex = estrai_coordinate(trex_img_path, pesi_modello, threshold=0.30)
     prop_trex = calcola_proporzioni(coords_trex)
 
     print("\nProporzioni Target calcolate (relative al torso):")
@@ -64,9 +64,9 @@ def esegui_retrieval(trex_img_path, pesi_modello, db_json_path):
 if __name__ == "__main__":
     # 1. SCARICA UNO SCHELETRO DI T-REX SU SFONDO NERO
     # 2. INSERISCI QUI IL PERCORSO:
-    trex_path = r"C:\Users\alexc\Desktop\OsteoGen_2\tests\t-rex.jpg"
+    trex_path = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\tests\t-rex.jpg"
     
-    pesi = r"C:\Users\alexc\Desktop\OsteoGen_2\training_outputs_2\Weights\best_keypoint_detector.pth"
-    db_path = r"C:\Users\alexc\Desktop\OsteoGen_2\data\processed\geometric_database.json"
+    pesi = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\training_outputs_2\Weights\best_keypoint_detector.pth"
+    db_path = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\data\processed\geometric_database.json"
 
     esegui_retrieval(trex_path, pesi, db_path)
