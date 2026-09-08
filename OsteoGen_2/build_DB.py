@@ -1,72 +1,100 @@
+"""
+build_DB.py
+
+Costruisce il database geometrico usato dal retrieval (compatibility.py).
+
+v2: per gli animali del dataset di training usiamo le coordinate annotate a
+mano in data/processed/Labels_X (ground truth), NON l'inferenza della rete.
+La rete serve a leggere keypoint su immagini MAI viste (il fossile target),
+non su immagini su cui abbiamo gia' l'annotazione esatta: usare l'inferenza
+qui introduceva solo rumore inutile nel database e rendeva build_DB.py
+dipendente da pesi gia' allenati.
+"""
 import os
 import json
-import numpy as np
-from inference import estrai_coordinate # Assicurati che il file precedente si chiami inference.py
 
-def calcola_distanza(p1, p2):
-    """Calcola la distanza euclidea tra due punti, se esistono."""
-    if p1 is None or p2 is None:
-        return 0.0
-    return float(np.linalg.norm(np.array(p1) - np.array(p2)))
+from geometry import (
+    NOMI_PUNTI, SEGMENTI, normalizza_keypoints, lunghezze_segmenti,
+    stima_fattore_calibrazione_cranio,
+)
+
 
 def costruisci_database():
-    img_dir_x = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\data\processed\input_x"
-    img_dir_y = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\data\processed\target_y"
-    pesi_modello = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\training_outputs_2\Weights\best_keypoint_detector.pth"
-    out_json = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\data\processed\geometric_database.json"
+    _base_dir = os.path.dirname(os.path.abspath(__file__))
+    img_dir_x = os.path.join(_base_dir, "data", "processed", "input_x")
+    img_dir_y = os.path.join(_base_dir, "data", "processed", "target_y")
+    json_dir_x = os.path.join(_base_dir, "data", "processed", "Labels_X")
+    out_json = os.path.join(_base_dir, "data", "processed", "geometric_database.json")
 
-    immagini = [f for f in os.listdir(img_dir_x) if f.endswith(('.png', '.jpg'))]
+    immagini = sorted(f for f in os.listdir(img_dir_x) if f.endswith(('.png', '.jpg')))
     database = {}
+    saltati = []
 
-    print(f"Avvio estrazione coordinate su {len(immagini)} animali...")
+    # Calibrazione: rapporto medio cranio/torso su tutto il dataset, usato
+    # per normalizzare in modo coerente gli animali privi di torso annotato
+    # (vedi geometry.trova_ancora_scala).
+    tutte_le_coords = []
+    for img_name in immagini:
+        base_name = os.path.splitext(img_name)[0]
+        path_json = os.path.join(json_dir_x, f"{base_name}.json")
+        if os.path.exists(path_json):
+            with open(path_json, 'r', encoding='utf-8') as f:
+                tutte_le_coords.append(json.load(f))
+    fattore_cranio = stima_fattore_calibrazione_cranio(tutte_le_coords)
+    print(f"Fattore di calibrazione cranio/torso stimato sul dataset: {fattore_cranio:.4f}")
+
+    print(f"Costruzione database geometrico su {len(immagini)} animali (da ground truth)...")
 
     for img_name in immagini:
+        base_name = os.path.splitext(img_name)[0]
         path_x = os.path.join(img_dir_x, img_name)
-        
-        # Supponiamo che il target Y abbia lo stesso nome
-        path_y = os.path.join(img_dir_y, img_name) 
-        
-        # Estrae i 14 keypoint usando la nostra ResNet18
-        coords = estrai_coordinate(path_x, pesi_modello)
-        
-        # Segmentazione in parti anatomiche
-        parti = {
-            "testa": {
-                "punti": ["punta_muso", "retro_cranio", "base_collo"],
-                "lunghezza_base": calcola_distanza(coords.get("punta_muso"), coords.get("base_collo"))
-            },
-            "torso": {
-                "punti": ["base_collo", "spalla", "dorso", "anca", "base_coda"],
-                "lunghezza_base": calcola_distanza(coords.get("base_collo"), coords.get("base_coda"))
-            },
-            "arto_anteriore": {
-                "punti": ["spalla", "gomito_ant_1", "gomito_ant_2", "zampa_ant"],
-                "lunghezza_base": calcola_distanza(coords.get("spalla"), coords.get("zampa_ant"))
-            },
-            "arto_posteriore": {
-                "punti": ["anca", "ginocchio_post_1", "ginocchio_post_2", "zampa_post"],
-                "lunghezza_base": calcola_distanza(coords.get("anca"), coords.get("zampa_post"))
-            },
-            "coda": {
-                "punti": ["base_coda", "punta_coda"],
-                "lunghezza_base": calcola_distanza(coords.get("base_coda"), coords.get("punta_coda"))
-            }
-        }
+        path_y = os.path.join(img_dir_y, img_name)
+        path_json = os.path.join(json_dir_x, f"{base_name}.json")
 
-        # Salva la struttura dell'animale
+        if not os.path.exists(path_json):
+            print(f"  [!] Nessuna annotazione per {img_name}, salto.")
+            saltati.append(img_name)
+            continue
+
+        with open(path_json, 'r', encoding='utf-8') as f:
+            coords_raw = json.load(f)
+        # Il JSON annotato puo' contenere liste [x, y]; le normalizziamo a
+        # tuple per coerenza con il resto della pipeline.
+        coords = {nome: (tuple(coords_raw[nome]) if coords_raw.get(nome) is not None else None)
+                  for nome in NOMI_PUNTI}
+
+        coords_normalizzati, ancora = normalizza_keypoints(coords, fattore_cranio)
+        if ancora is None:
+            print(f"  [!] {img_name}: nessuna ancora di scala disponibile (torso/cranio assenti), salto.")
+            saltati.append(img_name)
+            continue
+
+        lunghezze = lunghezze_segmenti(coords)
+
         database[img_name] = {
             "path_scheletro": path_x,
             "path_texture": path_y,
             "coordinate_grezze": coords,
-            "segmentazione": parti
+            "coordinate_normalizzate": coords_normalizzati,
+            "ancora_scala": ancora,
+            "segmentazione": {
+                parte: {"punti": punti, "lunghezza_base": lunghezze[parte]}
+                for parte, punti in SEGMENTI.items()
+            },
         }
-        
-        print(f"Processato: {img_name}")
+        print(f"  Processato: {img_name} (ancora: {ancora})")
 
-    with open(out_json, 'w') as f:
-        json.dump(database, f, indent=4)
-        
-    print(f"\nDatabase completato! Salvato in: {out_json}")
+    output = {
+        "_meta": {"fattore_calibrazione_cranio": fattore_cranio},
+        "animali": database,
+    }
+    with open(out_json, 'w', encoding='utf-8') as f:
+        json.dump(output, f, indent=4)
+
+    print(f"\nDatabase completato: {len(database)} animali salvati in {out_json}")
+    if saltati:
+        print(f"Animali saltati per dati insufficienti: {saltati}")
+
 
 if __name__ == "__main__":
     costruisci_database()

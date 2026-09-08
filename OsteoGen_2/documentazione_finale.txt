@@ -1,12 +1,25 @@
-DOCUMENTAZIONE TECNICA: PIPELINE MODULARE "OSTEOGEN"
-Architettura per la Generazione di Chimere Biologiche tramite Estrazione di Keypoint e Warping Spaziale
+DOCUMENTAZIONE TECNICA: PIPELINE MODULARE "OSTEOGEN" [v2]
+Architettura per la Ricostruzione Generativa di Animali a partire da Fossili/Scheletri
 
 1. INTRODUZIONE AL SISTEMA E INFRASTRUTTURA
-Il progetto OsteoGen risolve il complesso task di trasposizione scheletro-texture superando i tipici limiti dei modelli generativi globali (es. allucinazioni visive, blending sfocato) attraverso un approccio deterministico e modulare. La pipeline frammenta il problema in tre macro-fasi isolate: 
+Il progetto OsteoGen parte da un fossile/scheletro (anche di un animale mai fotografato da vivo, es. un dinosauro) e produce: (a) un report di compatibilita' biologica percentuale con gli animali di un database geometrico, e (b) un render generativo dell'animale ricostruito. La pipeline si articola in quattro macro-fasi:
 1) Rilevamento dei keypoint anatomici tramite Deep Learning (ResNet18).
-2) Retrieval biologico invariante alla scala.
-3) Deformazione spaziale non lineare (Warping e Convex Hull).
-L'infrastruttura è stata ottimizzata per parallelizzare i carichi di lavoro (num_workers=4) saturando i CUDA core e i 32 GB di VRAM dell'acceleratore NVIDIA RTX 5080, garantendo tempi di esecuzione e di training ideali per iterazioni di ricerca.
+2) Retrieval biologico invariante alla scala, con punteggio percentuale (non solo il match migliore).
+3) Generazione di un report leggibile (HTML/JSON) del retrieval.
+4) Render generativo (diffusione locale, ControlNet + IP-Adapter) condizionato dallo scheletro del target e dalle texture dei donatori pesate per compatibilita'.
+
+Nota v1->v2: la fase di composizione finale usava un warping rigido a triangoli
+(convexHull + estimateAffine2D) che produceva frammenti di texture incollati,
+non un animale coerente (vedi outputs/trex_chimera_render.jpg per un esempio
+del problema). Il codice di warping non e' stato buttato: e' stato retrocesso
+a generatore della control map/guida grezza per lo stadio generativo (v.
+render/control_map.py), che ora e' il vero output finale.
+
+L'infrastruttura di training e' pensata per una GPU NVIDIA con VRAM
+sufficiente per SD1.5+ControlNet+IP-Adapter (indicativamente una RTX 5080,
+16 GB VRAM) e un training set ancora piccolo (65 animali): non servono
+CUDA core "saturati" ne' decine di GB di VRAM per questa parte, che resta
+leggera; il render generativo e' lo stadio piu' pesante.
 
 2. FASE I: DATA PREPARATION E GROUND TRUTH
 L'obiettivo di questa fase è standardizzare gli input e definire le annotazioni spaziali per il training.
@@ -45,14 +58,30 @@ G. inference.py[cite: 4]
 - Obiettivo: Estrarre le coordinate anatomiche su campioni fuori distribuzione (OOD)[cite: 4].
 - Funzionamento: Disabilita il calcolo dei gradienti (`torch.no_grad()`) ed elabora l'immagine target[cite: 4]. Per ciascuno dei 14 canali predetti, identifica il picco massimo di probabilità tramite `np.argmax`, applicando una soglia di affidabilità (threshold) per scartare allucinazioni[cite: 4]. Le coordinate relative alla mappa 512x512 vengono rimappate matematicamente sulle dimensioni assolute dell'input[cite: 4].
 
-H. build_DB.py[cite: 1]
-- Obiettivo: Vettorializzare la biometria del dataset di addestramento[cite: 1].
-- Funzionamento: Utilizza l'inferenza per tracciare i keypoint sui 65 animali sorgente[cite: 1]. Segmenta l'anatomia in 5 blocchi e calcola una distanza euclidea di base per ogni sezione (es. distanza muso-collo), archiviando i metadati in un database geometrico JSON[cite: 1].
+H. geometry.py [v2]
+- Obiettivo: unica fonte di verita' per lo schema dei 14 keypoint, la segmentazione in 5 parti anatomiche, e la normalizzazione geometrica (traslazione+scala) condivisa da build_DB.py, compatibility.py e render/.
+- Funzionamento: la scala preferita e' il torso (base_collo->base_coda); quando manca (anatomie senza coda annotata: rana, serpente, tartaruga, scimpanzé, uomo, pipistrello) si usa un "torso equivalente" stimato dal cranio, corretto per il rapporto medio cranio/torso calibrato sul dataset (senza questa correzione le distanze tra le due popolazioni esplodono, verificato empiricamente su tartaruga.png: da dist~2.3 a dist~0.4, in linea con il resto del dataset). Le lunghezze di segmento sono calcolate come somma dei link della catena (non distanza diretta primo->ultimo): per il torso la distanza diretta coincide per costruzione con l'ancora di scala (~1.0 per ogni animale), un confronto inutile, mentre la catena via spalla/dorso/anca riflette quanto e' arcuato il dorso.
 
-I. match_dinosauro.py[cite: 6]
-- Obiettivo: Determinare i donatori di texture biologicamente e proporzionalmente più affini al target[cite: 6].
-- Funzionamento: Calcola le lunghezze dei segmenti del T-Rex e le divide per la lunghezza del proprio torso, ottenendo un set di proporzioni totalmente invarianti alla scala assoluta dell'immagine[cite: 6]. Attraverso una ricerca per distanza minima monodimensionale contro i record del database, assegna a ciascuna parte del corpo il donatore animale matematicamente più compatibile[cite: 6].
+I. build_DB.py [v2]
+- Obiettivo: costruire il database geometrico usato dal retrieval.
+- Funzionamento: legge le coordinate annotate a mano in Labels_X (ground truth) invece di ri-eseguire l'inferenza sulle immagini di training (la rete serve a leggere keypoint su immagini MAI viste, non su immagini gia' annotate a mano: usarla qui introduceva solo rumore). Per ogni animale salva sia le coordinate grezze sia quelle normalizzate (geometry.normalizza_keypoints) e le lunghezze di segmento. Il JSON risultante ha struttura {"_meta": {"fattore_calibrazione_cranio": ...}, "animali": {...}}.
 
-J. warp_dinosauro.py[cite: 10]
-- Obiettivo: Fondere organicamente le texture dei donatori sulla posa del target scheletrico[cite: 10].
-- Funzionamento: Implementa una robusta gestione degli errori scartando le matrici prive di punti omologhi minimi (< 3)[cite: 10]. Invece di ritagliare bounding box rigide che incollerebbero frammenti di sfondo, calcola il `cv2.convexHull` sui keypoint di origine per isolare una maschera poligonale precisa della sola pelle[cite: 10]. Utilizza `cv2.estimateAffine2D` per deformare spazialmente la texture, integrandola sul canvas finale attraverso una fusione basata sulla normalizzazione del canale alpha della maschera, garantendo transizioni pulite e prive di spigoli[cite: 10].
+J. compatibility.py [v2, sostituisce match_dinosauro.py]
+- Obiettivo: report di compatibilita' percentuale, non piu' un singolo "vince il piu' vicino".
+- Funzionamento: due livelli. (1) compatibilita_specie confronta i keypoint normalizzati del target con ogni animale del DB (RMS sui punti condivisi) e converte le distanze in percentuali con una softmax (temperature calibrata empiricamente: con un animale del DB come proprio target, il self-match resta 50-100% invece di un ranking quasi uniforme). (2) compatibilita_per_segmento fa lo stesso ma sulla proporzione di ciascuna delle 5 parti anatomiche, per scegliere i donatori di texture del render. genera_report_compatibilita combina i due in un'unica struttura.
+
+K. report.py [v2, nuovo]
+- Obiettivo: rendere il report leggibile da un umano, non solo consumabile da codice.
+- Funzionamento: genera_report_json salva la struttura grezza; genera_report_html produce una pagina HTML autonoma (nessuna dipendenza esterna, immagini incorporate come base64) con un grafico a barre delle specie compatibili e le thumbnail dei migliori donatori per segmento.
+
+L. render/control_map.py [v2, ex warp_dinosauro.py]
+- Obiettivo: NON produce piu' l'immagine finale. Il warping rigido a triangoli (outputs/trex_chimera_render.jpg nella v1) produceva frammenti di texture incollati, non un animale coerente: il problema non erano i keypoint (ben allineati, vedi outputs/debug_heatmap_trex.jpg) ma pretendere che un affine su 2-3 punti bastasse a comporre un corpo intero.
+- Funzionamento oggi: disegna_control_map traccia lo scheletro del target come polilinee bianche su nero, indipendente dallo stile dell'immagine originale - e' l'input per un ControlNet nello stadio generativo. genera_guida_grezza mantiene la logica di warping originale (convexHull/maschera tubolare/estimateAffinePartial2D) ma solo come init-image opzionale per un img2img a bassa strength, non come output finale.
+
+M. render/generate.py [v2, nuovo]
+- Obiettivo: il render generativo vero e proprio.
+- Funzionamento: pipeline diffusers locale (Stable Diffusion 1.5 + ControlNet condizionato sulla control map dello scheletro + IP-Adapter condizionato sulle foto dei migliori donatori, pesate per compatibilita' ripetendo le immagini in proporzione al peso invece di una media equa). Il prompt testuale e' costruito automaticamente dal report ("50% aquila, 30% pollo, ..."). Richiede una GPU CUDA; i pesi si scaricano da Hugging Face al primo uso.
+
+N. pipeline.py [v2, nuovo]
+- Obiettivo: CLI unico end-to-end.
+- Funzionamento: incatena preprocess_target -> inference -> compatibility -> report -> render (quest'ultimo opzionale con --no-render, per generare solo il report senza bisogno di GPU/pesi diffusers).

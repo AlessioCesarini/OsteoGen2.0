@@ -3,9 +3,10 @@ import matplotlib.pyplot as plt
 from heatmap import SkeletonKeypointDataset # Assicurati che il file precedente si chiami heatmap.py
 
 def salva_controlli_visivi():
-    img_dir = os.path.join("Data", "Processed", "Input_X")
-    json_dir = os.path.join("Data", "Processed", "Labels_X")
-    out_dir = os.path.join("Data", "Processed", "Heatmap_Checks")
+    _base_dir = os.path.dirname(os.path.abspath(__file__))
+    img_dir = os.path.join(_base_dir, "data", "processed", "input_x")
+    json_dir = os.path.join(_base_dir, "data", "processed", "Labels_X")
+    out_dir = os.path.join(_base_dir, "data", "processed", "Heatmap_Checks")
     
     # Crea la cartella di output se non esiste
     os.makedirs(out_dir, exist_ok=True)

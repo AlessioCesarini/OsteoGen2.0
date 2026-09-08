@@ -1,0 +1,36 @@
+# OsteoGen 2.0 - dipendenze
+#
+# torch/torchvision: installa la build adatta alla tua GPU seguendo
+# https://pytorch.org/get-started/locally/ (per una RTX 5080 serve una build
+# CUDA 12.x). Su questa macchina (senza GPU NVIDIA) usa pure la build CPU per
+# sviluppare/testare la logica non-generativa.
+torch>=2.3
+torchvision>=0.18
+
+numpy>=1.26
+opencv-python>=4.9
+Pillow>=10.2
+matplotlib>=3.8
+
+# Fase III - retrieval/compatibilita'
+scipy>=1.12
+
+# Fase IV - rendering generativo (ControlNet + IP-Adapter)
+diffusers>=0.29
+transformers>=4.42
+accelerate>=0.31
+safetensors>=0.4
+controlnet-aux>=0.0.9
+huggingface_hub>=0.24
+
+# opzionale, velocizza l'inferenza diffusers su GPU NVIDIA (richiede build
+# compatibile con la tua CUDA/torch); se l'installazione fallisce si puo'
+# semplicemente rimuovere, la pipeline funziona anche senza
+# xformers>=0.0.26
+
+# dataset_tools (ampliamento dataset da fonti a licenza aperta)
+requests>=2.31
+
+# preprocess_target.py: rimozione sfondo di qualita' su foto reali di
+# fossili. Opzionale: senza, si usa un fallback GrabCut piu' grezzo.
+rembg>=2.0.57

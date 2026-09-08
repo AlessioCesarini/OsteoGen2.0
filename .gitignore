@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+.venv*/
+venv/
+
+# Pesi/checkpoint (troppo grandi per git; vanno condivisi separatamente)
+*.pth
+*.pt
+*.safetensors
+
+# Cache modelli Hugging Face scaricati da render/generate.py
+.cache/

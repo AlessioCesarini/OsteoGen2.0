@@ -55,10 +55,11 @@ def salva_heatmap_inferenza(image_path, model_path, output_path, img_size=512):
     plt.show()
 
 if __name__ == "__main__":
-    trex_path = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\tests\t-rex.jpg"
-    pesi = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\training_outputs_2\Weights\best_keypoint_detector.pth"
-    output_path = r"C:\Users\alexc\Desktop\OsteoGen2.0\OsteoGen2.0\OsteoGen_2\outputs\debug_heatmap_trex.jpg"
-    
+    _base_dir = os.path.dirname(os.path.abspath(__file__))
+    trex_path = os.path.join(_base_dir, "tests", "horse.jpg")
+    pesi = os.path.join(_base_dir, "training_outputs_2", "Weights", "best_keypoint_detector.pth")
+    output_path = os.path.join(_base_dir, "outputs", "debug_heatmap_trex.jpg")
+
     # Crea la cartella se non esiste
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     

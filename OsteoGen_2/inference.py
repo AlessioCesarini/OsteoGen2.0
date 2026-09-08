@@ -5,7 +5,7 @@ from PIL import Image
 from torchvision import transforms
 from resnet import ResNet18KeypointDetector
 
-def estrai_coordinate(image_path, model_path, img_size=512, threshold=0.2):
+def estrai_coordinate(image_path, model_path, img_size=512, threshold=0.2, ritorna_confidenza=False):
     # Setup del device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
@@ -32,6 +32,7 @@ def estrai_coordinate(image_path, model_path, img_size=512, threshold=0.2):
     ]
 
     coordinate_estratte = {}
+    confidenze = {}
 
     with torch.no_grad():
         output = model(img_tensor) # Shape: (1, 14, 512, 512)
@@ -39,29 +40,33 @@ def estrai_coordinate(image_path, model_path, img_size=512, threshold=0.2):
 
     for i, nome in enumerate(nomi_punti):
         heatmap = heatmaps[i]
-        
+
         # Trova il valore massimo e la sua posizione
         max_val = np.max(heatmap)
+        confidenze[nome] = float(max_val)
         if max_val > threshold:
             # np.unravel_index converte l'indice 1D in coordinate 2D (y, x)
             y, x = np.unravel_index(np.argmax(heatmap), heatmap.shape)
-            
+
             # Riproporziona le coordinate alla dimensione originale dell'immagine
             x_orig = int((x / img_size) * original_size[0])
             y_orig = int((y / img_size) * original_size[1])
-            
+
             coordinate_estratte[nome] = (x_orig, y_orig)
         else:
             coordinate_estratte[nome] = None # Punto non trovato o assente
 
+    if ritorna_confidenza:
+        return coordinate_estratte, confidenze
     return coordinate_estratte
 
 if __name__ == "__main__":
     # Percorsi di test
-    pesi = r"C:\Users\alexc\Desktop\OsteoGen_2\training_outputs_2\Weights\best_keypoint_detector.pth"
-    
+    _base_dir = os.path.dirname(os.path.abspath(__file__))
+    pesi = os.path.join(_base_dir, "training_outputs_2", "Weights", "best_keypoint_detector.pth")
+
     # Scegli una foto di uno scheletro a caso dal dataset per testare
-    immagine_test = r"C:\Users\alexc\Desktop\OsteoGen_2\data\processed\input_x\aquila.png" 
+    immagine_test = os.path.join(_base_dir, "data", "processed", "input_x", "aquila.png")
     
     if os.path.exists(immagine_test) and os.path.exists(pesi):
         coords = estrai_coordinate(immagine_test, pesi)

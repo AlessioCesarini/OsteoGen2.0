@@ -28,13 +28,13 @@ def annota_immagine(img_path, json_path):
         else:
             annotazioni[nome] = coord 
 
-    with open(json_path, 'w') as f:
+    with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(annotazioni, f, indent=4)
 
 if __name__ == "__main__":
-    # Percorsi aggiornati alla tua struttura
-    cartella_immagini = os.path.join("Data", "Processed", "Input_X")
-    cartella_output = os.path.join("Data", "Processed", "Labels_X")
+    _base_dir = os.path.dirname(os.path.abspath(__file__))
+    cartella_immagini = os.path.join(_base_dir, "data", "processed", "input_x")
+    cartella_output = os.path.join(_base_dir, "data", "processed", "Labels_X")
     
     # Crea la cartella dei JSON se non esiste
     os.makedirs(cartella_output, exist_ok=True)
@@ -50,7 +50,7 @@ if __name__ == "__main__":
         
         # Salta le immagini già annotate per permetterti di fare pause
         if os.path.exists(json_path):
-            print(f"Skipping {nome_file}, JSON già esistente.")
+            print(f"Skipping {nome_file}, JSON gia' esistente.")
             continue
             
         print(f"Annotando: {nome_file}")

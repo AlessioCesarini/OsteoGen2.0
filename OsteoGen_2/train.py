@@ -55,15 +55,16 @@ def train_model(resume_path=None):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Training in esecuzione su: {device}")
 
-    img_dir = r"C:\Users\alexc\Desktop\GitHub Projects\OsteoGen\OsteoGen_Version2\data\processed\input_x"
-    json_dir = r"C:\Users\alexc\Desktop\GitHub Projects\OsteoGen\OsteoGen_Version2\data\processed\Labels_X"
-    out_dir = r"C:\Users\alexc\Desktop\GitHub Projects\OsteoGen\OsteoGen_Version2\training_outputs_2"
+    _base_dir = os.path.dirname(os.path.abspath(__file__))
+    img_dir = os.path.join(_base_dir, "data", "processed", "input_x")
+    json_dir = os.path.join(_base_dir, "data", "processed", "Labels_X")
+    out_dir = os.path.join(_base_dir, "training_outputs_2")
     weights_dir = os.path.join(out_dir, "Weights")
     renders_dir = os.path.join(out_dir, "Epoch_Renders")
     os.makedirs(weights_dir, exist_ok=True)
     os.makedirs(renders_dir, exist_ok=True)
 
-    dataset = SkeletonKeypointDataset(img_dir=img_dir, json_dir=json_dir, img_size=512, sigma=5.0)
+    dataset = SkeletonKeypointDataset(img_dir=img_dir, json_dir=json_dir, img_size=512, sigma=5.0, augment=True)
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=4)
 
     model = ResNet18KeypointDetector(num_keypoints=14).to(device)
