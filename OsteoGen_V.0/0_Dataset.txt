@@ -1,0 +1,161 @@
+Cosa ti propongo concretamente
+
+INDICAZIONI
+
+Un dataset piccolo ma ben curato e diversificato vale molto di più, in sede d'esame, di uno enorme ma raffazzonato. Ti propongo:
+
+30-50 specie, scelte per coprire diversità morfologica, non quantità pura: qualche mammifero (cane, gatto, cavallo, elefante), uccelli (aquila, struzzo), rettili (coccodrillo, tartaruga), pesce, magari un anfibio. Questo dà al modello varietà strutturale reale da generalizzare, che è più utile ai fini dell'esame che avere 300 specie di uccelli tutti simili tra loro.
+Il Dodo e altri estinti-con-raffigurazione (es. tigre della Tasmania) puoi includerli nel training se vuoi arricchire, oppure tenerli come test — a te la scelta, ma tienili separati concettualmente dai dinosauri (quelli sono il test finale "out of distribution" puro).
+
+Raccogliere l'immagine grezza è solo metà del lavoro — ti servirà quasi certamente:
+Rimozione sfondo (silhouette pulita, sfondo uniforme o rimosso) — altrimenti la rete impara anche rumore di sfondo
+Ridimensionamento a risoluzione fissa (es. 256x256, lo standard di pix2pix)
+Eventuale edge-detection/binarizzazione dello scheletro invece della foto grezza — spesso funziona meglio come input perché è più "pulito" strutturalmente (pensa a Canny edge detector)
+
+1 specie = 4 coppie input/output: ossa pulite, ossa+rumore, ruotato -45°, ruotato +45° e il loro corrispettivo corretto
+
+
+
+Riepilogo dataset — le regole generali
+
+Unità base: 1 specie = 1 coppia "sorgente" (A_base, B_base), da cui derivi le varianti.
+
+Le 4 varianti per specie (lo schema che avevi proposto tu, corretto):
+
+variante	cosa cambia in A (scheletro)	cosa cambia in B (aspetto)
+base	immagine pulita	immagine pulita
+noise	rumore/disturbo aggiunto	identica alla base — l'output non cambia, insegni solo robustezza al rumore
+rot -45°	ruotata di 45° a sinistra	ruotata IDENTICAMENTE di 45° a sinistra
+rot +45°	ruotata di 45° a destra	ruotata IDENTICAMENTE di 45° a destra
+
+Il principio che non deve mai rompersi: ogni trasformazione geometrica (rotazione, flip, crop) va applicata in modo identico a entrambe le immagini della coppia, altrimenti disallinei input e output. Le uniche trasformazioni che vanno solo su A sono quelle che simulano "degrado dell'informazione in ingresso" (rumore, occlusioni parziali) — perché lì l'obiettivo è insegnare al modello a essere robusto, non a cambiare l'output.
+
+Quindi per 56 specie x 4 varianti = 224 coppie totali nel dataset di train+val+test (prima di eventuale augmentation aggiuntiva via codice, tipo flip orizzontale automatico, che puoi comunque aggiungere dopo via script sempre rispettando la stessa regola).
+
+Split consigliato: con soli 224 esempi, non puoi permetterti split aggressivi — una proporzione tipica è 80% train / 10% val / 10% test, ma con numeri così bassi conviene fare lo split per specie intera (tutte e 4 le varianti di una specie nello stesso split), altrimenti rischi che il modello "veda già" quella specie in varianti leggermente diverse durante il training e il val/test non sia un test genuino.
+
+Risoluzione target: fissane una uguale per tutte le immagini fin da subito (es. 256x256, standard pix2pix) — ridimensiona/crop coerentemente su A e B insieme, non separatamente, altrimenti perdi l'allineamento spaziale.
+
+
+LISTA ANIMALI   11/63
+
+MAMMIFERI — Quadrupedi terrestri "standard"
+[FATTO] Cane (tipo Pastore Tedesco) — quadrupede standard, riferimento base
+[FATTO] Lupo — cranio più allungato, ossa più robuste
+[FATTO]Gatto — quadrupede piccolo, colonna molto flessibile
+[FATTO] Cavallo — arti a zoccolo unico, corsa
+[FATTO]Mucca/Bue — quadrupede pesante, corna ossee
+[FATTO]Cervo — palchi ossei (corna ramificate)
+[FATTO]Bassotto — zampe cortissime (condroplasia)
+[FATTO]Levriero — struttura affusolata, torace profondo
+
+MAMMIFERI — Scheletro atipico/estremo
+[FATTO]Elefante — arti a colonna, cranio enorme
+[FATTO]Giraffa — collo estremo (stesse 7 vertebre, allungate)
+[FATTO]Pipistrello — arti anteriori trasformati in ali (falangi allungate)
+[FATTO]Canguro — bipede saltatore, coda robusta, arti posteriori enormi
+[FATTO]Armadillo — corazza ossea (osteoderma)
+[FATTO]Formichiere gigante — cranio tubolare allungato, niente denti
+[FATTO]Rinoceronte 
+[FATTO]Ippopotamo
+[FATTO]Topo 
+[FATTO]Cinghiale 
+[FATTO]Bradipo
+
+PRIMATI
+[FATTO]Scimpanzé — semi-bipede, mano prensile
+[FATTO]Gorilla — quadrupede/nocche, robusto
+[FATTO]Essere umano (se vuoi includerlo per contrasto bipede puro — valuta tu se opportuno)
+
+MAMMIFERI ACQUATICI
+[FATTO]Delfino — pinne = arti modificati, coda orizzontale
+[FATTO]Balena — arti anteriori a pinna, assenza arti posteriori
+[FATTO]Foca/Otaria — arti intermedi terra/acqua
+[FATTO]Tricheco 
+
+UCCELLI — Volatori (forte gruppo, ponte teropodi)
+[FATTO]Aquila — rapace, artigli robusti
+[FATTO]Piccione/Colomba — uccello "generico" di riferimento
+[FATTO]Pappagallo — becco ricurvo massiccio
+[FATTO]Colibrì — scheletro minuscolo, sterno enorme (carena)
+[FATTO]Airone/Cicogna — collo e zampe lunghissime
+[FATTO]Rondine — ali affusolate, corpo aerodinamico
+[FATTO]Gufo — cranio con grandi orbite, collo flessibile
+[FATTO] (Becco a scarpa/Shoebill) — becco massiccio uncinato, postura rigida, forte somiglianza morfologica con piccoli teropodi
+[FATTO]Pellicano
+[FATTO]fagiani
+
+UCCELLI — Non volatori / ancestrali (chiave per collegamento dinosauri)
+[FATTO]Gallina — riferimento diretto teropode, da citare esplicitamente in relazione
+[FATTO]Tacchino — simile ma taglia/proporzioni diverse
+[FATTO]Struzzo — bipede corridore gigante, arti posteriori potenti
+[FATTO]Casuario — cresta ossea (casco), aspetto molto "dinosauro"
+[FATTO]Pinguino — ali trasformate in pinne rigide, ossa dense (non cave)
+[FATTO]Kiwi — corpo tozzo, becco lungo, quasi assenza ali
+[FATTO]Picchio — cranio rinforzato specificamente per l'impatto ripetuto, becco a scalpello
+
+RETTILI
+[FATTO] Coccodrillo — quadrupede corazzato, cranio allungato
+[FATTO]Tartaruga — guscio (carapace) fuso alla colonna
+[FATTO]Serpente — assenza totale di arti, colonna con centinaia di vertebre
+[FATTO]Iguana/Lucertola — quadrupede standard rettile
+[FATTO]Varano (tipo drago di Komodo) — rettile grande, robusto
+[FATTO]Camaleonte — arti a pinza, coda prensile
+
+
+ANFIBI
+[FATTO]Rana — arti posteriori enormi per il salto, assenza coda
+[FATTO]Salamandra — quadrupede primitivo, coda presente
+[FATTO]Oxylot
+
+PESCI
+[FATTO]Trota/Pesce osseo generico — scheletro osseo standard, pinne
+[FATTO]Squalo — scheletro cartilagineo (diverso da tutti gli altri)
+[FATTO]Razza — corpo appiattito, pinne pettorali enormi
+
+ESTINTI (con raffigurazione nota, no dinosauri)
+[FATTO]odo — uccello non volatore estinto, il tuo esempio guida
+[FATTO]Alca impenne (Great Auk) — uccello marino non volatore estinto
+[FATTO]Tigre della Tasmania (Thylacine) — marsupiale carnivoro, convergenza con canidi
+[FATTO]Mammut lanoso — proporzioni simili a elefante ma zanne diverse
+[FATTO]Rinoceronte Lanoso
+
+MONOTREMI (mammiferi primitivi che depongono uova)
+[FATTO]49. Ornitorinco — becco osseo appiattito, zampe palmate, morfologia unica
+[FATTO]50. Echidna — corpo con aculei, becco tubolare, altro monotrema per contrasto
+
+ANIMALI ANTICHI
+
+[FATTO]Celacanto — pesce "fossile vivente", pinne lobate (anello di congiunzione pesce-tetrapodi, scientificamente rilevantissimo per un progetto che tocca l'evoluzione)
+[FATTO]Tuatara — rettile neozelandese, unico sopravvissuto di un intero ordine (Rhynchocephalia) separato da lucertole/serpenti da 200+ milioni di anni
+[FATTO]Opossum della Virginia — marsupiale antico, utile contrasto con canguro
+
+
+
+DOVE REPERIRE LE IMMAGINI 
+
+Devo essere onesto: non esiste un sito che ti dà già pronte le coppie scheletro-animale nella forma in cui ti servono (stessa posa, stesso allineamento, pronte per il training). È un po' quello che temevo fin dall'inizio — questo tipo di dataset "già impacchettato" per il tuo task specifico semplicemente non esiste, perché è un problema di ricerca abbastanza di nicchia. Le uniche cose che ho trovato ora sono foto stock generiche (Getty, iStock, Freepik) e board Pinterest — inutili per un dataset serio, sia per qualità/coerenza sia per questioni di licenza.
+
+Le fonti migliori che esistono davvero, anche se richiedono comunque un po' di lavoro tuo
+
+Per gli scheletri (qualità alta, licenze aperte)
+
+Smithsonian Open Access (openaccess.si.edu) — collezioni museali digitalizzate, molte foto di scheletri montati, licenza libera
+Biodiversity Heritage Library (biodiversitylibrary.org) — libri scientifici storici di anatomia comparata digitalizzati, contengono tavole di scheletri disegnate con grande precisione (spesso più pulite di una foto)
+Wikimedia Commons, categoria "Animal skeletons" — crowdsourced ma con tante foto museali, licenza chiara indicata per ognuna
+
+Per l'aspetto "vivo" corrispondente
+
+Wikimedia Commons di nuovo, foto naturalistiche della specie
+iNaturalist (inaturalist.org) — enorme archivio di foto naturalistiche geolocalizzate, con licenze Creative Commons filtrate
+La verità sul lavoro che ti aspetta
+
+Nessuna di queste fonti ti darà la coppia "già allineata nella stessa posa" — quello lo dovrai fare tu, immagine per immagine: prendi lo scheletro da una fonte, l'aspetto da un'altra, e li adatti/tagli/ruoti finché non sono ragionevolmente coerenti come inquadratura. È esattamente il lavoro "da scervellarsi" che volevi evitare, ma non c'è scorciatoia reale — è la natura stessa di costruire un dataset ad-hoc per un task che nessuno ha mai affrontato prima in questo modo specifico.
+
+Un'alternativa che ti taglierebbe drasticamente il lavoro, se vuoi valutarla: invece di foto reali per l'aspetto (B), potresti usare illustrazioni scientifiche standardizzate (es. da field guide/atlanti zoologici) — spesso hanno già pose laterali standard coerenti tra specie diverse, il che risolve gran parte del problema di allineamento. Il compromesso è che il tuo modello imparerebbe uno "stile illustrativo" invece che fotorealismo, ma per un esame è assolutamente difendibile e ti fa risparmiare settimane.
+
+
+
+PER ALTRE INFO QUESTA LA CHAT CON CLAUDE
+
+https://claude.ai/share/f621ff4f-3fd1-4c0b-a83b-7f01649d466e

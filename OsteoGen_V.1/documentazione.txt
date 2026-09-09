@@ -1,0 +1,1166 @@
+================================================================================
+DOCUMENTAZIONE TECNICA APPROFONDITA
+Modulo: dataset.py — Classe OsteoDataset
+(versione con generazione automatica di prompt testuali, data augmentation
+e prompt dropout per Classifier-Free Guidance)
+Progetto: Ricostruzione dell'aspetto di un animale a partire dal suo scheletro
+================================================================================
+
+--------------------------------------------------------------------------------
+INDICE
+--------------------------------------------------------------------------------
+1.  Scopo del modulo e collocazione nel progetto
+2.  Struttura generale della classe e ciclo di vita di un Dataset PyTorch
+3.  Analisi di __init__: costruzione e pre-caricamento del dataset
+    3.1 Gestione dei percorsi con pathlib
+    3.2 Elenco dei file e coerenza input/target
+    3.3 La normalizzazione dedicata al target (normalize_y)
+    3.4 Il pre-caricamento integrale in RAM
+    3.5 La TRANSLATION_MAP: perché esiste e perché è statica
+    3.6 Costruzione del prompt testuale semantico
+    3.7 La struttura dati self.data
+4.  Analisi di get_default_transforms(): la data augmentation spaziale
+    4.1 RandomHorizontalFlip
+    4.2 RandomAffine dentro RandomApply
+    4.3 Perché queste trasformazioni e non altre ("niente elasticità")
+5.  Analisi di __len__ e __getitem__
+    5.1 __len__: il contratto con il DataLoader
+    5.2 __getitem__: assemblaggio del singolo campione
+    5.3 Il prompt dropout: l'implementazione pratica del Classifier-Free
+        Guidance
+    5.4 Perché il dropout avviene in __getitem__ e non in __init__
+    5.5 Applicazione sincronizzata della trasformazione a X e Y
+    5.6 Il formato di output: il dizionario richiesto da Diffusers
+6.  Il blocco di test autonomo (if __name__ == "__main__")
+7.  Collegamento con il resto del progetto e con l'ablation study
+8.  Criticità, osservazioni tecniche e possibili estensioni
+9.  Glossario dei termini chiave
+
+--------------------------------------------------------------------------------
+1. SCOPO DEL MODULO E COLLOCAZIONE NEL PROGETTO
+--------------------------------------------------------------------------------
+
+Questo modulo definisce OsteoDataset, la classe che fa da ponte tra le
+immagini presenti su disco (scheletri e animali reali corrispondenti) e il
+formato di tensori richiesto dalle architetture di training del progetto.
+Questa è la versione più evoluta della classe Dataset finora incontrata nel
+progetto: rispetto a un Dataset "puro" pensato per una U-Net semplice o per
+una GAN, qui il compito si arricchisce di due responsabilità aggiuntive,
+entrambe necessarie per addestrare correttamente un ControlNet su Stable
+Diffusion:
+
+  a) generare automaticamente un PROMPT TESTUALE descrittivo per ciascun
+     animale, a partire dal nome del file, per soddisfare il vincolo
+     strutturale della cross-attention testuale di Stable Diffusion
+     (discusso nella documentazione dello script di training ControlNet);
+  b) implementare il PROMPT DROPOUT stocastico, il meccanismo che rende
+     possibile addestrare la rete a fare affidamento anche solo
+     sull'immagine dello scheletro, ignorando il testo — condizione
+     necessaria per il test out-of-distribution finale sui dinosauri.
+
+--------------------------------------------------------------------------------
+2. STRUTTURA GENERALE DELLA CLASSE E CICLO DI VITA DI UN Dataset PYTORCH
+--------------------------------------------------------------------------------
+
+OsteoDataset eredita da torch.utils.data.Dataset, l'interfaccia astratta di
+PyTorch per rappresentare una collezione indicizzabile di campioni. Perché
+un DataLoader possa iterare su di essa, la classe deve implementare
+obbligatoriamente due metodi: __len__ (quanti campioni contiene il dataset)
+e __getitem__ (come recuperare il campione i-esimo). Tutto il lavoro di
+preparazione pesante (lettura da disco, traduzione dei nomi, costruzione
+dei prompt) viene invece svolto una sola volta in __init__, al momento
+della creazione dell'oggetto, per non ripetere operazioni costose ad ogni
+singola richiesta di campione durante il training.
+
+--------------------------------------------------------------------------------
+3. ANALISI DI __init__: COSTRUZIONE E PRE-CARICAMENTO DEL DATASET
+--------------------------------------------------------------------------------
+
+--- 3.1 Gestione dei percorsi con pathlib ---
+
+    self.data_dir = Path(data_dir)
+    self.x_dir = self.data_dir / "input_X"
+    self.y_dir = self.data_dir / "target_Y"
+
+L'uso di pathlib.Path (anziché la concatenazione manuale di stringhe con
+os.path.join o l'operatore +) garantisce che i percorsi funzionino
+correttamente sia su Windows (dove il separatore è il backslash) sia su
+Linux/macOS (dove è lo slash), grazie all'overload dell'operatore / che
+Path implementa per la composizione dei percorsi. Da notare che la
+struttura delle cartelle qui è diversa dalla convenzione train/A e train/B
+in stile pix2pix menzionata in altre parti del progetto: qui si usano
+direttamente due cartelle piatte, input_X (scheletri) e target_Y (animali),
+senza suddivisione esplicita in split di training/validation/test a
+livello di cartelle — uno split, se necessario, andrebbe quindi gestito
+altrove (ad esempio con un parametro aggiuntivo o con una sotto-selezione
+degli indici).
+
+--- 3.2 Elenco dei file e coerenza input/target ---
+
+    self.filenames = sorted([f.name for f in self.x_dir.glob("*.png")])
+
+Vengono elencati tutti i file PNG presenti nella cartella degli input,
+ordinati alfabeticamente: l'ordinamento esplicito garantisce la
+riproducibilità dell'ordine "naturale" del dataset (prima dello shuffle
+applicato dal DataLoader), utile ad esempio per il debug o per selezionare
+sempre lo stesso campione di riferimento (come si vedrà nello script di
+training raffinato, che usa dataset[0] come campione di validazione fisso).
+
+Successivamente, nel ciclo di pre-caricamento (vedi 3.4), viene applicato
+un controllo esplicito di coerenza:
+
+    if not y_path.exists():
+        continue
+
+Questo salta silenziosamente qualunque file di scheletro per cui non esiste
+un corrispondente file target con lo stesso nome, evitando un crash in
+fase di caricamento in caso di dataset incompleto o asimmetrico. È una
+misura di robustezza utile ma "silenziosa": non viene stampato alcun
+avviso quando un file viene scartato, il che potrebbe nascondere problemi
+di dataset incompleto senza che l'utente se ne accorga (vedi punto 8).
+
+--- 3.3 La normalizzazione dedicata al target (normalize_y) ---
+
+    self.normalize_y = v2.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
+
+Questa trasformazione porta i pixel del target dall'intervallo [0, 1] (in
+cui si trovano dopo la lettura via read_image e la divisione per 255.0)
+all'intervallo [-1, 1], applicando per ciascun canale RGB la formula
+standard (pixel - mean) / std con mean=std=0.5. Come annotato nel commento
+del codice, questo è un "requisito matematico tassativo del VAE di Stable
+Diffusion": il VAE è stato addestrato su immagini normalizzate in questo
+preciso intervallo, e fornirgli input fuori scala altererebbe in modo
+significativo la qualità della rappresentazione latente prodotta.
+
+Da notare che questa normalizzazione viene applicata SOLO al target (Y,
+l'animale), non allo scheletro (X): coerentemente con quanto osservato
+nella documentazione dello script di training, lo scheletro viene infatti
+mantenuto nell'intervallo [0, 1] perché è proprio questo il formato atteso
+dal parametro controlnet_cond dell'API ControlNet di Diffusers.
+
+--- 3.4 Il pre-caricamento integrale in RAM ---
+
+    self.data = []
+    for filename in self.filenames:
+        ...
+        tensor_x = read_image(str(x_path), mode=ImageReadMode.RGB).float() / 255.0
+        tensor_y = read_image(str(y_path), mode=ImageReadMode.RGB).float() / 255.0
+        ...
+        self.data.append({...})
+
+A differenza di un Dataset "lazy" (che legge ogni immagine da disco al
+momento della chiamata di __getitem__), qui l'INTERO dataset viene letto e
+convertito in tensori PyTorch una sola volta, durante l'inizializzazione, e
+tenuto permanentemente in memoria RAM in una lista Python (self.data). Il
+commento del codice motiva esplicitamente questa scelta: "saturare la RAM
+della CPU evita colli di bottiglia all'I/O del disco durante il training".
+
+Questa strategia è sensata e particolarmente efficace in questo progetto
+proprio perché il dataset è di dimensioni contenute (65 immagini, come
+indicato nello script di training): l'intero dataset occupa una quantità
+di RAM ragionevole anche a piena risoluzione, e il costo one-time di
+lettura da disco (che coinvolge anche una libreria I/O relativamente lenta
+come la decodifica PNG) viene pagato una sola volta invece che ad ogni
+epoca. Con un dataset di dimensioni molto maggiori, questa strategia
+diventerebbe insostenibile per la memoria disponibile, e sarebbe necessario
+tornare a una lettura lazy da disco (eventualmente con caching parziale o
+formati più efficienti).
+
+read_image restituisce un tensore in formato uint8 (valori interi da 0 a
+255); la chiamata .float() / 255.0 lo converte esplicitamente in un tensore
+a virgola mobile normalizzato in [0, 1], il formato numerico richiesto
+dalle reti neurali (che operano su float, non su interi).
+
+--- 3.5 La TRANSLATION_MAP: perché esiste e perché è statica ---
+
+    TRANSLATION_MAP = { "airone": "heron", ... "uomo": "human" }
+
+Questo dizionario, definito localmente dentro __init__ (quindi
+ricreato una sola volta per istanza del dataset, non per ogni file, come
+esplicitamente commentato nel codice — "Spostiamo la mappa di traduzione
+fuori dal ciclo for"), traduce il nome italiano di ciascuna specie
+(derivato dal nome del file) nel corrispondente nome inglese. La necessità
+di questa traduzione nasce dal fatto che Stable Diffusion 1.5 è stato
+addestrato quasi esclusivamente su didascalie in lingua inglese: un prompt
+in italiano produrrebbe un condizionamento testuale semanticamente più
+debole o distorto rispetto allo stesso concetto espresso in inglese, dato
+che il tokenizer/text encoder CLIP di Stable Diffusion "conosce" molto
+meglio il vocabolario inglese.
+
+L'uso di un DIZIONARIO STATICO scritto a mano (anziché, ad esempio,
+un'interrogazione a un servizio di traduzione automatica esterno) è una
+scelta di robustezza esplicitamente motivata nel commento del codice:
+"agisce da traduttore offline deterministico (nessun rischio di crash
+API)". Per un dataset fisso di 65 specie note in anticipo, una mappa
+scritta a mano è più affidabile, più veloce e non introduce una dipendenza
+di rete che potrebbe fallire silenziosamente durante un training di ore.
+
+--- 3.6 Costruzione del prompt testuale semantico ---
+
+    nome_animale_ita = Path(filename).stem.lower()
+    nome_animale_eng = TRANSLATION_MAP.get(nome_animale_ita, nome_animale_ita)
+    prompt = f"A full-body three-quarter view photo of a {nome_animale_eng}, featuring highly detailed, photorealistic textures, 8K resolution, studio lighting, and fully isolated against a pure black background."
+
+Il nome del file (senza estensione, tramite Path(...).stem, e forzato in
+minuscolo) viene usato come chiave di ricerca nella mappa di traduzione. Il
+metodo .get(chiave, default) restituisce il nome tradotto se presente nella
+mappa, oppure — come meccanismo di fallback sicuro esplicitamente
+commentato — il nome italiano originale se la specie non fosse presente
+nella mappa: questo evita un KeyError che interromperebbe bruscamente il
+pre-caricamento in caso di un file con un nome non previsto, accettando
+però il compromesso di generare, in quel caso, un prompt semanticamente
+meno efficace (in italiano anziché in inglese).
+
+Il template del prompt è costruito con una serie di "tag di qualità"
+tipici della prompt engineering per modelli text-to-image (full-body,
+three-quarter view, highly detailed, photorealistic textures, 8K
+resolution, studio lighting, isolated against a pure black background):
+frasi che, nella distribuzione di addestramento originale di Stable
+Diffusion, sono statisticamente associate a immagini di alta qualità
+tecnica e composizione pulita, e che vengono qui riutilizzate per guidare
+la rete verso uno stile visivo coerente e ben isolato dallo sfondo — una
+scelta funzionale al fatto che il target reale del dataset è presumibilmente
+anch'esso composto da soggetti isolati su sfondo scuro/nero.
+
+--- 3.7 La struttura dati self.data ---
+
+    self.data.append({
+        "tensor_x": tensor_x,
+        "tensor_y": tensor_y,
+        "prompt": prompt,
+        "debug_info": f"{nome_animale_ita} -> {nome_animale_eng}"
+    })
+
+Ogni campione pre-caricato viene conservato come un dizionario Python con
+quattro chiavi: i due tensori immagine, il prompt testuale già costruito,
+e un campo di debug che registra la traduzione applicata — utile per
+verificare rapidamente, in fase di sviluppo, che la mappa di traduzione
+stia funzionando correttamente per ogni file (ad esempio individuando
+subito eventuali fallback silenziosi al nome italiano per specie non
+mappate).
+
+--------------------------------------------------------------------------------
+4. ANALISI DI get_default_transforms(): LA DATA AUGMENTATION SPAZIALE
+--------------------------------------------------------------------------------
+
+--- 4.1 RandomHorizontalFlip ---
+
+    v2.RandomHorizontalFlip(p=0.5)
+
+Con probabilità 0.5, l'immagine (sia scheletro sia target, applicati
+insieme — vedi 5.5) viene ribaltata orizzontalmente. Questa trasformazione
+è particolarmente sensata per soggetti animali: la maggior parte degli
+animali ha una struttura bilateralmente simmetrica (a parte piccole
+asimmetrie naturali), quindi un'immagine specchiata rappresenta comunque
+un soggetto anatomicamente plausibile, raddoppiando di fatto la varietà
+percepita del dataset senza introdurre alcuna distorsione geometrica
+innaturale.
+
+--- 4.2 RandomAffine dentro RandomApply ---
+
+    v2.RandomApply([
+        v2.RandomAffine(degrees=[-10, 10], translate=[0.05, 0.05], scale=[0.95, 1.05], fill=0)
+    ], p=0.5)
+
+RandomAffine applica, quando attivata, una combinazione di lievi rotazioni
+(fino a ±10°), traslazioni (fino al 5% delle dimensioni dell'immagine) e
+variazioni di scala (tra il 95% e il 105% della dimensione originale),
+riempiendo con fill=0 (nero) le eventuali aree scoperte create dalla
+trasformazione. L'intero blocco è avvolto in un RandomApply con probabilità
+0.5, quindi nella metà dei casi la trasformazione affine non viene
+applicata affatto (l'immagine resta invariata rispetto al flip già
+eventualmente eseguito al passo precedente).
+
+Come commentato nel codice, l'obiettivo di questa trasformazione è rendere
+la rete più invariante rispetto a piccole variazioni di posizione, scala e
+orientamento dello scheletro nell'inquadratura — una forma di
+regolarizzazione che aiuta a generalizzare meglio, dato l'elevato rischio
+di overfitting con un dataset di sole 65 immagini di base.
+
+--- 4.3 Perché queste trasformazioni e non altre ("niente elasticità") ---
+
+Il commento del codice specifica esplicitamente "trasformazioni spaziali
+rigorose (niente elasticità)": la scelta di limitarsi a flip, rotazioni,
+traslazioni e scaling — tutte trasformazioni RIGIDE o quasi-rigide, che
+preservano le proporzioni relative tra le parti dell'oggetto — ed evitare
+deliberatamente trasformazioni elastiche (come warping locale, distorsioni
+non lineari, o elastic transform) è una decisione metodologicamente
+importante per questo specifico dominio: un'eventuale distorsione elastica
+altererebbe le proporzioni anatomiche relative tra le ossa dello scheletro
+(ad esempio, allungando artificialmente un femore rispetto alla tibia), il
+che introdurrebbe nel dataset esempi di training con una geometria ossea
+biologicamente implausibile — l'esatto contrario di ciò che l'augmentation
+dovrebbe fare, che è arricchire la varietà del dataset senza corromperne
+la validità biologica.
+
+--------------------------------------------------------------------------------
+5. ANALISI DI __len__ E __getitem__
+--------------------------------------------------------------------------------
+
+--- 5.1 __len__: il contratto con il DataLoader ---
+
+    def __len__(self):
+        return len(self.data)
+
+Restituisce semplicemente il numero di campioni validi effettivamente
+caricati in self.data (che può essere inferiore al numero di file trovati
+in x_dir, se alcuni erano privi del corrispondente target — vedi 3.2).
+Questo valore è ciò che permette al DataLoader di sapere quando un'epoca è
+da considerarsi conclusa.
+
+--- 5.2 __getitem__: assemblaggio del singolo campione ---
+
+    item = self.data[idx]
+    tensor_x = item["tensor_x"]
+    tensor_y = item["tensor_y"]
+    prompt = item["prompt"]
+
+A differenza del pre-caricamento in __init__ (eseguito una sola volta),
+__getitem__ viene invocato ad ogni singola richiesta di campione da parte
+del DataLoader, per ogni epoca. Poiché i tensori grezzi sono già disponibili
+in RAM (grazie al pre-caricamento), questo metodo si limita a recuperarli e
+ad applicare le trasformazioni STOCASTICHE che devono variare ad ogni
+richiesta (augmentation e prompt dropout, vedi 5.3-5.5): è proprio la
+separazione tra "cosa viene fatto una sola volta" (in __init__) e "cosa
+deve essere ricalcolato ad ogni accesso per garantire varietà tra le epoche"
+(in __getitem__) il punto di design più importante di questa classe.
+
+--- 5.3 Il prompt dropout: l'implementazione pratica del Classifier-Free Guidance ---
+
+    if random.random() < 0.10:
+        prompt = ""
+
+Nel 10% dei casi, indipendentemente da quale animale sia stato selezionato,
+il prompt testuale viene sostituito con una stringa vuota. Questo è il
+meccanismo di PROMPT DROPOUT, la tecnica standard con cui si addestrano i
+modelli di diffusione condizionati per supportare il Classifier-Free
+Guidance in fase di inferenza: esponendo la rete, durante il training,
+sia a esempi pienamente condizionati sul testo sia a esempi non
+condizionati (prompt vuoto), la si addestra a comportarsi correttamente in
+entrambi gli scenari, permettendo poi in fase di generazione di combinare
+le due predizioni (condizionata e non condizionata) con un fattore di
+guidance regolabile.
+
+Nel contesto specifico di questo progetto, però, il prompt dropout ha
+un'ulteriore funzione, più specifica dell'ablation study: esponendo la rete
+periodicamente a scheletri SENZA alcuna descrizione testuale della specie,
+la si costringe a non fare affidamento esclusivo sul testo per determinare
+il fenotipo, rafforzando la sua capacità di leggere l'informazione
+anatomica dallo scheletro stesso — la condizione indispensabile perché il
+successivo test zero-shot sui dinosauri (specie per cui, plausibilmente, un
+prompt come "a photo of a Tyrannosaurus Rex" attiverebbe comunque una forte
+conoscenza pregressa di Stable Diffusion sull'aspetto convenzionale dei
+dinosauri nell'immaginario collettivo, vanificando la natura "cieca" del
+test) sia scientificamente più significativo.
+
+--- 5.4 Perché il dropout avviene in __getitem__ e non in __init__ ---
+
+Il commento del codice lo rende esplicito: "Si esegue qui nel __getitem__
+(e non nel pre-caricamento) in modo che sia stocastico ad ogni epoca". Se
+il dropout fosse deciso una sola volta in __init__ (ad esempio, decidendo
+staticamente che il 10% dei campioni avrà per sempre un prompt vuoto), lo
+stesso sottoinsieme di animali sarebbe sistematicamente privato del testo
+in ogni epoca, introducendo un bias sistematico (alcune specie verrebbero
+apprese "sempre con testo", altre "sempre senza"). Eseguendo l'estrazione
+casuale ad ogni chiamata di __getitem__, invece, lo stesso animale può
+essere presentato con il prompt pieno in un'epoca e senza prompt in
+un'altra, garantendo che l'intero dataset venga visto dalla rete in
+entrambe le condizioni nel corso del training.
+
+--- 5.5 Applicazione sincronizzata della trasformazione a X e Y ---
+
+    tensor_x, tensor_y = self.transform(tensor_x, tensor_y)
+
+Un dettaglio tecnico cruciale: le trasformazioni spaziali (flip,
+rotazione, traslazione, scala) devono essere applicate in modo IDENTICO sia
+allo scheletro sia al target, altrimenti la corrispondenza spaziale tra i
+due — che è l'informazione stessa che la rete deve imparare a preservare —
+verrebbe distrutta (ad esempio, uno scheletro ruotato di 10° accoppiato con
+un animale non ruotato costituirebbe un esempio di training palesemente
+incoerente). Le trasformazioni di torchvision.transforms.v2, a differenza
+della v1, supportano nativamente la chiamata con più tensori come argomenti
+posizionali, applicando gli stessi parametri campionati casualmente (lo
+stesso "seed" implicito di rotazione, traslazione, scala, e la stessa
+decisione di flip o meno) a tutti gli argomenti passati in un'unica
+chiamata — è esattamente il comportamento descritto nel commento del
+codice ("L'API v2 garantisce che le medesime trasformazioni spaziali...
+vengano applicate sia allo scheletro che all'animale").
+
+--- 5.6 Il formato di output: il dizionario richiesto da Diffusers ---
+
+    return {
+        "pixel_values": tensor_y,
+        "conditioning_pixel_values": tensor_x,
+        "text": prompt
+    }
+
+Il campione restituito è un dizionario con tre chiavi, i cui nomi
+("pixel_values", "conditioning_pixel_values") non sono arbitrari: ricalcano
+esattamente la convenzione di naming usata negli script di esempio
+ufficiali della libreria Diffusers di Hugging Face per l'addestramento di
+ControlNet, facilitando l'integrazione con eventuale codice di training
+standard o di utilità già esistente in quell'ecosistema. "text" contiene il
+prompt (pieno o vuoto, a seconda del dropout), che verrà poi tokenizzato ed
+elaborato dal text encoder CLIP nello script di training.
+
+--------------------------------------------------------------------------------
+6. IL BLOCCO DI TEST AUTONOMO (if __name__ == "__main__")
+--------------------------------------------------------------------------------
+
+    if __name__ == "__main__":
+        dataset = OsteoDataset()
+        dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
+        for batch in dataloader:
+            print(f"Prompt Esempio 1: '{batch['text'][0]}'")
+            print(f"Prompt Esempio 2: '{batch['text'][1]}'")
+            break
+
+Questo blocco permette di eseguire il file dataset.py direttamente (anziché
+solo importarlo da un altro script) per un rapido test di integrità: crea
+il dataset, ne estrae un singolo batch di 4 campioni, e stampa i prompt
+testuali di due di essi, permettendo di verificare a colpo d'occhio (a)
+che il pre-caricamento e la traduzione funzionino correttamente, e (b) di
+osservare, ripetendo l'esecuzione più volte, l'effetto stocastico del
+prompt dropout (occasionalmente uno dei due prompt stampati sarà una
+stringa vuota).
+
+--------------------------------------------------------------------------------
+7. COLLEGAMENTO CON IL RESTO DEL PROGETTO E CON L'ABLATION STUDY
+--------------------------------------------------------------------------------
+
+Questa versione di OsteoDataset è pensata specificamente per alimentare lo
+script di training ControlNet + Stable Diffusion (documentato a parte),
+e non è direttamente compatibile con gli script di training della baseline
+U-Net o della GAN Pix2Pix del progetto, che si aspettano una coppia di
+tensori (ossa, animale) restituita come tupla posizionale, non un
+dizionario con chiavi denominate e un prompt testuale. Se il progetto
+prevede di eseguire l'intero ablation study a partire da un'unica classe
+Dataset condivisa, andrebbe verificato che le altre due pipeline di
+training siano state aggiornate coerentemente per gestire questo nuovo
+formato di output, oppure che venga mantenuta una versione precedente e più
+semplice della classe dedicata a quegli script.
+
+Il numero di specie effettivamente caricate da questa versione del dataset
+(65, secondo il commento nello script di training raffinato) è leggermente
+superiore alle 56 specie menzionate come lista finalizzata in una fase
+precedente del progetto: un dettaglio che vale la pena verificare per
+assicurarsi che la lista di specie sia stata effettivamente aggiornata o
+ampliata rispetto alla pianificazione iniziale.
+
+--------------------------------------------------------------------------------
+8. CRITICITÀ, OSSERVAZIONI TECNICHE E POSSIBILI ESTENSIONI
+--------------------------------------------------------------------------------
+
+  a) Il salto silenzioso dei file privi di target (punto 3.2) non produce
+     alcun log o avviso: sarebbe una piccola ma utile aggiunta stampare
+     quanti file sono stati eventualmente scartati per assenza del target,
+     per intercettare subito eventuali problemi di coerenza tra le due
+     cartelle del dataset.
+
+  b) Il fallback della TRANSLATION_MAP (punto 3.6) su .get(chiave,
+     nome_italiano) non emette alcun avviso quando scatta: se in futuro
+     venissero aggiunte nuove specie al dataset senza aggiornare
+     contestualmente il dizionario, quegli animali riceverebbero
+     silenziosamente un prompt in italiano, con un condizionamento
+     testuale presumibilmente più debole, senza che nulla nel log lo
+     segnali. Un semplice print di avviso in caso di fallback risolverebbe
+     il problema.
+
+  c) L'assenza di un meccanismo esplicito di split train/validation/test a
+     livello di questa classe (a differenza della struttura a cartelle
+     A/B con sottocartelle train/val/test menzionata altrove nel progetto)
+     implica che, se questa versione del dataset viene usata per un
+     training rigoroso, lo split debba essere gestito altrove — ad esempio
+     filtrando self.filenames prima del pre-caricamento, o creando istanze
+     separate della classe puntate a cartelle diverse.
+
+  d) Il pre-caricamento integrale in RAM (punto 3.4), per quanto efficace
+     alla scala attuale (65 immagini), rende la classe non direttamente
+     riutilizzabile senza modifiche per un ipotetico ampliamento futuro del
+     dataset a una scala molto maggiore (centinaia o migliaia di specie):
+     in quel caso andrebbe reintrodotta una lettura lazy da disco in
+     __getitem__, eventualmente con una cache LRU parziale.
+
+  e) Il seed della componente casuale (random.random() per il dropout, e
+     l'aleatorietà interna di v2.RandomApply/RandomAffine/RandomHorizontalFlip)
+     non viene fissato esplicitamente in questo file: per esperimenti
+     pienamente riproducibili (utile in sede di tesi per poter rigenerare
+     esattamente le stesse condizioni di un run), andrebbe considerata
+     l'impostazione di un seed globale (torch.manual_seed, random.seed)
+     all'inizio dello script di training.
+
+--------------------------------------------------------------------------------
+9. GLOSSARIO DEI TERMINI CHIAVE
+--------------------------------------------------------------------------------
+
+Classifier-Free       Tecnica di inferenza per modelli di diffusione
+Guidance (CFG)         condizionati, in cui si combinano una predizione
+                       condizionata (es. sul testo) e una non condizionata,
+                       pesandole con un fattore di guidance per rafforzare
+                       l'aderenza al condizionamento.
+
+Data augmentation      Tecnica che genera varianti artificiali dei dati di
+                       training (rotazioni, flip, traslazioni...) per
+                       aumentare la varietà effettiva del dataset e ridurre
+                       il rischio di overfitting.
+
+Dataset "eager"        Strategia di caricamento in cui l'intero dataset
+(pre-caricato)         viene letto e tenuto in memoria fin dall'inizio,
+                       contrapposta al caricamento "lazy" (bufferizzato solo
+                       al momento della richiesta).
+
+Prompt dropout         Tecnica di training in cui il condizionamento
+                       testuale viene occasionalmente rimosso (sostituito
+                       da una stringa vuota) per addestrare la rete a
+                       funzionare correttamente sia con sia senza guida
+                       testuale.
+
+Tokenizer/Text encoder Coppia di componenti (qui, CLIP) che trasformano una
+                       stringa di testo in una sequenza di token e poi in un
+                       tensore di embedding numerico semanticamente
+                       significativo.
+
+Trasformazione rigida  Trasformazione geometrica (rotazione, traslazione,
+                       scala uniforme, flip) che preserva le proporzioni
+                       relative tra le parti di un oggetto, contrapposta a
+                       trasformazioni elastiche/non lineari che le
+                       distorcono localmente.
+
+================================================================================
+FINE DOCUMENTO
+================================================================================
+
+
+
+
+
+
+
+================================================================================
+DOCUMENTAZIONE TECNICA APPROFONDITA
+Modulo: train_controlnet_v2.py — ControlNet su Stable Diffusion 1.5
+(versione raffinata: gradient accumulation, mixed precision bfloat16,
+salvataggio nativo Diffusers, validazione con UniPC scheduler)
+Progetto: Ricostruzione dell'aspetto di un animale a partire dal suo scheletro
+================================================================================
+
+--------------------------------------------------------------------------------
+INDICE
+--------------------------------------------------------------------------------
+1.  Scopo del modulo e collocazione nel progetto
+2.  Configurazione globale: le costanti in testa al file
+3.  Analisi di plot_loss(): il grafico pronto per la tesi
+4.  Analisi di main(): setup dell'architettura
+    4.1 Tokenizer, text encoder, VAE, U-Net: il Foundation Model
+    4.2 ControlNet e congelamento selettivo dei pesi
+    4.3 Lo scheduler di training (DDPM) e l'ottimizzatore (AdamW con
+        weight decay)
+    4.4 GradScaler: la componente per la Mixed Precision
+    4.5 Il campione di validazione fisso (val_sample)
+    4.6 UniPCMultistepScheduler: uno scheduler diverso per l'inferenza
+5.  Il ciclo di training: differenze chiave rispetto alla versione precedente
+    5.1 Tokenizzazione dinamica nel loop (rispetto al prompt pre-scritto)
+    5.2 Encoding testuale e VAE sotto torch.no_grad()
+    5.3 Gradient Accumulation: simulare un batch più grande
+    5.4 Automatic Mixed Precision (AMP) con bfloat16
+    5.5 Il cast a float32 nel calcolo della loss
+    5.6 GradScaler: backward, step, update
+    5.7 Early stopping con MIN_DELTA esplicito
+    5.8 Salvataggio in formato nativo Diffusers (save_pretrained)
+    5.9 Checkpoint seriali e criterio di early stopping più stringente
+        rispetto agli script precedenti
+    5.10 Feedback visivo con pipeline completa e scheduler dedicato
+    5.11 Gestione robusta di interruzione e chiusura (try/except/finally)
+6.  Perché la Gradient Accumulation, e perché proprio 4 step
+7.  Perché bfloat16 e non float16 "classico"
+8.  Confronto con la versione precedente dello script ControlNet
+9.  Criticità e osservazioni tecniche
+10. Tabella riepilogativa delle dimensioni e degli shape principali
+11. Glossario dei termini chiave
+
+--------------------------------------------------------------------------------
+1. SCOPO DEL MODULO E COLLOCAZIONE NEL PROGETTO
+--------------------------------------------------------------------------------
+
+Questo script è una riscrittura matura e ottimizzata per l'hardware dello
+script di training ControlNet + Stable Diffusion già presente nel progetto:
+mantiene lo stesso principio architetturale di fondo (Foundation Model
+pre-addestrato e congelato, ControlNet addestrato per iniettare il
+condizionamento spaziale dello scheletro), ma introduce una serie di
+tecniche di ingegneria del training pensate per (a) sfruttare al meglio
+l'hardware disponibile (una GPU RTX 5080 con supporto nativo per la
+precisione bfloat16), (b) stabilizzare l'ottimizzazione simulando un batch
+size effettivo più ampio di quello che la VRAM consentirebbe direttamente,
+e (c) produrre artefatti (checkpoint, grafici) pienamente compatibili con
+l'ecosistema Diffusers e pronti per essere inclusi in una relazione o tesi.
+
+--------------------------------------------------------------------------------
+2. CONFIGURAZIONE GLOBALE: LE COSTANTI IN TESTA AL FILE
+--------------------------------------------------------------------------------
+
+    BATCH_SIZE = 4
+    GRADIENT_ACCUMULATION_STEPS = 4
+    LEARNING_RATE = 1e-5
+    EPOCHS = 1000
+    PATIENCE = 60
+    MIN_DELTA = 1e-4
+
+Rispetto alla versione precedente dello script ControlNet (batch_size=4,
+lr=1e-4, epochs=2000, patience=250), qui si osservano tre cambiamenti
+sostanziali, ciascuno motivato esplicitamente nei commenti del codice:
+
+  - Il BATCH SIZE resta 4, ma viene ora combinato con l'accumulo del
+    gradiente (vedi 5.3 e 6) per raggiungere un batch size EFFETTIVO di 16,
+    un compromesso tra il limite fisico della VRAM disponibile e la
+    stabilità statistica desiderata per il calcolo del gradiente.
+
+  - Il LEARNING RATE è stato abbassato di un intero ordine di grandezza,
+    da 1e-4 a 1e-5. Il commento del codice lo definisce "obbligatorio per
+    fine-tuning per non distruggere i pesi preesistenti": un learning rate
+    più conservativo riduce il rischio che gli aggiornamenti applicati al
+    ControlNet (che, ricordiamo, viene inizializzato copiando pesi già
+    pre-addestrati dall'encoder della U-Net, per via di
+    ControlNetModel.from_unet) siano così bruschi da vanificare il beneficio
+    di partire da un'inizializzazione già sensata, comportandosi più come
+    un training da zero con conseguenze indesiderate sulla stabilità.
+
+  - Patience e min_delta sono stati rivisti (patience abbassata da 250 a
+    60, ma con l'introduzione esplicita di una soglia minima di
+    miglioramento MIN_DELTA=1e-4, assente nella versione precedente):
+    combinati, questi due parametri rendono il criterio di arresto
+    anticipato più rapido a intervenire, ma al tempo stesso più esigente
+    nel definire cosa conti come "miglioramento reale" (una diminuzione
+    della loss inferiore a 1e-4 viene considerata rumore statistico e non
+    fatta valere ai fini del reset del contatore di pazienza).
+
+--------------------------------------------------------------------------------
+3. ANALISI DI plot_loss(): IL GRAFICO PRONTO PER LA TESI
+--------------------------------------------------------------------------------
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(1, len(epoch_losses) + 1), epoch_losses, marker='o', ...)
+    ...
+    plt.savefig(save_path, dpi=300)
+
+Questa funzione è stata isolata come componente riutilizzabile e curata
+esplicitamente per la qualità tipografica richiesta da un documento
+stampato: dimensioni del canvas 10x6 (un rapporto adatto all'inserimento in
+una pagina A4), titolo, etichette degli assi e legenda esplicite, griglia
+tratteggiata per facilitare la lettura quantitativa dei valori, e una
+risoluzione di salvataggio a 300 DPI — lo standard tipografico per
+immagini incluse in un documento destinato alla stampa (una risoluzione a
+72-96 DPI, adeguata per lo schermo, apparirebbe visibilmente sgranata su
+carta). Il commento nel codice lo rende esplicito: il grafico è pensato fin
+dall'inizio "pronti per l'inserimento nella tesi".
+
+--------------------------------------------------------------------------------
+4. ANALISI DI main(): SETUP DELL'ARCHITETTURA
+--------------------------------------------------------------------------------
+
+--- 4.1 Tokenizer, text encoder, VAE, U-Net: il Foundation Model ---
+
+Il caricamento dei quattro componenti pre-addestrati di Stable Diffusion
+1.5 (tokenizer, text_encoder, vae, unet) segue esattamente lo stesso schema
+già discusso nella documentazione della versione precedente dello script:
+tutti derivano da "runwayml/stable-diffusion-v1-5" tramite from_pretrained,
+e vengono spostati sul device CUDA non appena caricati.
+
+--- 4.2 ControlNet e congelamento selettivo dei pesi ---
+
+    controlnet = ControlNetModel.from_unet(unet).to(DEVICE)
+    vae.requires_grad_(False)
+    unet.requires_grad_(False)
+    text_encoder.requires_grad_(False)
+    controlnet.train()
+
+Identico, concettualmente, alla versione precedente: il ControlNet viene
+creato clonando l'architettura e i pesi dell'encoder della U-Net (una
+"copia strategica", come annotato nel commento, che permette al ControlNet
+di "riconoscere da subito le immagini senza dover essere addestrata da
+zero" — un'inizializzazione informata, non casuale), mentre i tre
+componenti del Foundation Model restano congelati e il ControlNet è l'unico
+componente in modalità .train().
+
+--- 4.3 Lo scheduler di training (DDPM) e l'ottimizzatore (AdamW con weight decay) ---
+
+    noise_scheduler = DDPMScheduler.from_pretrained(MODEL_ID, subfolder="scheduler")
+    optimizer = torch.optim.AdamW(controlnet.parameters(), lr=LEARNING_RATE, weight_decay=1e-2)
+
+Rispetto alla versione precedente (che usava AdamW senza specificare
+esplicitamente un weight_decay, quindi con il valore di default della
+libreria), qui viene impostato esplicitamente weight_decay=1e-2: un
+termine di regolarizzazione L2 sui pesi del ControlNet che scoraggia
+valori eccessivamente grandi, riducendo il rischio di overfitting — una
+precauzione particolarmente sensata dato il numero contenuto di immagini
+di training (65) rispetto alla capacità rappresentativa di un modulo
+ControlNet, che pur essendo più piccolo dell'intera U-Net resta comunque
+un modello con diversi milioni di parametri.
+
+--- 4.4 GradScaler: la componente per la Mixed Precision ---
+
+    scaler = torch.amp.GradScaler('cuda')
+
+Il GradScaler è il componente che rende numericamente sicuro l'addestramento
+in precisione mista (vedi 5.4 e 7): scala dinamicamente il valore della
+loss prima del backward pass per evitare che gradienti molto piccoli, se
+rappresentati in una precisione numerica ridotta, vadano perduti per
+underflow (arrotondati silenziosamente a zero), per poi ri-scalarli
+correttamente al momento dell'aggiornamento dei pesi.
+
+--- 4.5 Il campione di validazione fisso (val_sample) ---
+
+    val_sample = dataset[0]
+    val_prompt = val_sample["text"]
+    if val_prompt == "":
+        val_prompt = "A highly detailed, realistic photo of an animal, fully isolated against a pure black background."
+    val_skeleton_pil = TF.to_pil_image(val_sample["conditioning_pixel_values"])
+    val_real_pil = TF.to_pil_image((val_sample["pixel_values"] * 0.5) + 0.5)
+
+A differenza della versione precedente dello script (che prelevava un
+batch qualunque dal dataloader ad ogni ciclo di validazione, con il rischio
+che il campione di riferimento cambiasse ogni volta), qui viene fissato UNA
+VOLTA SOLA, prima dell'inizio del training, un singolo campione di
+riferimento (il primo del dataset). Questo garantisce che, osservando la
+sequenza di immagini di verifica generate epoca dopo epoca, si stia sempre
+confrontando l'evoluzione della rete sullo STESSO identico animale — un
+requisito metodologico importante per poter apprezzare visivamente il
+progresso del training nel tempo, cosa che sarebbe impossibile se il
+soggetto di riferimento cambiasse ad ogni controllo.
+
+È presente inoltre un piccolo ma significativo dettaglio di robustezza: dato
+che dataset[0] richiama __getitem__(0), che a sua volta applica il prompt
+dropout stocastico descritto nella documentazione di OsteoDataset, esiste
+una probabilità del 10% che proprio il campione di validazione venga
+estratto con un prompt vuoto. Il codice se ne accorge esplicitamente
+(if val_prompt == "") e sostituisce, solo per la generazione di verifica,
+un prompt generico di fallback: questo evita che il test visivo periodico
+risulti, per puro caso al momento dell'esecuzione di questa riga, privo di
+qualunque guida testuale, pur mantenendo intatta la logica del dropout per
+il resto del training.
+
+--- 4.6 UniPCMultistepScheduler: uno scheduler diverso per l'inferenza ---
+
+    val_scheduler = UniPCMultistepScheduler.from_config(noise_scheduler.config)
+
+Un dettaglio tecnico rilevante: lo scheduler usato per il TRAINING
+(DDPMScheduler, che aggiunge rumore secondo lo schema classico dei DDPM,
+punto 5.2) è diverso da quello usato per la GENERAZIONE di verifica
+(UniPCMultistepScheduler). Questo è normale e comune nell'ecosistema
+Diffusers: il processo di training richiede uno scheduler che sappia
+aggiungere rumore in modo controllato (forward diffusion) a un timestep
+casuale, mentre l'inferenza richiede uno scheduler che sappia invertire
+efficientemente il processo (reverse diffusion) nel minor numero possibile
+di passi. UniPC (Zhao et al., 2023) è uno scheduler di ordine superiore
+progettato specificamente per produrre immagini di buona qualità con un
+numero di step molto ridotto (qui, 20, contro i 50 o più tipicamente
+necessari con schedulatori più semplici come il DDPM stesso in fase di
+inferenza): una scelta sensata per un controllo di qualità che deve essere
+eseguito periodicamente durante il training senza rallentarlo
+eccessivamente.
+
+--------------------------------------------------------------------------------
+5. IL CICLO DI TRAINING: DIFFERENZE CHIAVE RISPETTO ALLA VERSIONE PRECEDENTE
+--------------------------------------------------------------------------------
+
+--- 5.1 Tokenizzazione dinamica nel loop (rispetto al prompt pre-scritto) ---
+
+    text_prompts = batch["text"]
+    text_inputs = tokenizer(text_prompts, padding="max_length", max_length=tokenizer.model_max_length, truncation=True, return_tensors="pt").to(DEVICE)
+
+A differenza della versione precedente dello script (dove il prompt era
+sempre forzato a una stringa vuota direttamente nel ciclo di training), qui
+il testo arriva già pronto dal dataset (comprensivo dell'eventuale dropout
+già applicato in OsteoDataset.__getitem__, vedi la documentazione
+dedicata) e viene tokenizzato per ogni batch. L'aggiunta esplicita di
+truncation=True (assente nella versione precedente) garantisce che, anche
+nel caso — qui improbabile ma comunque gestito con robustezza — di un
+prompt più lungo del limite di 77 token del tokenizer CLIP, la stringa
+venga troncata anziché generare un errore.
+
+--- 5.2 Encoding testuale e VAE sotto torch.no_grad() ---
+
+    with torch.no_grad():
+        encoder_hidden_states = text_encoder(text_inputs.input_ids)[0]
+    with torch.no_grad():
+        latents = vae.encode(pixel_values).latent_dist.sample() * vae.config.scaling_factor
+
+Sebbene text_encoder e vae siano già stati marcati con requires_grad_(False)
+(punto 4.2), avvolgere esplicitamente le loro chiamate in un blocco
+torch.no_grad() aggiunge un ulteriore livello di sicurezza e di risparmio
+di memoria: requires_grad_(False) impedisce che i LORO pesi vengano
+aggiornati, ma senza no_grad() PyTorch costruirebbe comunque, per default,
+il grafo computazionale relativo alle attivazioni intermedie di questi
+moduli (necessario in generale per calcolare gradienti rispetto a
+componenti a monte, come nel caso del ControlNet più avanti nel grafo).
+Isolare esplicitamente queste due chiamate sotto no_grad() evita di
+allocare inutilmente questo grafo per componenti il cui output, in questo
+punto specifico del calcolo, viene semplicemente consumato come input fisso
+per gli step successivi.
+
+--- 5.3 Gradient Accumulation: simulare un batch più grande ---
+
+    loss = loss / GRADIENT_ACCUMULATION_STEPS
+    scaler.scale(loss).backward()
+    if (step + 1) % GRADIENT_ACCUMULATION_STEPS == 0:
+        scaler.step(optimizer)
+        scaler.update()
+        optimizer.zero_grad(set_to_none=True)
+
+Questa è la tecnica di GRADIENT ACCUMULATION, discussa in dettaglio al
+punto 6. In sintesi: la loss di ogni singolo mini-batch da 4 immagini viene
+prima divisa per il numero di step di accumulo (4), poi retropropagata
+normalmente. Il passo cruciale è che optimizer.zero_grad() e
+scaler.step(optimizer) NON vengono chiamati ad ogni batch, ma solo ogni 4
+batch (quando (step + 1) % GRADIENT_ACCUMULATION_STEPS == 0): nel
+frattempo, i gradienti calcolati da .backward() ad ogni chiamata si
+sommano progressivamente nei tensori .grad dei parametri (il comportamento
+di accumulo predefinito di PyTorch, qui sfruttato deliberatamente anziché
+azzerato ad ogni batch come avveniva negli script precedenti del progetto).
+
+--- 5.4 Automatic Mixed Precision (AMP) con bfloat16 ---
+
+    with torch.amp.autocast('cuda', dtype=torch.bfloat16):
+        down_block_res_samples, mid_block_res_sample = controlnet(...)
+        model_pred = unet(...)
+        loss = F.mse_loss(model_pred.float(), noise.float(), reduction="mean")
+
+Il context manager autocast fa sì che le operazioni matriciali eseguite al
+suo interno (in particolare, le convoluzioni e le moltiplicazioni
+matriciali dentro ControlNet e U-Net) vengano eseguite automaticamente in
+precisione ridotta bfloat16 anziché nella precisione float32 standard,
+laddove l'hardware e l'operazione lo consentano in sicurezza. Questo
+dimezza (circa) l'occupazione di memoria e sfrutta le unità di calcolo
+specializzate (Tensor Core) presenti nelle GPU NVIDIA moderne come la RTX
+5080, che sono significativamente più veloci su formati a precisione
+ridotta rispetto al float32 pieno.
+
+--- 5.5 Il cast a float32 nel calcolo della loss ---
+
+Da notare, all'interno dello stesso blocco autocast, la scelta esplicita
+di forzare model_pred e noise a .float() (cioè float32) prima del calcolo
+della MSE, come annotato nel commento del codice: "calcolare la loss in
+bfloat16 potrebbe causare instabilità nei decimali". Il calcolo di una
+riduzione statistica come la media di un errore quadratico è
+particolarmente sensibile alla precisione numerica (somme di molti valori
+piccoli, dove gli errori di arrotondamento tendono ad accumularsi): eseguire
+questo passo specifico in float32, pur mantenendo bfloat16 per il resto
+delle operazioni più pesanti dal punto di vista computazionale (le
+convoluzioni), è una pratica raccomandata e comune nei workflow di training
+in mixed precision.
+
+--- 5.6 GradScaler: backward, step, update ---
+
+Il ciclo scaler.scale(loss).backward() -> scaler.step(optimizer) ->
+scaler.update() è il pattern standard di utilizzo di torch.amp.GradScaler:
+scale() moltiplica la loss per un fattore dinamico prima del backward (per
+evitare underflow dei gradienti piccoli in precisione ridotta), step()
+de-scala i gradienti e li passa all'ottimizzatore solo se non contengono
+valori non finiti (NaN/Inf, che indicherebbero un'instabilità numerica, nel
+qual caso lo step viene saltato per quell'iterazione), e update() adatta il
+fattore di scala per l'iterazione successiva in base a quanto osservato.
+
+Da notare la scelta optimizer.zero_grad(set_to_none=True): passare
+set_to_none=True (anziché il comportamento di default, che azzera i
+tensori dei gradienti mantenendoli allocati) fa sì che i tensori dei
+gradienti vengano deallocati del tutto anziché riempiti di zeri,
+risparmiando un'operazione di scrittura in memoria e riducendo lievemente
+il footprint di memoria — un'ottimizzazione minore ma tipica del codice di
+training moderno orientato alle prestazioni.
+
+--- 5.7 Early stopping con MIN_DELTA esplicito ---
+
+    if avg_epoch_loss < (best_loss - MIN_DELTA):
+        best_loss = avg_epoch_loss
+        patience_counter = 0
+        controlnet.save_pretrained(best_model_path)
+    else:
+        patience_counter += 1
+    if patience_counter >= PATIENCE:
+        break
+
+Concettualmente identico al meccanismo già visto negli script precedenti
+del progetto (loss media di epoca, non dell'ultimo batch — una scelta
+metodologicamente solida, coerente con quanto già osservato per lo script
+Pix2Pix), con l'aggiunta esplicita del margine MIN_DELTA: una diminuzione
+della loss inferiore a 1e-4 non viene considerata un miglioramento reale ai
+fini del reset del contatore di pazienza, un accorgimento che rende il
+criterio di arresto anticipato più robusto rispetto a micro-oscillazioni
+statisticamente non significative della loss.
+
+--- 5.8 Salvataggio in formato nativo Diffusers (save_pretrained) ---
+
+    controlnet.save_pretrained(best_model_path)
+
+A differenza degli script precedenti del progetto (che usavano
+torch.save(model.state_dict(), "file.pth"), il formato "grezzo" di
+PyTorch), qui si utilizza il metodo save_pretrained(), fornito nativamente
+dalle classi di Hugging Face che ereditano da PreTrainedModel/ModelMixin.
+Questo metodo salva non un singolo file di pesi, ma un'intera cartella
+contenente sia i pesi sia il file di configurazione dell'architettura
+(config.json): il vantaggio pratico è che il modello può essere ricaricato
+in seguito con una singola chiamata ControlNetModel.from_pretrained(path),
+senza dover ricostruire manualmente l'architettura prima di caricarvi i
+pesi (come sarebbe invece necessario con un semplice state_dict) — una
+convenienza particolarmente utile quando il modello deve essere ricaricato
+in contesti diversi (ad esempio, uno script di inferenza separato per
+generare le immagini finali della tesi).
+
+--- 5.9 Checkpoint seriali e criterio di early stopping più stringente rispetto agli script precedenti ---
+
+Il salvataggio seriale ogni 50 epoche (controlnet_epoch_{N}) segue lo
+stesso principio già visto nella versione precedente dello script (lì ogni
+100 epoche): un backup indipendente dal "best" checkpoint, utile per
+analisi retrospettive. La frequenza dimezzata (50 contro 100) è coerente
+con il numero di epoche massime più contenuto previsto in questa versione
+(1000 contro 2000).
+
+--- 5.10 Feedback visivo con pipeline completa e scheduler dedicato ---
+
+Il meccanismo è concettualmente identico a quello della versione precedente
+(costruzione al volo di una StableDiffusionControlNetPipeline riutilizzando
+i componenti già in memoria, generazione con il campione fisso di
+validazione, salvataggio di un confronto visivo a tre pannelli), con due
+differenze tecniche degne di nota:
+
+  - la pipeline di verifica usa qui val_scheduler (UniPCMultistepScheduler,
+    vedi 4.6) anziché lo scheduler di default della pipeline, per generare
+    un'immagine di qualità accettabile in soli 20 step;
+  - la generazione avviene interamente all'interno di un blocco
+    torch.amp.autocast('cuda', dtype=torch.bfloat16), oltre che di
+    torch.no_grad(): coerentemente con l'adozione della mixed precision
+    anche in fase di training, la si sfrutta anche per accelerare e
+    alleggerire la generazione di verifica periodica, non solo il calcolo
+    della loss.
+
+Il confronto visivo, in questa versione, viene composto direttamente con
+Matplotlib (fig, axs = plt.subplots(1, 3, ...)) anziché con la
+manipolazione manuale di immagini PIL tramite Image.new/paste usata nella
+versione precedente: questo permette di aggiungere titoli descrittivi
+sopra ciascun pannello (Input, Prediction con numero di epoca, Ground
+Truth) direttamente nella figura salvata, rendendo l'immagine
+autoesplicativa se estratta e inserita isolatamente in un documento, senza
+bisogno di didascalie esterne.
+
+--- 5.11 Gestione robusta di interruzione e chiusura (try/except/finally) ---
+
+La struttura try/except KeyboardInterrupt/finally è la stessa già
+apprezzata nello script Pix2Pix GAN del progetto: in caso di interruzione
+manuale, il ControlNet viene salvato nel suo stato corrente (qui,
+nuovamente in formato nativo Diffusers, in una cartella
+controlnet_interrupted), mentre il blocco finally genera comunque il
+grafico della loss accumulata fino a quel momento, purché sia stata
+completata almeno un'epoca (if len(epoch_losses) > 0), evitando un errore
+nel caso limite di un'interruzione avvenuta prima ancora della fine della
+prima epoca.
+
+--------------------------------------------------------------------------------
+6. PERCHÉ LA GRADIENT ACCUMULATION, E PERCHÉ PROPRIO 4 STEP
+--------------------------------------------------------------------------------
+
+Il batch size ideale per stabilizzare la stima del gradiente in un training
+di diffusione è generalmente più alto di 4: batch troppo piccoli producono
+una stima del gradiente più rumorosa (basata su pochi campioni), il che può
+rallentare o destabilizzare la convergenza. Tuttavia, l'intera pipeline di
+training (VAE, text encoder, U-Net e ControlNet tutti simultaneamente in
+VRAM, più le rispettive attivazioni intermedie necessarie per il
+backward pass) ha un footprint di memoria elevato, che a batch size 16
+supererebbe con ogni probabilità la VRAM disponibile anche su una GPU di
+fascia alta come la RTX 5080.
+
+La Gradient Accumulation risolve questo compromesso: si eseguono 4 forward
+e backward pass consecutivi con batch fisici da 4 immagini ciascuno (quindi
+mai più di 4 immagini simultaneamente in VRAM), sommando i gradienti
+calcolati ad ogni passo senza applicarli, per poi eseguire un UNICO
+aggiornamento dei pesi che è matematicamente equivalente (a meno di
+dettagli legati alla BatchNorm, qui non rilevanti perché il ControlNet non
+ne fa uso nei punti coinvolti) a quello che si otterrebbe con un vero batch
+size di 4 x 4 = 16. È per questo che, come specificato nel commento del
+codice, GRADIENT_ACCUMULATION_STEPS = 4 combinato con BATCH_SIZE = 4
+"simula un batch size reale di 16, stabilizzando la loss" senza mai
+richiedere di allocare in memoria più di 4 immagini all'interno di
+un singolo forward pass.
+
+--------------------------------------------------------------------------------
+7. PERCHÉ bfloat16 E NON float16 "CLASSICO"
+--------------------------------------------------------------------------------
+
+Esistono due formati comuni a 16 bit usati per la mixed precision: float16
+(IEEE half precision, 1 bit di segno, 5 bit di esponente, 10 bit di
+mantissa) e bfloat16 (1 bit di segno, 8 bit di esponente, 7 bit di
+mantissa — la stessa ampiezza di esponente del float32, ma mantissa più
+corta). La scelta di bfloat16, esplicitata nel commento del codice
+("dimezzando i tempi di calcolo senza perdita di stabilità"), è motivata dal
+fatto che il range dinamico di bfloat16 (determinato dagli 8 bit di
+esponente, identici a float32) è molto più ampio di quello di float16:
+questo riduce drasticamente il rischio di overflow/underflow numerico
+durante operazioni come l'accumulo di attivazioni profonde in una U-Net di
+grandi dimensioni, un problema storicamente più frequente con float16
+classico (che richiede spesso tecniche aggiuntive di loss scaling più
+aggressive per essere usato in sicurezza). Le GPU NVIDIA di generazione
+recente (incluse le architetture Ada Lovelace e Blackwell, a cui
+presumibilmente appartiene la RTX 5080 citata nei commenti) supportano
+nativamente ed efficientemente bfloat16 nei propri Tensor Core, rendendolo
+oggi la scelta preferita rispetto a float16 per il training di modelli di
+diffusione di grandi dimensioni.
+
+--------------------------------------------------------------------------------
+8. CONFRONTO CON LA VERSIONE PRECEDENTE DELLO SCRIPT ControlNet
+--------------------------------------------------------------------------------
+
+    Aspetto                    Versione precedente        Versione raffinata (qui)
+    Batch size fisico            4                          4
+    Batch size effettivo         4                          16 (via accumulo x4)
+    Learning rate                 1e-4                       1e-5
+    Weight decay                  non specificato (default)  1e-2 esplicito
+    Precisione di calcolo          float32 pieno              Mixed precision bfloat16
+                                                               (con GradScaler)
+    Epoche massime                 2000                       1000
+    Patience                        250                        60
+    Min delta per il miglioramento   non presente                1e-4
+    Formato di salvataggio            torch.save(state_dict)      controlnet.save_pretrained()
+                                       (.pth grezzo)                (cartella nativa Diffusers)
+    Scheduler di inferenza per        Nessuno (stesso DDPM          UniPCMultistepScheduler
+    il test visivo                    scheduler di default)          dedicato (20 step)
+    Campione di validazione            Ricampionato ad ogni           Fissato una volta sola,
+                                        controllo (primo batch          all'inizio del training
+                                        del dataloader corrente)
+    Gestione errori                     Solo except KeyboardInterrupt   try / except / finally
+                                                                          più strutturato
+    Loss LPIPS                          Caricata ma mai usata            Assente dal codice (solo
+                                                                          MSE sul rumore)
+
+L'ultimo punto merita un commento: la versione raffinata non carica affatto
+il modulo LPIPS, risolvendo per omissione l'incoerenza segnalata nella
+documentazione della versione precedente (dove LPIPS veniva caricato,
+occupando VRAM, senza mai essere effettivamente usato nella loss). Se
+l'obiettivo del progetto resta comunque quello di introdurre in futuro una
+componente di loss percettiva, andrebbe reintrodotta qui in modo coerente,
+tenendo conto delle nuove complessità introdotte dalla mixed precision e
+dalla gradient accumulation (LPIPS opera nello spazio pixel, quindi
+richiederebbe di decodificare periodicamente i latenti tramite il VAE,
+un'operazione aggiuntiva da inserire con attenzione all'interno — o subito
+dopo — il blocco di autocast).
+
+--------------------------------------------------------------------------------
+9. CRITICITÀ E OSSERVAZIONI TECNICHE
+--------------------------------------------------------------------------------
+
+  a) Come nelle altre versioni del progetto, non è presente un validation
+     set distinto dal training set: sia l'ottimizzazione sia l'early
+     stopping (seppur più raffinato, con MIN_DELTA) restano calcolati sugli
+     stessi dati usati per addestrare la rete.
+
+  b) L'ultimo batch di un'epoca potrebbe non allinearsi esattamente a un
+     multiplo di GRADIENT_ACCUMULATION_STEPS (ad esempio, se il numero di
+     batch per epoca non è divisibile per 4): in questo caso, i gradienti
+     accumulati negli ultimi step "incompleti" di quell'epoca non
+     verrebbero mai applicati con uno scaler.step() prima della fine del
+     ciclo interno, per poi essere implicitamente scartati quando
+     l'epoca successiva ricomincia daccapo (dato che optimizer.zero_grad()
+     non viene chiamato esplicitamente all'inizio di ogni nuova epoca, ma
+     solo quando scatta la condizione di accumulo — è comunque implicito
+     nel fatto che al passo (step+1) % 4 == 0 dell'epoca successiva
+     l'accumulo ripartirà "pulito" solo se l'ultimo aggiornamento
+     dell'epoca precedente è avvenuto correttamente all'ultimo batch
+     disponibile). È un caso limite che vale la pena verificare
+     esplicitamente contando il numero di batch per epoca rispetto al
+     valore di GRADIENT_ACCUMULATION_STEPS, per assicurarsi che non ci sia
+     una piccola perdita sistematica di segnale di training a ogni fine
+     epoca.
+
+  c) Il messaggio di log durante l'addestramento (progress_bar.set_postfix)
+     mostra loss.item() * GRADIENT_ACCUMULATION_STEPS, cioè la loss
+     "ri-scalata" al suo valore originale (prima della divisione fatta al
+     punto 5.3): un dettaglio di presentazione corretto e utile, che evita
+     di mostrare in console un valore di loss artificiosamente più basso
+     (diviso per 4) rispetto alla reale grandezza dell'errore per singolo
+     campione.
+
+  d) Non viene fissato alcun seed globale di riproducibilità (torch.manual_
+     seed, random.seed) in questo script: per un confronto sperimentale
+     rigoroso tra run diverse (ad esempio, per l'ablation study
+     complessivo del progetto), sarebbe utile poter fissare il seed per
+     rendere l'intero processo di training riproducibile bit per bit (nei
+     limiti del non-determinismo intrinseco di alcune operazioni CUDA).
+
+--------------------------------------------------------------------------------
+10. TABELLA RIEPILOGATIVA DELLE DIMENSIONI E DEGLI SHAPE PRINCIPALI
+--------------------------------------------------------------------------------
+
+Assumendo immagini 512x512x3 e il VAE standard di Stable Diffusion 1.5
+(fattore di compressione 8x, 4 canali latenti):
+
+    Tensore                     Shape approssimativa      Ruolo
+    pixel_values (target)        [4, 3, 512, 512]            Animale reale, [-1, 1]
+    conditioning_pixel_values     [4, 3, 512, 512]            Scheletro, [0, 1]
+    latents (post-VAE)            [4, 4, 64, 64]              Rappresentazione latente
+    noise                          [4, 4, 64, 64]              Rumore target
+    noisy_latents                  [4, 4, 64, 64]              Input rumoroso alla U-Net
+    timesteps                       [4]                          Livello di rumore per campione
+    text_inputs.input_ids            [4, 77]                       Token testuali (CLIP)
+    encoder_hidden_states             [4, 77, 768]                  Embedding testuale
+    model_pred (noise_pred)            [4, 4, 64, 64]                Rumore predetto
+
+(Batch fisico = 4; batch effettivo dopo l'accumulo = 16; 77 = lunghezza
+massima di token CLIP; 768 = dimensione dell'embedding CLIP ViT-L/14.)
+
+--------------------------------------------------------------------------------
+11. GLOSSARIO DEI TERMINI CHIAVE
+--------------------------------------------------------------------------------
+
+AMP (Automatic Mixed  Tecnica che esegue automaticamente alcune operazioni
+Precision)            in precisione numerica ridotta (es. bfloat16/float16)
+                       e altre in precisione piena (float32), per
+                       accelerare il calcolo e ridurre l'uso di memoria
+                       senza compromettere eccessivamente la stabilità
+                       numerica.
+
+bfloat16              Formato numerico a 16 bit con lo stesso range di
+                       esponente di float32 ma mantissa più corta,
+                       preferito a float16 nei moderni acceleratori per il
+                       minor rischio di overflow/underflow.
+
+Gradient Accumulation  Tecnica che somma i gradienti di più mini-batch
+                       consecutivi prima di applicare un singolo
+                       aggiornamento dei pesi, per simulare un batch size
+                       effettivo più grande di quello che la memoria
+                       disponibile permetterebbe direttamente.
+
+GradScaler             Componente di PyTorch che scala dinamicamente il
+                       valore della loss prima del backward pass in
+                       training a precisione mista, per prevenire
+                       l'underflow dei gradienti piccoli.
+
+MIN_DELTA              Soglia minima di miglioramento richiesta perché una
+                       diminuzione della loss sia considerata significativa
+                       ai fini dell'early stopping, distinguendola dal
+                       rumore statistico.
+
+save_pretrained /      Metodo/funzione dell'ecosistema Hugging Face per
+from_pretrained        salvare/caricare un modello insieme alla propria
+                       configurazione architetturale, in una cartella
+                       autosufficiente e facilmente ricaricabile.
+
+Underflow numerico     Fenomeno per cui un valore troppo piccolo per essere
+                       rappresentato in una data precisione numerica viene
+                       arrotondato a zero, con conseguente perdita di
+                       informazione (rilevante per i gradienti in mixed
+                       precision).
+
+UniPC                  Scheduler di diffusione di ordine superiore,
+                       progettato per generare immagini di buona qualità
+                       con un numero ridotto di step di inferenza rispetto
+                       agli scheduler classici come il DDPM.
+
+Weight decay           Termine di regolarizzazione che penalizza pesi di
+                       grande ampiezza durante l'ottimizzazione, riducendo
+                       il rischio di overfitting.
+
+================================================================================
+FINE DOCUMENTO
+================================================================================
+
+
+
+
+

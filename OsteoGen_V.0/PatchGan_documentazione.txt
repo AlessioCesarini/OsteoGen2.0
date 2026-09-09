@@ -1,0 +1,754 @@
+================================================================================
+DOCUMENTAZIONE TECNICA APPROFONDITA
+Modulo: train_pix2pix.py — GAN Condizionale completa (Pix2Pix)
+Generatore U-Net profondo (6 livelli) + Discriminatore PatchGAN
+Progetto: Ricostruzione dell'aspetto di un animale a partire dal suo scheletro
+================================================================================
+
+--------------------------------------------------------------------------------
+INDICE
+--------------------------------------------------------------------------------
+1.  Scopo del modulo e collocazione nel progetto
+2.  Il salto concettuale: da regressione pura ad addestramento avversario
+3.  Analisi del Generatore: SimpleUNet (versione profonda a 6 livelli)
+    3.1 Perché approfondire la rete invece di allargarla
+    3.2 Encoder a 6 stadi e il tetto dei 512 canali
+    3.3 Bottleneck 8x8: il "riassunto posturale" dell'animale
+    3.4 Decoder simmetrico e canali di concatenazione
+    3.5 Il forward pass completo
+4.  Analisi del Discriminatore: PatchGANDiscriminator
+    4.1 Perché un discriminatore "a patch" e non "a immagine intera"
+    4.2 discriminator_block: anatomia di un blocco
+    4.3 Perché niente BatchNorm sul primo layer
+    4.4 Il ruolo di stride=1 negli ultimi due blocchi
+    4.5 Perché LeakyReLU e non ReLU
+    4.6 Nessuna Sigmoid finale: il legame con BCEWithLogitsLoss
+    4.7 Il forward pass: giudicare la coppia, non l'immagine singola
+5.  Analisi di train_model()
+    5.1 Dataset, ottimizzatori e funzioni di costo
+    5.2 lambda_L1 = 100: il "golden standard" di Pix2Pix
+    5.3 Fase 1 — Addestramento del Discriminatore
+    5.4 Fase 2 — Addestramento del Generatore
+    5.5 Perché la loss totale del Generatore non può guidare il salvataggio
+    5.6 Il criterio di early stopping corretto: la L1 pura
+    5.7 Salvataggio periodico delle immagini di verifica
+    5.8 Gestione robusta dell'interruzione: try/except/finally
+    5.9 I due grafici finali: dinamica avversaria vs. aderenza strutturale
+6.  L1 vs MSE: la scelta della funzione di costo pixel-wise
+7.  Confronto con le due versioni precedenti del progetto
+8.  Criticità e possibili estensioni (incluso il bonus LPIPS/FID)
+9.  Tabella riepilogativa delle dimensioni dei tensori
+10. Glossario dei termini chiave
+
+--------------------------------------------------------------------------------
+1. SCOPO DEL MODULO E COLLOCAZIONE NEL PROGETTO
+--------------------------------------------------------------------------------
+
+Questo script rappresenta la versione COMPLETA dell'architettura Pix2Pix
+(Isola et al., "Image-to-Image Translation with Conditional Adversarial
+Networks", CVPR 2017) applicata al progetto: un Generatore U-Net (qui
+approfondito rispetto alla baseline) che compete con un Discriminatore
+PatchGAN in un gioco a somma variabile, il tutto guidato da una loss
+combinata che unisce l'obiettivo avversariale a un termine di fedeltà
+pixel-per-pixel.
+
+Nell'impianto dell'ablation study del progetto, questo file rappresenta il
+terzo termine di confronto: dopo la baseline "solo L1" (documentata in
+train_baseline.py) e l'approccio "diffusione latente pre-addestrata"
+(documentato in train_controlnet.py), qui si torna a un generatore
+addestrato interamente da zero, ma questa volta affiancato da un
+discriminatore che fornisce un segnale di realismo percettivo che la sola
+L1 non può dare.
+
+--------------------------------------------------------------------------------
+2. IL SALTO CONCETTUALE: DA REGRESSIONE PURA AD ADDESTRAMENTO AVVERSARIO
+--------------------------------------------------------------------------------
+
+Nella baseline, l'unico segnale di errore che il Generatore riceveva era
+"quanto sei numericamente lontano dal target" (L1 Loss). Come discusso
+nella documentazione precedente, questo porta tipicamente a immagini
+sfocate, perché la soluzione che minimizza l'errore medio assoluto quando
+esistono più texture plausibili per una stessa regione è spesso una loro
+media indistinta.
+
+In questo script si introduce un secondo "giudice": il Discriminatore. Il
+suo unico compito è distinguere una coppia (scheletro, animale) REALE da
+una coppia (scheletro, animale) GENERATA dal Generatore. Il Generatore, a
+sua volta, viene ora premiato non solo per essere numericamente vicino al
+target, ma anche per produrre immagini che il Discriminatore non riesce a
+distinguere dalla realtà. Questo secondo obiettivo — puramente percettivo,
+non numerico — è ciò che spinge la rete a produrre texture nitide e
+dettagliate (pelo, piume, squame) invece della media sfocata tipica della
+sola regressione L1.
+
+--------------------------------------------------------------------------------
+3. ANALISI DEL GENERATORE: SimpleUNet (VERSIONE PROFONDA A 6 LIVELLI)
+--------------------------------------------------------------------------------
+
+--- 3.1 Perché approfondire la rete invece di allargarla ---
+
+Rispetto alla baseline (3 livelli di encoder, canali che crescono fino a
+512 nel bottleneck), questa versione ha 6 livelli di encoder (enc1...enc6)
+più il bottleneck, per un totale di 7 downsampling successivi. La scelta
+architetturale esplicitata nei commenti del codice è di "cappare" i canali
+a 512 a partire da enc4 in poi, anziché lasciarli raddoppiare
+indefinitamente (che porterebbe a 1024, 2048... canali, con una crescita
+esplosiva dei parametri addestrabili). In questo modo la rete guadagna
+PROFONDITÀ SPAZIALE (arriva a "vedere" l'intera posa dell'animale compressa
+in una griglia di soli 8x8 "super-pixel" nel bottleneck) senza un'esplosione
+corrispondente nel numero di pesi, ottenendo così un compromesso tra
+capacità di catturare pattern globali (la postura, la silhouette generale)
+e rischio di overfitting/costo computazionale.
+
+--- 3.2 Encoder a 6 stadi e il tetto dei 512 canali ---
+
+    Livello   Canali in -> out      Risoluzione relativa (rispetto all'input)
+    enc1      3   -> 64              1x
+    enc2      64  -> 128             1/2
+    enc3      128 -> 256             1/4
+    enc4      256 -> 512             1/8
+    enc5      512 -> 512             1/16
+    enc6      512 -> 512             1/32
+
+Da enc4 in poi il numero di canali resta costante a 512: la rete continua a
+comprimere spazialmente (grazie al MaxPooling che precede ogni blocco) ma
+non aumenta più la capacità semantica dei canali, dedicando i tre livelli
+finali (enc4, enc5, enc6) esclusivamente all'astrazione della struttura
+spaziale complessiva, piuttosto che all'estrazione di feature sempre più
+elaborate.
+
+--- 3.3 Bottleneck 8x8: il "riassunto posturale" dell'animale ---
+
+    self.bottleneck = self.conv_block(512, 512)
+
+Con un input tipico di 512x512 pixel e 7 dimezzamenti successivi (uno per
+ogni pooling che precede enc2...enc6 e il bottleneck stesso), la
+risoluzione spaziale del bottleneck scende a 512 / 2^7 = 4, oppure a 8x8 a
+seconda di come viene contato l'ultimo pooling prima del bottleneck (il
+commento del codice indica esplicitamente 8x8): in ogni caso, l'ordine di
+grandezza è quello di una griglia minuscola, in cui ogni "pixel" del
+tensore latente racchiude informazioni su un'ampia porzione dell'immagine
+originale. È qui che la rete arriva a rappresentare concetti come "questa
+è la geometria compatibile con un quadrupede di grossa taglia, con le zampe
+posteriori più arretrate", ben oltre la scala del singolo dettaglio osseo.
+
+--- 3.4 Decoder simmetrico e canali di concatenazione ---
+
+Il decoder risale specularmente, con una particolarità rispetto alla
+baseline: la compressione dei canali nella parte finale del decoder non è
+uniforme, ma segue uno schema di restringimento progressivo pensato per
+riportare gradualmente la rete verso i 64 canali necessari all'output RGB:
+
+    Livello   upconv (in->out)   Concatenazione       dec (in->out)
+    dec6      512 -> 512         + e6 (512)  = 1024    1024 -> 512
+    dec5      512 -> 512         + e5 (512)  = 1024    1024 -> 512
+    dec4      512 -> 512         + e4 (512)  = 1024    1024 -> 256
+    dec3      256 -> 256         + e3 (256)  = 512      512 -> 128
+    dec2      128 -> 128         + e2 (128)  = 256      256 -> 64
+    dec1      64  -> 64          + e1 (64)   = 128      128 -> 64
+
+Si nota che dec4, dec3 e dec2 non si limitano a "dimezzare" i canali in
+ingresso come nella simmetria stretta della baseline, ma comprimono
+progressivamente di più (1024->256, poi 512->128, poi 256->64): è una
+strategia di restringimento accelerato verso la fine della risalita, che
+permette al decoder di raggiungere rapidamente un numero di canali
+compatibile con la sintesi finale dei 3 canali RGB, mantenendo comunque,
+grazie alle skip connection, l'accesso ai dettagli spaziali fini catturati
+a ogni livello dell'encoder.
+
+Come annotato nel codice, questa simmetria strutturale tra encoder e
+decoder (ogni upconvN specchia esattamente il corrispondente encN in
+termini di canali in ingresso all'upconv) è importante non solo per la
+coerenza architetturale, ma anche per un flusso bilanciato dei gradienti
+durante la backpropagation: un'asimmetria marcata tra un ramo e l'altro
+potrebbe creare colli di bottiglia nel flusso del gradiente, rallentando
+selettivamente l'apprendimento di alcuni livelli rispetto ad altri.
+
+--- 3.5 Il forward pass completo ---
+
+Il flusso computazionale segue esattamente lo stesso schema concettuale
+della baseline (discesa con salvataggio delle feature map a ogni livello,
+bottleneck, risalita con concatenazione delle skip connection), semplicemente
+esteso a 6 livelli anziché 3:
+
+    x -> e1 -> e2 -> e3 -> e4 -> e5 -> e6 -> b (bottleneck)
+    b -> d6 (cat e6) -> d5 (cat e5) -> d4 (cat e4)
+      -> d3 (cat e3) -> d2 (cat e2) -> d1 (cat e1) -> out
+
+Il layer finale (final_conv + tanh) è identico concettualmente alla
+baseline: proiezione 1x1 sui 3 canali RGB seguita da Tanh per vincolare
+l'output nell'intervallo [-1, 1], coerente con la normalizzazione dei
+target.
+
+--------------------------------------------------------------------------------
+4. ANALISI DEL DISCRIMINATORE: PatchGANDiscriminator
+--------------------------------------------------------------------------------
+
+--- 4.1 Perché un discriminatore "a patch" e non "a immagine intera" ---
+
+Un discriminatore tradizionale produrrebbe un singolo numero (vero/falso)
+per l'intera immagine. Un PatchGAN, introdotto proprio nel paper originale
+di Pix2Pix, produce invece una MATRICE di giudizi, dove ogni singolo
+elemento di quella matrice esprime un verdetto "vero/falso" relativo a una
+specifica porzione locale (patch) dell'immagine originale — nel caso
+tipico di questa architettura, patch di circa 70x70 pixel, come indicato
+nel commento del codice.
+
+Questo approccio ha un duplice vantaggio: (a) costringe il Generatore a
+produrre texture realistiche in OGNI regione locale dell'immagine, non solo
+nell'aspetto complessivo, il che è particolarmente utile per dettagli come
+la texture di pelo/piume/squame che sono intrinsecamente locali; (b) rende
+il discriminatore più leggero e veloce da addestrare, dato che non deve
+elaborare l'intera immagine in un singolo giudizio globale ad alta
+dimensionalità.
+
+--- 4.2 discriminator_block: anatomia di un blocco ---
+
+    def discriminator_block(in_filters, out_filters, normalization=True, stride=2):
+        layers = [nn.Conv2d(in_filters, out_filters, kernel_size=4, stride=stride, padding=1)]
+        if normalization:
+            layers.append(nn.BatchNorm2d(out_filters))
+        layers.append(nn.LeakyReLU(0.2, inplace=True))
+        return layers
+
+Ogni blocco è una singola convoluzione con kernel 4x4 (lo standard Pix2Pix,
+diverso dal 3x3 usato nel Generatore), seguita opzionalmente da BatchNorm
+e sempre da una LeakyReLU. Con stride=2 (il default), ogni blocco dimezza
+la risoluzione spaziale dell'immagine, in modo analogo a un MaxPooling ma
+realizzato direttamente dalla convoluzione stessa (una tecnica comune nelle
+architetture GAN, dove si preferisce spesso lo "strided convolution" al
+pooling esplicito per dare alla rete più libertà di apprendere come
+sotto-campionare l'informazione).
+
+--- 4.3 Perché niente BatchNorm sul primo layer ---
+
+    *discriminator_block(6, 64, normalization=False)
+
+Il primo blocco riceve i 6 canali grezzi della coppia scheletro+animale
+(concatenati, vedi 4.7) e disattiva esplicitamente la BatchNorm. La
+motivazione, esplicitata nel commento del codice, è che normalizzare
+immediatamente i valori RGB grezzi in ingresso rischierebbe di alterare
+distribuzioni di colore che sono invece informative fin dal primo livello
+per il compito di discriminazione: è una pratica standard, condivisa con
+molte altre architetture GAN (incluso il DCGAN originale), di non applicare
+normalizzazione al primissimo layer che riceve i pixel non elaborati.
+
+--- 4.4 Il ruolo di stride=1 negli ultimi due blocchi ---
+
+    *discriminator_block(128, 256)               # stride=2 di default
+    *discriminator_block(256, 512, stride=1)      # stride esplicito a 1
+
+A partire dal terzo blocco (128->256, che di default userebbe comunque
+stride=2 essendo omesso nel codice — da notare che il blocco 128->256
+usa lo stride di default pari a 2, mentre è il blocco successivo 256->512
+a impostare esplicitamente stride=1), la rete smette di dimezzare
+ulteriormente la risoluzione spaziale. Questo è il "trucco architetturale"
+esplicitamente commentato nel codice: mantenendo una griglia spaziale più
+ampia negli strati finali, il discriminatore continua a poter esprimere un
+giudizio per PATCH LOCALI distinte, invece di schiacciare l'intera
+informazione spaziale in un singolo valore scalare, che trasformerebbe il
+PatchGAN in un discriminatore globale tradizionale, vanificandone il
+vantaggio descritto al punto 4.1.
+
+--- 4.5 Perché LeakyReLU e non ReLU ---
+
+La ReLU standard (f(x) = max(0, x)) azzera completamente ogni valore
+negativo, il che può portare al fenomeno del "Dying ReLU": un neurone che,
+per effetto dell'aggiornamento dei pesi, inizia sempre a produrre output
+negativi, riceve gradiente zero per tutti gli input successivi e smette
+definitivamente di apprendere. In un contesto avversario, dove il
+Discriminatore compete costantemente con un Generatore che si evolve, la
+rete non può permettersi di perdere capacità rappresentativa durante il
+training: LeakyReLU(0.2) lascia passare una piccola frazione (20%) dei
+valori negativi, garantendo che il gradiente non si azzeri mai
+completamente e che il Discriminatore mantenga la capacità di continuare
+ad apprendere anche quando alcuni neuroni tendono verso attivazioni
+negative.
+
+--- 4.6 Nessuna Sigmoid finale: il legame con BCEWithLogitsLoss ---
+
+    nn.Conv2d(512, 1, kernel_size=4, padding=1)  # nessuna Sigmoid dopo
+
+L'ultimo layer proietta i 512 canali su un singolo canale spaziale
+(la matrice di "logits", cioè valori grezzi non ancora convertiti in
+probabilità), senza applicare alcuna funzione di attivazione finale. Questo
+è deliberato e strettamente legato alla scelta, nel training loop, di
+nn.BCEWithLogitsLoss() (vedi 5.1) anziché una Binary Cross Entropy
+applicata dopo una Sigmoid esplicita: BCEWithLogitsLoss combina
+internamente la Sigmoide e il calcolo della cross-entropy in un'unica
+operazione numericamente stabile (sfruttando il "log-sum-exp trick"),
+evitando i problemi di instabilità numerica (valori che tendono a 0 o 1 con
+conseguente saturazione del gradiente) che si presenterebbero applicando
+esplicitamente una Sigmoide seguita da una BCE separata.
+
+--- 4.7 Il forward pass: giudicare la coppia, non l'immagine singola ---
+
+    def forward(self, skeleton, animal):
+        img_input = torch.cat([skeleton, animal], dim=1)
+        return self.model(img_input)
+
+Un dettaglio concettuale fondamentale del PatchGAN condizionale: il
+Discriminatore non riceve mai l'animale da solo, ma sempre la COPPIA
+scheletro+animale, concatenata lungo l'asse dei canali (3+3=6 canali in
+ingresso). Questo perché il compito del Discriminatore non è "questa foto
+sembra un animale vero?" in astratto, ma "questo animale è coerente con
+QUESTO SPECIFICO scheletro?" — è precisamente ciò che rende Pix2Pix una GAN
+CONDIZIONALE (conditional GAN, cGAN): il Discriminatore giudica la
+plausibilità congiunta della coppia input-output, non la plausibilità
+dell'output isolato, incentivando così il Generatore a rispettare
+fedelmente la geometria di input, non solo a produrre "un animale
+qualsiasi convincente".
+
+--------------------------------------------------------------------------------
+5. ANALISI DI train_model()
+--------------------------------------------------------------------------------
+
+--- 5.1 Dataset, ottimizzatori e funzioni di costo ---
+
+    dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
+    generator = SimpleUNet().to(device)
+    discriminator = PatchGANDiscriminator().to(device)
+
+    criterion_GAN = nn.BCEWithLogitsLoss()
+    criterion_L1  = nn.L1Loss()
+
+    optimizer_G = optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+    optimizer_D = optim.Adam(discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+
+Batch size 8: una via di mezzo tra i 16 della baseline (che non doveva
+tenere in memoria un secondo modello) e i 4 del ControlNet (che deve
+tenere in memoria un intero foundation model). Da notare che qui, A
+DIFFERENZA della baseline (dove il learning rate era 0.001, disallineato
+dallo standard), il learning rate è correttamente impostato a 0.0002 con
+betas=(0.5, 0.999): esattamente i valori "golden standard" della
+letteratura Pix2Pix, come esplicitamente commentato nel codice ("Non
+cambiare nulla, altrimenti la GAN collassa"). Il valore di beta1 ridotto a
+0.5 (anziché il default 0.9 di Adam) è una scelta specifica per stabilizzare
+il training avversario, riducendo il momentum e quindi la tendenza
+dell'ottimizzatore a "overshoot-are" durante le oscillazioni tipiche del
+gioco min-max tra Generatore e Discriminatore.
+
+Due ottimizzatori distinti e indipendenti vengono usati per Generatore e
+Discriminatore: è essenziale che ciascuno aggiorni solo i propri parametri
+(generator.parameters() / discriminator.parameters()), dato che nella
+dinamica avversaria le due reti hanno obiettivi opposti e non devono mai
+essere aggiornate dallo stesso passo di ottimizzazione.
+
+--- 5.2 lambda_L1 = 100: il "golden standard" di Pix2Pix ---
+
+    lambda_L1 = 100
+
+Come esplicitato nel commento del codice, senza un termine di regolarizzazione
+L1 pesante, il Generatore potrebbe imparare a ingannare il Discriminatore
+producendo texture iper-realistiche ma geometricamente scorrette (ad
+esempio "inventando" una coda dove lo scheletro non ne prevede una), perché
+dal punto di vista del solo obiettivo avversario, ciò che conta è
+esclusivamente il realismo percettivo, non la fedeltà spaziale. Moltiplicare
+il termine L1 per 100 riequilibra drasticamente i due obiettivi nella
+somma della loss totale del Generatore, imponendo che la fedeltà spaziale e
+cromatica al target reale pesi cento volte più del solo obiettivo di
+"sembrare vero" agli occhi del Discriminatore. Questo valore (100) è
+esattamente quello proposto nel paper originale di Pix2Pix e ripreso qui
+integralmente.
+
+--- 5.3 Fase 1 — Addestramento del Discriminatore ---
+
+    optimizer_D.zero_grad()
+    animali_finti = generator(ossa)
+
+    pred_real = discriminator(ossa, animali_veri)
+    loss_D_real = criterion_GAN(pred_real, torch.ones_like(pred_real))
+
+    pred_fake = discriminator(ossa, animali_finti.detach())
+    loss_D_fake = criterion_GAN(pred_fake, torch.zeros_like(pred_fake))
+
+    loss_D = (loss_D_real + loss_D_fake) * 0.5
+    loss_D.backward()
+    optimizer_D.step()
+
+Il Discriminatore viene addestrato su due esempi per ogni batch: la coppia
+REALE (scheletro + animale vero, etichetta target = 1) e la coppia FALSA
+(scheletro + animale generato, etichetta target = 0). La loss totale è la
+media delle due componenti, in modo che il Discriminatore impari in modo
+bilanciato sia a riconoscere il vero sia a smascherare il falso, senza
+sbilanciarsi verso uno dei due compiti.
+
+Il dettaglio tecnico cruciale è .detach() applicato a animali_finti in
+questa fase: taglia esplicitamente il collegamento del grafo computazionale
+autograd tra l'output del Generatore e questo particolare calcolo della
+loss. Senza questo distacco, la successiva chiamata a loss_D.backward()
+propagherebbe (inutilmente, in questa fase) i gradienti anche fino ai pesi
+del Generatore, sprecando calcolo e — soprattutto — rischiando di
+interferire con l'aggiornamento indipendente del Generatore previsto nella
+Fase 2, dato che optimizer_D.step() aggiornerebbe comunque solo i pesi del
+Discriminatore, ma i gradienti accumulati inutilmente sul Generatore
+potrebbero sommarsi in modo scorretto ai gradienti calcolati nella fase
+successiva se non venissero poi esplicitamente azzerati.
+
+--- 5.4 Fase 2 — Addestramento del Generatore ---
+
+    optimizer_G.zero_grad()
+    pred_fake_for_G = discriminator(ossa, animali_finti)  # NIENTE .detach() qui
+    loss_G_GAN = criterion_GAN(pred_fake_for_G, torch.ones_like(pred_fake_for_G))
+    loss_G_L1_pure = criterion_L1(animali_finti, animali_veri)
+    loss_G_L1_scaled = loss_G_L1_pure * lambda_L1
+    loss_G = loss_G_GAN + loss_G_L1_scaled
+    loss_G.backward()
+    optimizer_G.step()
+
+Qui il Discriminatore viene interrogato di nuovo sulla stessa immagine
+generata (animali_finti), ma questa volta SENZA .detach(): il grafo
+computazionale resta collegato fino al Generatore, perché è esattamente
+attraverso questo percorso che il gradiente dovrà fluire per aggiornare i
+suoi pesi. Il "trucco psicologico" della GAN, come esplicitamente commentato
+nel codice, è che la predizione del Discriminatore sull'immagine falsa
+viene confrontata con l'etichetta target_real (matrice di 1): il Generatore
+viene matematicamente penalizzato ogni volta che il Discriminatore riesce
+a classificare correttamente l'immagine come falsa, il che lo spinge, per
+discesa del gradiente, a modificare i propri pesi nella direzione che rende
+le proprie immagini sempre più indistinguibili da quelle reali agli occhi
+del Discriminatore.
+
+Il termine loss_G_L1_pure viene conservato separatamente (senza la
+moltiplicazione per lambda_L1) per essere usato più avanti come metrica di
+riferimento per l'early stopping e il salvataggio del modello (vedi 5.5 e
+5.6): è un dettaglio implementativo importante, perché tenere traccia sia
+della loss "pura" sia di quella "scalata" (effettivamente usata nella
+backpropagation) permette di disaccoppiare l'obiettivo di ottimizzazione
+dall'obiettivo di monitoraggio/selezione del modello.
+
+--- 5.5 Perché la loss totale del Generatore non può guidare il salvataggio ---
+
+Questo è il punto metodologicamente più delicato e più importante da saper
+argomentare in sede di esame, ed è esplicitamente evitato nel codice:
+usare loss_G (la somma di loss_G_GAN e loss_G_L1_scaled) come criterio per
+decidere quale checkpoint salvare sarebbe un errore concettuale grave, per
+due ragioni distinte:
+
+  a) IL PARADOSSO DEL "FALSARIO E DEL POLIZIOTTO CIECO": la componente
+     loss_G_GAN non misura la qualità assoluta dell'immagine generata, ma
+     quanto efficacemente il Generatore inganna IL DISCRIMINATORE CORRENTE.
+     Se in una certa fase del training il Discriminatore collassasse (ad
+     esempio diventando incapace di distinguere vero da falso, un fenomeno
+     non raro nella dinamica instabile delle GAN), classificherebbe come
+     "vere" anche immagini generate di pessima qualità. In quel momento
+     loss_G_GAN crollerebbe verso zero, facendo apparire artificialmente
+     bassa anche la loss_G totale — pur in presenza di un Generatore che, in
+     quella fase, produce output privi di senso. Un criterio di salvataggio
+     basato sulla loss_G totale interpreterebbe questo collasso come "il
+     momento migliore del training" e sovrascriverebbe il best checkpoint
+     con pesi che, in realtà, rappresentano un fallimento.
+
+  b) L'OSCILLAZIONE FISIOLOGICA DELLA LOSS AVVERSARIA: anche in un training
+     GAN sano, senza alcun collasso, la componente loss_G_GAN non converge
+     mai in modo monotono verso un minimo stabile: oscilla continuamente,
+     perché ogni miglioramento del Generatore altera il compito che il
+     Discriminatore deve risolvere, e viceversa, in un ciclo di
+     rincorsa reciproca (il gioco min-max descritto nella formulazione
+     originale delle GAN di Goodfellow et al., 2014). Un grafico della sola
+     loss_G_GAN (o della loss_G totale che la incorpora) è quindi
+     intrinsecamente rumoroso e non riflette in modo affidabile la reale
+     qualità visiva dell'immagine prodotta in un dato istante del training.
+
+--- 5.6 Il criterio di early stopping corretto: la L1 pura ---
+
+    if avg_G_L1 < best_L1_loss:
+        best_L1_loss = avg_G_L1
+        best_epoch = epoch + 1
+        epochs_no_improve = 0
+        torch.save(generator.state_dict(), ".../best_generator.pth")
+        torch.save(discriminator.state_dict(), ".../best_discriminator.pth")
+    else:
+        epochs_no_improve += 1
+
+La soluzione adottata nel codice è di ignorare completamente sia
+loss_G_GAN sia loss_D ai fini del salvataggio, e di usare esclusivamente
+avg_G_L1 (la media della loss_G_L1_pure su tutti i batch dell'epoca) come
+unico criterio decisionale. La motivazione, coerente con quanto discusso al
+punto 5.5, è che la distanza L1 pura è l'UNICA metrica del sistema che non
+dipende in alcun modo dal giudizio soggettivo e instabile del
+Discriminatore: misura esclusivamente quanto l'immagine generata sia
+numericamente vicina, pixel per pixel, alla fotografia reale del target.
+Cercarne il minimo storico assoluto garantisce di individuare l'epoca in
+cui il Generatore ha prodotto le ricostruzioni più fedeli spazialmente e
+cromaticamente, indipendentemente dalle oscillazioni della componente
+avversaria.
+
+Da notare, coerentemente, che la tolleranza di pazienza per l'early
+stopping è qui molto più alta rispetto alla baseline (patience=500 contro
+i 200 della baseline), esplicitamente motivata nel codice come necessaria
+per assorbire "le oscillazioni fisiologiche della GAN": un training
+avversario richiede più tempo e più tolleranza prima di poter concludere
+con sicurezza che non ci sono più miglioramenti in corso, proprio a causa
+della natura non monotona della dinamica min-max.
+
+--- 5.7 Salvataggio periodico delle immagini di verifica ---
+
+Il meccanismo di generazione di un collage di verifica (scheletro |
+generato | reale) ogni 20 epoche è concettualmente identico a quello della
+baseline: model.eval(), torch.no_grad(), denormalizzazione da [-1,1] a
+[0,1], concatenazione lungo la dimensione del batch, save_image. L'unica
+differenza rilevante è la frequenza (ogni 20 epoche anziché ogni 10),
+coerente con il budget di epoche più ampio previsto per questo training
+(2000 contro le 1000 della baseline).
+
+--- 5.8 Gestione robusta dell'interruzione: try/except/finally ---
+
+A differenza degli script precedenti, qui la gestione dell'interruzione
+manuale è più completa, articolata su tre blocchi:
+
+  - try: contiene l'intero ciclo di training.
+  - except KeyboardInterrupt: intercetta l'interruzione manuale (Ctrl+C) e,
+    a differenza degli script precedenti, SALVA ESPLICITAMENTE sia il
+    Generatore sia il Discriminatore nel loro stato corrente all'epoca
+    dell'interruzione (generator_interrotto_ep{N}.pth), con un nome di file
+    che riporta l'epoca esatta: questo evita di perdere del tutto il
+    progresso di un'epoca in corso non ancora completata al momento di un
+    checkpoint "best" e permette di riprendere l'analisi esattamente da
+    dove l'utente ha deciso di fermarsi.
+  - finally: viene eseguito SEMPRE, sia in caso di conclusione naturale del
+    ciclo (esaurimento delle epoche o early stopping), sia in caso di
+    interruzione manuale, sia — implicitamente — in caso di eccezioni non
+    previste che dovessero propagarsi oltre il blocco except (che cattura
+    solo KeyboardInterrupt): genera comunque i grafici finali riepilogativi
+    a partire dagli storici di loss accumulati fino a quel momento. Questo
+    garantisce che, qualunque sia la modalità di terminazione, l'utente
+    riceva sempre un riepilogo visivo dell'andamento del training svolto
+    fino a quel punto.
+
+--- 5.9 I due grafici finali: dinamica avversaria vs. aderenza strutturale ---
+
+Il grafico finale (grafico_loss_complessivo.png) è composto da due
+sottografici affiancati (plt.subplot(1, 2, ...)), che riflettono
+esattamente la distinzione concettuale discussa al punto 5.5:
+
+  - Sottografico 1 ("Dinamica Avversaria"): sovrappone la loss del
+    Generatore (componente avversaria) e la loss del Discriminatore nel
+    tempo, con una linea verticale tratteggiata (axvline) che marca
+    l'epoca del miglior checkpoint salvato. Questo grafico serve a
+    ispezionare visivamente la salute della dinamica competitiva (le due
+    curve dovrebbero oscillare in un equilibrio relativo, senza che una
+    delle due collassi permanentemente verso zero — un segnale di eventuale
+    collasso della GAN, discusso al punto 5.5a).
+  - Sottografico 2 ("Aderenza Strutturale e Colore"): mostra la sola curva
+    della L1 pura nel tempo, con un marcatore a stella sull'epoca del
+    minimo storico. Questo è il grafico che riflette più direttamente la
+    qualità oggettiva della ricostruzione, coerentemente con il criterio di
+    early stopping adottato.
+
+Tenere questi due grafici separati, anziché un unico grafico con tutte le
+curve sovrapposte, è una scelta di visualizzazione efficace: evita di
+confondere una metrica intrinsecamente oscillante e non direttamente
+interpretabile in valore assoluto (la dinamica avversaria) con l'unica
+metrica realmente indicativa della qualità della ricostruzione (la L1
+pura).
+
+--------------------------------------------------------------------------------
+6. L1 vs MSE: LA SCELTA DELLA FUNZIONE DI COSTO PIXEL-WISE
+--------------------------------------------------------------------------------
+
+Una precisazione matematica importante, che vale la pena rendere esplicita
+in sede di relazione/discussione: la componente di fedeltà pixel-per-pixel
+usata in questo script (e in tutto il progetto) è la L1 Loss (Errore Medio
+Assoluto, MAE), NON la MSE (Mean Squared Error, L2 Loss).
+
+La differenza non è puramente stilistica, ma ha una conseguenza pratica
+diretta sulla qualità visiva del risultato:
+
+  - La MSE eleva al quadrato ogni errore pixel-per-pixel. Questo significa
+    che un errore grande (ad esempio, sbagliare completamente il colore di
+    una piccola regione ad alto contrasto, come il bordo netto di una
+    banda di colore) viene penalizzato in modo QUADRATICO, non lineare. Per
+    minimizzare questa penalità enorme, la rete è matematicamente
+    incentivata a "giocare sul sicuro": anziché rischiare un bordo netto
+    che potrebbe essere leggermente disallineato rispetto al target (e
+    quindi generare un errore quadratico enorme in quella zona), la rete
+    preferisce sfumare la transizione, producendo la caratteristica "nebbia"
+    o "foschia" cromatica diffusa attorno ai bordi — un fenomeno
+    tipicamente osservato quando si allena un modello generativo con la
+    sola MSE, ed esplicitamente richiamato come lezione appresa da un
+    precedente esperimento del progetto.
+
+  - La L1, penalizzando invece linearmente ogni errore assoluto, non ha
+    questo stesso incentivo esasperato a "giocare sul sicuro": tollera
+    meglio i contrasti netti tra regioni di colore diverso, permettendo
+    alla rete di produrre bordi più definiti — un requisito particolarmente
+    importante in questo progetto, dove i bordi netti corrispondono
+    spesso a strutture anatomiche reali (il profilo di un'ala, il margine
+    di una zampa) che è essenziale preservare con precisione.
+
+Questa scelta, già presente nella baseline (train_baseline.py), viene qui
+mantenuta e ulteriormente rinforzata dal peso lambda_L1=100, e resta
+complementare — non alternativa — alla componente avversaria discussa al
+punto 2: la L1 garantisce la fedeltà strutturale/cromatica di base, mentre
+il Discriminatore aggiunge lo strato di realismo percettivo che né L1 né
+MSE, da sole, potrebbero fornire.
+
+--------------------------------------------------------------------------------
+7. CONFRONTO CON LE DUE VERSIONI PRECEDENTI DEL PROGETTO
+--------------------------------------------------------------------------------
+
+    Aspetto                Baseline            ControlNet+SD        Pix2Pix GAN (qui)
+    Generatore              U-Net 3 livelli     U-Net pre-addestrata  U-Net 6 livelli
+                            (from scratch)      + ControlNet          (from scratch)
+    Discriminatore           Assente             Assente               PatchGAN (70x70)
+    Loss principale           L1 pura             MSE sul rumore        BCE (GAN) + L1*100
+                                                   (obiettivo DDPM)
+    Parametri addestrati       Tutti               Solo ControlNet       Tutti (G) + Tutti (D)
+    Learning rate               0.001 (disallineato  1e-4                 0.0002 (corretto,
+                                dallo standard)                           standard Pix2Pix)
+    Batch size                  16                   4                    8
+    Epoche massime               1000                 2000                 2000
+    Patience                     200                  250                  500
+    Criterio salvataggio          Loss ultimo batch    Media loss epoca     L1 pura media epoca
+                                                                            (mai la loss GAN)
+    Effetto atteso sull'output    Blurring (media       Texture nitide via   Texture nitide via
+                                  statistica dei         processo di          competizione
+                                  pixel)                  denoising            avversaria
+
+Questa tabella costituisce, nel complesso delle tre documentazioni prodotte
+per il progetto, il quadro riassuntivo dell'intero ablation study: tre
+strategie generative radicalmente diverse (regressione pura, diffusione
+latente pre-addestrata, addestramento avversario), applicate allo stesso
+dataset e allo stesso task, che permettono un confronto sperimentale
+solido sia in termini quantitativi (le rispettive curve di loss/L1) sia
+qualitativi (l'ispezione visiva dei collage generati periodicamente da
+ciascuno script).
+
+--------------------------------------------------------------------------------
+8. CRITICITÀ E POSSIBILI ESTENSIONI (INCLUSO IL BONUS LPIPS/FID)
+--------------------------------------------------------------------------------
+
+  a) Nessun validation set esplicito: come nei due script precedenti, sia
+     l'ottimizzazione sia l'early stopping avvengono sugli stessi dati di
+     training, senza un insieme di validazione separato.
+
+  b) Il criterio di salvataggio basato sulla L1 pura, per quanto
+     correttamente motivato (vedi punto 5.5-5.6), resta comunque una
+     metrica puramente pixel-wise: due immagini possono avere una distanza
+     L1 identica pur avendo una qualità percettiva molto diversa (una
+     leggermente sfocata ma ben allineata, l'altra nitida ma con un
+     piccolo disallineamento spaziale potrebbero avere la stessa L1 media).
+     La L1 è quindi il criterio di salvataggio più OGGETTIVO e stabile
+     disponibile in questo script, ma non necessariamente il più
+     rappresentativo della qualità visiva percepita da un osservatore
+     umano.
+
+  c) ESTENSIONE SUGGERITA (livello tesi): per una valutazione più rigorosa
+     della qualità finale del modello, oltre alla L1 usata per il
+     salvataggio in-training, si potrebbero calcolare a posteriori — sul
+     miglior checkpoint selezionato — metriche percettive dedicate come
+     LPIPS (Learned Perceptual Image Patch Similarity, già introdotta e
+     caricata, ma non ancora utilizzata nella loss, nello script
+     ControlNet del progetto) o la FID (Fréchet Inception Distance), che
+     confrontano le immagini non pixel per pixel ma nello spazio delle
+     feature di reti pre-addestrate, offrendo una misura molto più
+     correlata al giudizio visivo umano circa il realismo delle texture
+     generate (pelo, piume, squame). Queste metriche si prestano
+     particolarmente bene a una sezione di VALUTAZIONE FINALE comparativa
+     tra le tre architetture del progetto (baseline, ControlNet+SD,
+     Pix2Pix GAN), complementare al confronto basato sulle sole curve di
+     loss durante il training.
+
+  d) Il piccolo dettaglio sul blocco discriminator_block(128, 256), che usa
+     implicitamente lo stride di default (2) mentre il commento del codice
+     lo descrive come il livello in cui si introduce il "trucco" dello
+     stride=1: è in realtà il blocco SUCCESSIVO (256->512) a impostare
+     esplicitamente stride=1. Un dettaglio puramente di lettura del codice,
+     senza impatto funzionale, ma utile da avere chiaro per una spiegazione
+     precisa dell'architettura in sede di esame.
+
+--------------------------------------------------------------------------------
+9. TABELLA RIEPILOGATIVA DELLE DIMENSIONI DEI TENSORI
+--------------------------------------------------------------------------------
+
+Assumendo immagini di input 512x512x3 (7 dimezzamenti fino al bottleneck):
+
+    Tensore     Canali    Risoluzione (H x W)     Ruolo
+    x           3         512 x 512                 Scheletro (input)
+    e1          64        512 x 512                 Skip 1
+    e2          128       256 x 256                 Skip 2
+    e3          256       128 x 128                 Skip 3
+    e4          512       64  x 64                   Skip 4
+    e5          512       32  x 32                   Skip 5
+    e6          512       16  x 16                   Skip 6
+    b           512       8   x 8                     Bottleneck
+    d6          512       16  x 16                   -
+    d5          512       32  x 32                   -
+    d4          256       64  x 64                   -
+    d3          128       128 x 128                 -
+    d2          64        256 x 256                 -
+    d1          64        512 x 512                 -
+    out         3         512 x 512                 Animale ricostruito
+
+    Discriminatore (input concatenato 6 canali, 512x512):
+    Blocco 1    64        256 x 256   (stride 2, no BatchNorm)
+    Blocco 2    128       128 x 128   (stride 2)
+    Blocco 3    256       128 x 128*  (*se il blocco 128->256 usa stride
+                                        di default 2: 64x64; verificare
+                                        contro il commento del punto 8d)
+    Blocco 4    512       ~64 x 64    (stride 1, invariato rispetto al
+                                        blocco precedente)
+    Output      1         ~63 x 63    (matrice di logits patch-wise)
+
+--------------------------------------------------------------------------------
+10. GLOSSARIO DEI TERMINI CHIAVE
+--------------------------------------------------------------------------------
+
+BCEWithLogitsLoss   Versione numericamente stabile della Binary Cross
+                    Entropy che incorpora al proprio interno la funzione
+                    Sigmoide, evitando di applicarla esplicitamente
+                    all'output della rete prima del calcolo della loss.
+
+Conditional GAN     GAN in cui sia il Generatore sia il Discriminatore
+(cGAN)              ricevono un'informazione di condizionamento aggiuntiva
+                    (qui, lo scheletro), anziché operare in modo puramente
+                    non condizionato.
+
+Detach              Operazione che stacca un tensore dal grafo
+                    computazionale autograd, impedendo che i gradienti si
+                    propaghino a ritroso attraverso di esso.
+
+Dying ReLU          Fenomeno per cui un neurone con attivazione ReLU smette
+                    permanentemente di aggiornarsi perché riceve sempre
+                    gradiente zero, tipicamente perché il suo output è
+                    costantemente negativo prima dell'attivazione.
+
+Early stopping      Interruzione anticipata del training quando una
+                    metrica di riferimento smette di migliorare per un
+                    numero prefissato di epoche (qui, la L1 pura).
+
+FID                 Fréchet Inception Distance: metrica che misura la
+                    distanza tra la distribuzione statistica delle feature
+                    di un insieme di immagini generate e quelle di un
+                    insieme di immagini reali, in uno spazio di feature
+                    prodotto da una rete pre-addestrata (tipicamente
+                    Inception).
+
+LeakyReLU           Variante della ReLU che lascia passare una piccola
+                    frazione (qui, il 20%) dei valori negativi, evitando il
+                    fenomeno del Dying ReLU.
+
+PatchGAN            Discriminatore che produce un giudizio per ciascuna
+                    porzione locale (patch) dell'immagine, anziché un
+                    singolo giudizio globale.
+
+Pix2Pix             Architettura di conditional GAN per image-to-image
+                    translation, che combina un Generatore U-Net, un
+                    Discriminatore PatchGAN e una loss combinata
+                    avversariale + L1.
+
+Regularizzazione L1 Nel contesto di questo script, il termine lambda_L1
+(nel training)     che pesa la componente di fedeltà pixel-wise nella loss
+                    totale del Generatore, per evitare che l'obiettivo
+                    avversario da solo produca output geometricamente
+                    infedeli al target.
+
+Strided convolution Convoluzione con stride maggiore di 1, che riduce la
+                    risoluzione spaziale del tensore direttamente durante
+                    l'operazione di convoluzione, senza bisogno di un
+                    layer di pooling separato.
+
+================================================================================
+FINE DOCUMENTO
+================================================================================

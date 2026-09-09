@@ -1,0 +1,639 @@
+================================================================================
+DOCUMENTAZIONE TECNICA APPROFONDITA
+Modulo: train_baseline.py — Baseline U-Net per Image-to-Image Translation
+Progetto: Ricostruzione dell'aspetto di un animale a partire dal suo scheletro
+================================================================================
+
+--------------------------------------------------------------------------------
+INDICE
+--------------------------------------------------------------------------------
+1.  Scopo del modulo e collocazione nel progetto
+2.  Contesto teorico: image-to-image translation e ablation study
+3.  Analisi dell'architettura SimpleUNet
+    3.1 Filosofia generale: perché una U-Net
+    3.2 Encoder
+    3.3 Bottleneck
+    3.4 Decoder e Skip Connection
+    3.5 Layer di output e normalizzazione
+    3.6 Il blocco convoluzionale (conv_block)
+    3.7 Il metodo forward: flusso computazionale completo
+4.  Analisi della funzione train_model()
+    4.1 Setup del device e riproducibilità hardware
+    4.2 Caricamento del dataset e DataLoader
+    4.3 Istanziazione del modello
+    4.4 Funzione di costo: L1 Loss
+    4.5 Ottimizzatore: Adam
+    4.6 Iperparametri di training
+    4.7 Il ciclo di addestramento (epoche e batch)
+    4.8 I cinque passi della backpropagation
+    4.9 Early stopping e checkpointing
+    4.10 Logging visivo periodico
+    4.11 Salvataggio della curva di apprendimento
+5.  Tabella riepilogativa delle dimensioni dei tensori
+6.  Perché questa è una "baseline": limiti noti dell'architettura
+7.  Collegamento con il resto del progetto (pix2pix, PatchGAN, dataset di 56 specie)
+8.  Possibili estensioni e direzioni di miglioramento
+9.  Glossario dei termini chiave
+
+--------------------------------------------------------------------------------
+1. SCOPO DEL MODULO E COLLOCAZIONE NEL PROGETTO
+--------------------------------------------------------------------------------
+
+Questo script implementa e addestra una rete neurale convoluzionale di tipo
+U-Net "pura" (priva di discriminatore avversariale) per risolvere un compito
+di image-to-image translation: dato in input il rendering di uno scheletro
+animale, la rete deve produrre in output una ricostruzione plausibile
+dell'aspetto esterno dell'animale (pelle, piume, muscolatura, colorazione).
+
+Il modulo rappresenta la BASELINE dell'ablation study del progetto. In un
+ablation study si parte da una versione semplificata del sistema finale
+(qui: solo generatore, solo loss L1, nessun discriminatore) per poi
+confrontarla, in una fase successiva, con la versione completa in stile
+pix2pix (generatore U-Net + discriminatore PatchGAN + loss combinata
+L1 + adversarial). Questo confronto quantitativo è ciò che permette di
+dimostrare, in sede d'esame, il contributo reale della componente
+avversariale rispetto a una semplice regressione pixel-per-pixel.
+
+--------------------------------------------------------------------------------
+2. CONTESTO TEORICO: IMAGE-TO-IMAGE TRANSLATION E ABLATION STUDY
+--------------------------------------------------------------------------------
+
+Il problema affrontato appartiene alla famiglia dei task di "image-to-image
+translation" (Isola et al., "Image-to-Image Translation with Conditional
+Adversarial Networks", CVPR 2017 — il paper di pix2pix), in cui si apprende
+una mappatura tra un dominio A (scheletro) e un dominio B (aspetto esterno),
+condizionata pixel per pixel sull'immagine di input.
+
+In questa baseline, il problema viene trattato come una pura REGRESSIONE
+SUPERVISIONATA: per ogni pixel dell'immagine di output, la rete impara a
+minimizzare la distanza assoluta rispetto al pixel corrispondente
+nell'immagine target (l'animale reale). Non c'è alcun segnale che spinga
+esplicitamente la rete a generare immagini "realistiche" nel senso percettivo
+del termine: la rete è incentivata solo a essere numericamente vicina al
+target, il che — come discusso al punto 6 — porta tipicamente a output
+sfocati (blurring), perché la media statisticamente ottimale di più
+soluzioni plausibili è spesso un'immagine "sfumata".
+
+--------------------------------------------------------------------------------
+3. ANALISI DELL'ARCHITETTURA SimpleUNet
+--------------------------------------------------------------------------------
+
+--- 3.1 Filosofia generale: perché una U-Net ---
+
+La U-Net (Ronneberger et al., 2015, originariamente proposta per la
+segmentazione biomedica) è la scelta architetturale standard per i task di
+image-to-image translation perché risolve un problema strutturale delle
+reti encoder-decoder "a clessidra": la perdita di dettaglio spaziale ad alta
+frequenza durante la fase di compressione (downsampling).
+
+Un encoder-decoder tradizionale comprime l'immagine in un vettore latente a
+bassa risoluzione (il bottleneck) e poi tenta di ricostruire l'immagine
+completa partendo solo da quella rappresentazione compressa. Nella
+ricostruzione di uno scheletro in un animale, questo approccio perderebbe
+i bordi netti delle ossa, dei denti, delle articolazioni: dettagli
+geometrici fondamentali per un output credibile.
+
+La U-Net risolve questo problema introducendo le SKIP CONNECTION: collegamenti
+diretti che "cortocircuitano" l'encoder e il decoder allo stesso livello di
+risoluzione, permettendo alle informazioni ad alta frequenza (bordi, texture,
+contorni) di raggiungere il decoder senza dover attraversare — e quindi senza
+essere degradate da — il collo di bottiglia centrale.
+
+--- 3.2 Encoder ---
+
+L'encoder è composto da tre blocchi convoluzionali (enc1, enc2, enc3),
+ciascuno seguito da un MaxPooling 2x2 che dimezza altezza e larghezza del
+tensore:
+
+    Livello   Canali in ingresso -> uscita   Risoluzione relativa
+    enc1      3   -> 64                       1x  (piena risoluzione)
+    enc2      64  -> 128                      1/2
+    enc3      128 -> 256                      1/4
+
+Il numero di canali raddoppia a ogni livello mentre la risoluzione spaziale
+si dimezza: è il compromesso classico "meno spazio, più semantica". A ogni
+MaxPooling, la rete perde precisione sulla posizione esatta delle feature ma
+guadagna capacità di riconoscere pattern più ampi e astratti (ad esempio,
+la forma complessiva della cassa toracica, piuttosto che il singolo pixel
+di un bordo osseo).
+
+--- 3.3 Bottleneck ---
+
+Il bottleneck (256 -> 512 canali, alla risoluzione più bassa, 1/8 rispetto
+all'originale) rappresenta lo "spazio latente" della rete: qui l'informazione
+non è più un'immagine, ma un insieme astratto di feature semantiche di alto
+livello (es. "geometria compatibile con un quadrupede di grossa taglia").
+È il punto della rete con il maggior numero di canali e la minima
+risoluzione spaziale, e costituisce il collo di bottiglia informativo
+dell'intera architettura.
+
+--- 3.4 Decoder e Skip Connection ---
+
+Il decoder specularmente risale la piramide, utilizzando ConvTranspose2d
+(convoluzione trasposta, detta anche "deconvoluzione") per raddoppiare la
+risoluzione spaziale a ogni passo:
+
+    Livello    Upsampling            Concatenazione skip     Conv risultante
+    upconv3    512 -> 256 (2x2, s2)  + e3 (256 canali)        512 -> 256 (dec3)
+    upconv2    256 -> 128 (2x2, s2)  + e2 (128 canali)        256 -> 128 (dec2)
+    upconv1    128 -> 64  (2x2, s2)  + e1 (64  canali)        128 -> 64  (dec1)
+
+Ad ogni livello, il tensore appena ingrandito viene concatenato lungo l'asse
+dei canali (torch.cat(..., dim=1)) con il tensore corrispondente salvato
+durante la fase di encoder. Questo raddoppia temporaneamente il numero di
+canali (es. 256+256=512 prima di dec3), motivo per cui i blocchi conv_block
+del decoder ricevono in ingresso il doppio dei canali rispetto all'output
+del rispettivo upconv.
+
+Concettualmente: il ramo "upconv" fornisce il contesto semantico globale
+appreso nel bottleneck, mentre il ramo "skip" fornisce i dettagli spaziali
+ad alta risoluzione preservati dall'encoder. Il conv_block successivo fonde
+le due informazioni, sintetizzando un output che è al tempo stesso
+semanticamente coerente e spazialmente preciso.
+
+--- 3.5 Layer di output e normalizzazione ---
+
+L'ultimo layer (final_conv) è una convoluzione 1x1 che proietta i 64 canali
+finali sui 3 canali RGB dell'immagine di output. La scelta del kernel 1x1
+è deliberata: non introduce alcuna informazione spaziale aggiuntiva, si
+limita a ricombinare linearmente (con pesi appresi) le 64 feature map in
+un'unica tripletta di colore per ciascun pixel — è, in sostanza, una somma
+pesata canale per canale.
+
+Segue una funzione di attivazione Tanh, che vincola ogni pixel dell'output
+nell'intervallo [-1, 1]. Questa scelta è coerente con la normalizzazione
+applicata alle immagini target in fase di preprocessing (presumibilmente in
+dataset.py, tramite una trasformazione tipo Normalize(mean=0.5, std=0.5) che
+porta i pixel da [0, 255] a [-1, 1]): è essenziale che il codominio della
+rete (l'intervallo di Tanh) coincida esattamente con il codominio dei
+target, altrimenti la loss L1 non potrebbe mai annullarsi del tutto.
+
+--- 3.6 Il blocco convoluzionale (conv_block) ---
+
+Ogni blocco ricorrente dell'architettura (enc1, enc2, enc3, bottleneck,
+dec3, dec2, dec1) è costruito dal metodo conv_block, che applica in sequenza:
+
+    1. Conv2d(in, out, kernel=3, padding=1)   -> estrazione feature, dimensioni
+                                                   spaziali invariate grazie al
+                                                   padding
+    2. BatchNorm2d(out)                        -> normalizza l'attivazione
+                                                   canale per canale sul batch,
+                                                   stabilizzando e accelerando
+                                                   la convergenza
+    3. ReLU(inplace=True)                      -> non linearità f(x)=max(0,x)
+    4. Conv2d(out, out, kernel=3, padding=1)   -> seconda convoluzione, combina
+                                                   le feature di basso livello
+                                                   appena estratte in pattern
+                                                   leggermente più complessi
+    5. BatchNorm2d(out)
+    6. ReLU(inplace=True)
+
+L'uso di DUE convoluzioni 3x3 in sequenza (anziché una sola) è una scelta
+standard nella letteratura U-Net: aumenta il campo recettivo effettivo del
+blocco (equivalente, in termini di copertura spaziale, a un singolo kernel
+5x5) mantenendo però un numero di parametri e un costo computazionale
+inferiori rispetto a un kernel più grande, oltre a introdurre una
+non-linearità intermedia in più.
+
+--- 3.7 Il metodo forward: flusso computazionale completo ---
+
+Il metodo forward descrive il percorso che un batch di immagini in input
+compie attraverso la rete:
+
+    x (input, scheletro)
+    -> e1 = enc1(x)                              [64  canali, risoluzione 1x]
+    -> e2 = enc2(pool(e1))                        [128 canali, risoluzione 1/2]
+    -> e3 = enc3(pool(e2))                        [256 canali, risoluzione 1/4]
+    -> b  = bottleneck(pool(e3))                  [512 canali, risoluzione 1/8]
+    -> d3 = dec3( cat[ upconv3(b), e3 ] )          [256 canali, risoluzione 1/4]
+    -> d2 = dec2( cat[ upconv2(d3), e2 ] )         [128 canali, risoluzione 1/2]
+    -> d1 = dec1( cat[ upconv1(d2), e1 ] )         [64  canali, risoluzione 1x]
+    -> out = tanh( final_conv(d1) )                [3   canali, risoluzione 1x]
+
+Il tensore e1, e2, e3 vengono "salvati" (tenuti vivi in memoria) durante la
+discesa dell'encoder proprio per poter essere richiamati nella risalita del
+decoder: è l'implementazione concreta delle skip connection descritte al
+punto 3.4.
+
+--------------------------------------------------------------------------------
+4. ANALISI DELLA FUNZIONE train_model()
+--------------------------------------------------------------------------------
+
+--- 4.1 Setup del device e riproducibilità hardware ---
+
+    device = torch.device("cuda") if torch.cuda.is_available() else "cpu"
+
+Selezione automatica del dispositivo di calcolo: se è disponibile una GPU
+compatibile CUDA (nel caso specifico, una RTX 5080), il training verrà
+eseguito su di essa; altrimenti si ricade sulla CPU, con un rallentamento
+di uno o più ordini di grandezza per operazioni convoluzionali di questa
+scala.
+
+La riga os.environ['KMP_DUPLICATE_LIB_OK'] = 'True' in testa al file
+disattiva un controllo di sicurezza di Intel MKL/OpenMP che altrimenti
+solleverebbe un errore quando più librerie (tipicamente PyTorch e
+Matplotlib, entrambe legate a runtime OpenMP) vengono caricate nello stesso
+processo. È una soluzione pragmatica a un problema comune su ambienti Windows
+con Anaconda, ma va segnalato che disabilita un controllo pensato per
+prevenire comportamenti indefiniti in caso di librerie OpenMP realmente
+incompatibili tra loro: in produzione sarebbe preferibile risolvere il
+conflitto a monte (isolando l'ambiente virtuale) piuttosto che sopprimere
+l'avviso.
+
+--- 4.2 Caricamento del dataset e DataLoader ---
+
+    dataset = OsteoDataset(data_dir="OsteoGen/data/processed")
+    dataloader = DataLoader(dataset, batch_size=16, shuffle=True)
+
+Il dataset viene caricato tramite la classe custom OsteoDataset (definita
+altrove, in src/dataset.py), che presumibilmente implementa l'interfaccia
+standard di torch.utils.data.Dataset (__len__ e __getitem__) restituendo
+coppie (scheletro, animale_reale) lette dalla struttura di cartelle
+train/A e train/B in stile pix2pix.
+
+Il DataLoader avvolge il dataset e si occupa di:
+  - raggruppare i campioni in batch di 16 immagini;
+  - mescolare (shuffle=True) l'ordine dei campioni a ogni epoca, per evitare
+    che la rete apprenda un ordine spurio o overfitti su sotto-sequenze
+    correlate (es. tutte le immagini della stessa specie consecutive).
+
+Il valore batch_size=16 è dimensionato per sfruttare la VRAM di una GPU di
+fascia alta (32 GB); su hardware con meno memoria video andrebbe ridotto
+per evitare errori di Out Of Memory.
+
+--- 4.3 Istanziazione del modello ---
+
+    model = SimpleUNet().to(device)
+
+Il metodo .to(device) sposta fisicamente tutti i parametri (pesi e bias)
+del modello sulla memoria del dispositivo selezionato. Da questo punto in
+avanti, ogni tensore che interagisce con il modello (input, target) dovrà
+trovarsi sullo stesso device, pena un RuntimeError di mismatch.
+
+--- 4.4 Funzione di costo: L1 Loss ---
+
+    criterion = nn.L1Loss()
+
+La L1 Loss (Mean Absolute Error) calcola la media delle distanze assolute
+pixel per pixel tra l'immagine generata e l'immagine target:
+
+    L1(y_pred, y_true) = mean( |y_pred - y_true| )
+
+Rispetto alla più comune L2/MSE Loss, la L1 penalizza gli errori in modo
+lineare anziché quadratico. Questo significa che errori grandi (outlier)
+non vengono amplificati in maniera sproporzionata, e la rete non è
+incentivata a "diluire" l'incertezza mediando eccessivamente tra soluzioni
+plausibili diverse. Nella letteratura di image-to-image translation (in
+particolare nel paper di pix2pix), la L1 è preferita alla L2 proprio perché
+tende a produrre immagini meno sfocate e con bordi più netti, a parità di
+assenza di un discriminatore.
+
+--- 4.5 Ottimizzatore: Adam ---
+
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+Adam (Adaptive Moment Estimation) mantiene, per ciascun parametro
+individualmente, una stima adattiva sia del primo momento (la media mobile
+del gradiente, analoga al "momentum" classico) sia del secondo momento (la
+media mobile del quadrato del gradiente, che regola dinamicamente il
+learning rate effettivo). Questo permette ad Adam di accelerare lungo
+direzioni con gradiente costante e stabile, e di frenare automaticamente
+lungo direzioni rumorose o oscillanti, senza richiedere una schedulazione
+manuale del learning rate.
+
+NOTA IMPORTANTE PER LA VALUTAZIONE: il commento nel codice cita
+correttamente il "Golden Standard" della letteratura Pix2Pix, ovvero
+lr = 2e-4 (0.0002) abbinato a beta1 = 0.5 (anziché il default 0.9) per il
+discriminatore/generatore GAN. Tuttavia il valore effettivamente impostato
+nel codice è lr = 0.001 (1e-3), cioè 5 volte più alto dello standard
+citato nel commento, e i parametri beta di Adam sono lasciati ai valori di
+default di PyTorch (0.9, 0.999). Si tratta di un'incoerenza tra commento e
+implementazione che vale la pena segnalare esplicitamente in sede di
+esame: un learning rate più alto può accelerare le prime fasi della
+convergenza ma rischia oscillazioni o instabilità più avanti nel training,
+specie in combinazione con la BatchNorm. Se l'obiettivo è replicare
+fedelmente le condizioni sperimentali di Pix2Pix per un confronto rigoroso
+nell'ablation study, questo valore andrebbe allineato a 0.0002.
+
+--- 4.6 Iperparametri di training ---
+
+    num_epochs = 1000
+    patience   = 200   (early stopping)
+    batch_size = 16
+
+Mille epoche rappresentano un budget di training molto ampio, motivato nel
+commento dalla necessità di portare la loss L1 a valori accettabili con
+questo batch size. Il meccanismo di early stopping (vedi punto 4.9)
+garantisce che il training si interrompa automaticamente prima delle 1000
+epoche qualora la rete smetta di migliorare, evitando sia un consumo
+computazionale inutile sia un possibile overfitting prolungato.
+
+--- 4.7 Il ciclo di addestramento (epoche e batch) ---
+
+Il training è strutturato su due livelli di iterazione annidati:
+
+  - Ciclo ESTERNO (epoche): un'epoca corrisponde a un singolo passaggio
+    completo su tutto il dataset di training.
+  - Ciclo INTERNO (batch): a ogni epoca, il DataLoader suddivide il dataset
+    in mini-batch di 16 immagini; per ciascun batch viene eseguito un ciclo
+    completo di forward + backward + update dei pesi.
+
+Ad ogni epoca, model.train() viene invocato esplicitamente prima del ciclo
+sui batch: questo comunica ai layer BatchNorm2d di comportarsi in modalità
+"addestramento" (calcolando statistiche di media e varianza sul batch
+corrente e aggiornando le statistiche cumulative "running") anziché in
+modalità "inferenza" (dove userebbero le statistiche cumulative già fissate).
+È un passaggio concettualmente fondamentale: dimenticare model.train()/
+model.eval() è uno degli errori più comuni e insidiosi nell'addestramento
+di reti con BatchNorm o Dropout, perché non genera errori espliciti ma
+degrada silenziosamente le prestazioni.
+
+tqdm avvolge il DataLoader per fornire una barra di progresso interattiva
+con il valore della loss corrente (set_postfix), mentre ogni 10 batch viene
+stampato un log testuale esplicito con epoca, indice del batch e valore
+della loss — utile sia per il monitoraggio in tempo reale sia per
+eventuali analisi retrospettive sui log salvati.
+
+--- 4.8 I cinque passi della backpropagation ---
+
+Il cuore matematico del training, esplicitamente numerato nel codice con un
+commento didattico, segue lo schema canonico di PyTorch:
+
+  1. optimizer.zero_grad()
+     Azzera i gradienti accumulati nei tensori dei parametri. È un passo
+     necessario perché, per design, PyTorch ACCUMULA i gradienti a ogni
+     chiamata di .backward() anziché sovrascriverli: senza questo azzeramento
+     esplicito, il gradiente del batch N si sommerebbe a quello dei batch
+     precedenti, corrompendo l'aggiornamento dei pesi.
+
+  2. animali_finti = model(ossa)
+     Il forward pass. Va sottolineato — come correttamente annotato nel
+     codice — che si chiama model(ossa) e non model.forward(ossa)
+     direttamente: il metodo __call__ ereditato da nn.Module esegue hook
+     interni indispensabili (in particolare la costruzione del grafo
+     computazionale autograd) prima di invocare effettivamente forward().
+     Chiamare forward() manualmente produrrebbe un output numericamente
+     identico ma privo del grafo delle operazioni necessario alla successiva
+     backpropagation, causando un errore al momento di loss.backward().
+
+  3. loss = criterion(animali_finti, animali_veri)
+     Calcolo dello scalare di errore (L1 Loss media sul batch) tra output
+     generato e target reale.
+
+  4. loss.backward()
+     Backpropagation: PyTorch percorre a ritroso il grafo computazionale
+     costruito durante il forward pass, applicando la regola della catena
+     per calcolare la derivata parziale della loss rispetto a ciascun
+     parametro addestrabile della rete (i pesi di tutte le Conv2d e
+     ConvTranspose2d).
+
+  5. optimizer.step()
+     Adam utilizza i gradienti appena calcolati (e le proprie stime interne
+     dei momenti) per aggiornare fisicamente il valore di ciascun parametro,
+     nella direzione che riduce la loss.
+
+--- 4.9 Early stopping e checkpointing ---
+
+    if current_loss < best_loss - 0.001:
+        best_loss = current_loss
+        epochs_no_improve = 0
+        torch.save(model.state_dict(), ".../best_unet_baseline.pth")
+    else:
+        epochs_no_improve += 1
+    if epochs_no_improve >= patience:
+        break
+
+Al termine di ogni epoca, la loss dell'ULTIMO batch di quell'epoca (non la
+media di tutti i batch) viene confrontata con la migliore loss osservata
+finora, con una soglia minima di miglioramento richiesta (0.001) per evitare
+che micro-fluttuazioni numeriche resettino il contatore di pazienza.
+
+  - Se c'è un miglioramento significativo, i pesi correnti del modello
+    vengono salvati su disco (checkpointing) sovrascrivendo il file
+    best_unet_baseline.pth, e il contatore epochs_no_improve si azzera.
+  - Se non c'è miglioramento, il contatore aumenta; una volta raggiunta la
+    soglia di patience (200 epoche consecutive senza miglioramento), il
+    training si interrompe anticipatamente.
+
+OSSERVAZIONE METODOLOGICA (utile in sede di esame): utilizzare la loss
+dell'ultimo batch dell'epoca come indicatore per l'early stopping è una
+semplificazione. Un solo batch di 16 immagini è un campione rumoroso della
+performance reale della rete su tutto il dataset; una pratica più robusta,
+specie in un contesto valutativo, sarebbe calcolare la loss media su tutti
+i batch dell'epoca (o, meglio ancora, su un validation set separato dal
+training set) prima di decidere se salvare il checkpoint o incrementare il
+contatore di pazienza. Così com'è, il meccanismo rischia di salvare un
+checkpoint "fortunato" (un batch particolarmente facile) o di innescare
+uno stop anticipato spurio.
+
+--- 4.10 Logging visivo periodico ---
+
+Ogni 10 epoche, il modello viene posto in model.eval() e, all'interno di un
+blocco torch.no_grad() (che disabilita il tracciamento dei gradienti per
+risparmiare memoria e tempo, dato che qui non serve addestrare), viene
+generato un confronto visivo su un singolo batch di esempio:
+
+  1. Le immagini vengono DENORMALIZZATE: dall'intervallo [-1, 1] (dominio di
+     Tanh) all'intervallo [0, 1] richiesto da torchvision.utils.save_image,
+     tramite la trasformazione lineare (x * 0.5) + 0.5.
+  2. Vengono selezionate solo le prime 4 immagini del batch ([:4]), per
+     mantenere il collage leggibile.
+  3. torch.cat concatena, lungo la dimensione del batch (dim=0), tre gruppi
+     di immagini: scheletro di input, animale generato dalla rete, animale
+     reale target — in quest'ordine.
+  4. save_image salva il risultato come griglia PNG (parametro nrow=4,
+     quindi 4 immagini per riga: la griglia risultante avrà 3 righe da 4
+     immagini ciascuna, corrispondenti rispettivamente a input/predizione/
+     target).
+
+Questo meccanismo fornisce un'ispezione visiva qualitativa dell'evoluzione
+del modello nel tempo, complementare alla curva di loss puramente numerica,
+ed è particolarmente prezioso in un task creativo/ricostruttivo come questo,
+dove una loss numerica bassa non garantisce automaticamente un risultato
+percettivamente convincente.
+
+--- 4.11 Salvataggio della curva di apprendimento ---
+
+Al termine del ciclo di training (per esaurimento delle epoche o per early
+stopping), la lista storico_loss — che contiene la loss dell'ultimo batch
+di ciascuna epoca — viene plottata con Matplotlib e salvata come immagine
+(grafico_loss_finale.png). Questo grafico costituisce l'output principale
+dell'ablation study per la baseline: sarà il termine di paragone diretto
+con la curva di loss del modello GAN completo, sviluppato successivamente.
+
+--------------------------------------------------------------------------------
+5. TABELLA RIEPILOGATIVA DELLE DIMENSIONI DEI TENSORI
+--------------------------------------------------------------------------------
+
+Assumendo immagini di input 512x512x3 (come indicato nei commenti del
+codice):
+
+    Tensore        Canali    Risoluzione (H x W)      Ruolo
+    x (input)      3         512 x 512                 Scheletro
+    e1             64        512 x 512                 Skip connection 1
+    pool(e1)       64        256 x 256                 -
+    e2             128       256 x 256                 Skip connection 2
+    pool(e2)       128       128 x 128                 -
+    e3             256       128 x 128                 Skip connection 3
+    pool(e3)       256       64  x 64                   -
+    b (bottleneck) 512       64  x 64                   Spazio latente
+    upconv3(b)     256       128 x 128                 -
+    cat[·, e3]     512       128 x 128                 -
+    d3             256       128 x 128                 -
+    upconv2(d3)    128       256 x 256                 -
+    cat[·, e2]     256       256 x 256                 -
+    d2             128       256 x 256                 -
+    upconv1(d2)    64        512 x 512                 -
+    cat[·, e1]     128       512 x 512                 -
+    d1             64        512 x 512                 -
+    out            3         512 x 512                 Animale ricostruito
+
+--------------------------------------------------------------------------------
+6. PERCHÉ QUESTA È UNA "BASELINE": LIMITI NOTI DELL'ARCHITETTURA
+--------------------------------------------------------------------------------
+
+Questa sezione è pensata per essere spesa esplicitamente in sede di
+presentazione/discussione dell'esame, per dimostrare consapevolezza critica
+del proprio lavoro (elemento spesso premiante nella valutazione):
+
+  a) EFFETTO BLURRING: allenando la rete con la sola L1 Loss, in assenza di
+     un discriminatore, la rete non ha alcun incentivo a produrre texture
+     ad alta frequenza (peli, piume, dettagli fini della pelle). La
+     soluzione statisticamente ottimale per minimizzare l'errore assoluto
+     medio, quando esistono più configurazioni plausibili per una stessa
+     regione dell'immagine, è spesso una media "sfocata" di tali
+     configurazioni. Questo è precisamente il problema che, nell'architettura
+     completa del progetto, la componente avversariale (discriminatore
+     PatchGAN) è pensata per risolvere, penalizzando esplicitamente le
+     immagini che "sembrano finte" indipendentemente dalla loro distanza
+     numerica pixel-per-pixel dal target.
+
+  b) NESSUNA VALIDATION SET ESPLICITA: il ciclo di training, così come
+     scritto, monitora la loss solo sul training set (non emerge dal codice
+     un chiaro split di validazione usato per l'early stopping o per la
+     selezione del checkpoint). Questo rende difficile distinguere un vero
+     miglioramento della capacità di generalizzazione da un progressivo
+     overfitting ai dati di training.
+
+  c) EARLY STOPPING BASATO SU UN SINGOLO BATCH: come discusso al punto 4.9,
+     il criterio di arresto anticipato usa la loss dell'ultimo batch di
+     ogni epoca anziché una media più rappresentativa.
+
+  d) ASSENZA DI DATA AUGMENTATION VISIBILE IN QUESTO FILE: se non
+     implementata internamente a OsteoDataset, la rete vede solo le
+     varianti già pre-generate del dataset (base, noise, rotazione ±45°),
+     il che limita la capacità di generalizzazione rispetto a un
+     augmentation dinamico applicato a runtime.
+
+  e) LEARNING RATE non allineato allo standard Pix2Pix citato nel commento
+     (vedi punto 4.5): 0.001 anziché 0.0002.
+
+--------------------------------------------------------------------------------
+7. COLLEGAMENTO CON IL RESTO DEL PROGETTO
+--------------------------------------------------------------------------------
+
+Questo script si inserisce in un progetto più ampio (repository GitHub
+dedicata) il cui obiettivo finale è, dato lo scheletro di un animale
+qualsiasi — incluse specie estinte come dinosauri e dodo, usate come test
+set out-of-distribution e non incluse nel training — generare una
+ricostruzione plausibile del suo aspetto esterno.
+
+Il dataset è stato costruito manualmente dall'autore, comprende 56 specie
+di vertebrati organizzate per gruppo morfologico, con un'enfasi particolare
+sugli uccelli per il loro legame filogenetico con i teropodi (ad esempio,
+la relazione evolutiva gallina/Tyrannosaurus rex), e segue la struttura a
+cartelle train/val/test con sottocartelle A (scheletro) e B (aspetto),
+tipica dei dataset pix2pix, con 4 varianti per specie (immagine base, con
+rumore, ruotata di -45° e di +45°) e uno split 80/10/10 applicato per
+specie intera (per evitare data leakage tra split).
+
+L'architettura completa prevista per il confronto finale dell'ablation
+study è un conditional GAN in stile pix2pix, con:
+  - Generatore: la stessa U-Net qui documentata (o una sua evoluzione);
+  - Discriminatore: una PatchGAN, che classifica come reali o false porzioni
+    locali (patch) dell'immagine anziché l'immagine nella sua interezza,
+    incentivando texture e dettagli locali realistici;
+  - Loss combinata: L1 (fedeltà pixel-per-pixel, già usata qui) + loss
+    avversariale (realismo percettivo).
+
+Il file qui documentato produce quindi il termine di paragone "senza GAN"
+di questo confronto sperimentale.
+
+--------------------------------------------------------------------------------
+8. POSSIBILI ESTENSIONI E DIREZIONI DI MIGLIORAMENTO
+--------------------------------------------------------------------------------
+
+  - Introdurre un vero validation split e calcolare la loss di validazione
+    a fine epoca per un early stopping più robusto e statisticamente
+    significativo.
+  - Sostituire il criterio di early stopping con la media della loss
+    sull'intera epoca (o su un validation set) anziché sull'ultimo batch.
+  - Allineare il learning rate allo standard di letteratura (2e-4) e i
+    parametri beta di Adam (0.5, 0.999), per garantire un confronto
+    metodologicamente rigoroso con il modello GAN completo nell'ablation
+    study.
+  - Aggiungere metriche percettive oggettive (es. SSIM, PSNR, o — se
+    disponibile un modello pre-addestrato — LPIPS) accanto alla sola L1,
+    per quantificare numericamente l'effetto di blurring discusso al
+    punto 6a.
+  - Salvare anche un checkpoint "ultima epoca" oltre al best checkpoint,
+    per poter analizzare a posteriori eventuali fenomeni di overfitting
+    tardivo.
+  - Loggare la loss su TensorBoard o Weights & Biases per un'analisi più
+    interattiva rispetto al solo grafico Matplotlib statico finale.
+
+--------------------------------------------------------------------------------
+9. GLOSSARIO DEI TERMINI CHIAVE
+--------------------------------------------------------------------------------
+
+Ablation study     Studio sperimentale in cui si rimuovono o si isolano
+                    componenti di un sistema per misurarne il contributo
+                    individuale alla performance complessiva.
+
+Backpropagation     Algoritmo che calcola il gradiente della funzione di
+                    costo rispetto a ciascun parametro della rete,
+                    propagando l'errore all'indietro attraverso il grafo
+                    computazionale tramite la regola della catena.
+
+Batch               Sottoinsieme di campioni del dataset processato
+                    insieme in una singola iterazione di training.
+
+BatchNorm           Layer che normalizza le attivazioni di un mini-batch
+                    (media 0, varianza 1) per canale, stabilizzando e
+                    accelerando la convergenza del training.
+
+Bottleneck          Il punto della rete con la minima risoluzione spaziale
+                    e la rappresentazione più compressa/astratta
+                    dell'informazione.
+
+Checkpoint          Stato salvato dei pesi di un modello in un dato istante
+                    del training, per poterlo ripristinare o riutilizzare.
+
+Early stopping      Tecnica di regolarizzazione che interrompe il training
+                    quando la performance smette di migliorare per un
+                    numero prefissato di epoche (patience).
+
+Epoca               Un singolo passaggio completo della rete su tutto il
+                    dataset di training.
+
+Overfitting         Fenomeno per cui un modello si adatta eccessivamente ai
+                    dati di training, perdendo capacità di generalizzare a
+                    dati mai visti.
+
+PatchGAN            Discriminatore che valuta il realismo di porzioni
+                    locali (patch) dell'immagine anziché dell'immagine
+                    intera, tipico dell'architettura pix2pix.
+
+Skip connection     Collegamento diretto tra layer non adiacenti della
+                    rete (qui, tra encoder e decoder allo stesso livello di
+                    risoluzione) che preserva informazioni altrimenti perse
+                    durante la compressione.
+
+Tensore             Struttura dati multidimensionale (generalizzazione di
+                    scalari, vettori e matrici) usata da PyTorch per
+                    rappresentare dati e parametri.
+
+VRAM                Memoria video della GPU, in cui vengono allocati modello
+                    e dati durante il training accelerato via CUDA.
+
+================================================================================
