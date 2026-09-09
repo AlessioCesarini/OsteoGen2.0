@@ -107,6 +107,26 @@ def stage(description):
         print(f"   done ({time.time() - start:.1f}s)")
 
 
+# Below this average keypoint confidence, the detected shape is probably
+# too unreliable to trust the compatibility percentages that follow -
+# calibrated loosely against real out-of-distribution test images (a T-Rex,
+# a Brachiosaurus) that averaged 0.4-0.5 and produced near-meaningless
+# retrieval results, versus a clean in-distribution match scoring much
+# higher. Tune if it turns out to be too strict/loose in practice.
+LOW_CONFIDENCE_AVG = 0.6
+
+
+def warn_low_confidence(conf_media, conf_minima):
+    message = (f"Low average keypoint confidence (avg {conf_media:.2f}, min {conf_minima:.2f}): "
+               f"the target's shape may be too different from the training set for the "
+               f"network to place all 14 joints reliably. Treat the compatibility "
+               f"percentages below with caution.")
+    if _RICH:
+        _console.print(f"[bold yellow]![/bold yellow] {message}")
+    else:
+        print(f"! {message}")
+
+
 def print_summary(report):
     from display_names import species_name
     ranking = report["ranking_specie"][:8]

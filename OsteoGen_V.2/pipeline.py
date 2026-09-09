@@ -113,14 +113,20 @@ def esegui_pipeline(fossile_path, pesi_path=_PESI_DEFAULT, db_path=_DB_DEFAULT,
 
     # 2. Keypoint detection
     with ui.stage("Detecting the 14 anatomical keypoints (ResNet18)"):
-        coords = estrai_coordinate(target_path, pesi_path)
+        coords, confidenze = estrai_coordinate(target_path, pesi_path, ritorna_confidenza=True)
     n_trovati = sum(1 for v in coords.values() if v is not None)
-    print(f"  {n_trovati}/14 keypoints detected with sufficient confidence.")
+    conf_media = sum(confidenze.values()) / len(confidenze)
+    conf_minima = min(confidenze.values())
+    print(f"  {n_trovati}/14 keypoints detected (average confidence {conf_media:.2f}, "
+          f"minimum {conf_minima:.2f}).")
+    if conf_media < ui.LOW_CONFIDENCE_AVG:
+        ui.warn_low_confidence(conf_media, conf_minima)
 
     # 3. Compatibility
     with ui.stage("Retrieval: computing compatibility against the geometric database"):
         db, fattore_cranio = carica_database(db_path)
         report = genera_report_compatibilita(coords, db, fattore_cranio)
+    report["confidenza_keypoint"] = {"media": round(conf_media, 3), "minima": round(conf_minima, 3)}
     stampa_report(report)
 
     # 4. Readable report

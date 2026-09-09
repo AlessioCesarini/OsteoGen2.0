@@ -59,6 +59,8 @@ h2 { font-size: 1.05rem; margin-top: 2rem; border-bottom: 1px solid #333; paddin
 .donatore { text-align:center; font-size:.75rem; width:78px; }
 .donatore img { width:70px; height:70px; object-fit:contain; background:#000; border-radius:6px; }
 .assente { color:#888; font-style:italic; font-size:.85rem; }
+.confidenza-bassa { background:#3a2c10; border:1px solid #6b4e14; border-radius:6px;
+       padding:.7rem 1rem; margin:1rem 0; font-size:.85rem; color:#f0c674; }
 footer { margin-top:2.5rem; font-size:.75rem; color:#777; }
 """
 
@@ -104,6 +106,16 @@ def genera_report_html(report, db, fossile_path, output_path, titolo="OsteoGen c
 
     fossile_img_tag = f'<img src="{fossile_b64}">' if fossile_b64 else ''
 
+    confidenza = report.get("confidenza_keypoint")
+    banner_confidenza = ""
+    if confidenza:
+        from ui import LOW_CONFIDENCE_AVG
+        if confidenza["media"] < LOW_CONFIDENCE_AVG:
+            banner_confidenza = f"""
+      <div class="confidenza-bassa">Low average keypoint confidence (avg {confidenza['media']:.2f},
+      min {confidenza['minima']:.2f}): the target's shape may be too different from the training
+      set for the network to place all 14 joints reliably. Treat the percentages below with caution.</div>"""
+
     html = f"""<!doctype html>
 <html><head><meta charset="utf-8"><title>{titolo}</title><style>{_CSS}</style></head>
 <body>
@@ -112,6 +124,7 @@ def genera_report_html(report, db, fossile_path, output_path, titolo="OsteoGen c
     <div>
       <h1>{titolo}</h1>
       <div>Compared against {report['n_animali_confrontati']} animals in the geometric database.</div>
+      {banner_confidenza}
     </div>
   </div>
 
