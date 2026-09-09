@@ -12,6 +12,13 @@ opencv-python>=4.9
 Pillow>=10.2
 matplotlib>=3.8
 
+# ui.py: pipeline.py's interactive interface (prompt, spinner, summary).
+# Purely cosmetic: if missing, pipeline.py falls back to plain text status
+# lines - it is not required for the pipeline itself to work. Installed
+# automatically by pipeline.py/bootstrap.py if missing, listed here mainly
+# for the record.
+rich>=13.7
+
 # Fase III - retrieval/compatibilita'
 scipy>=1.12
 

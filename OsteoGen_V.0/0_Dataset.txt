@@ -151,9 +151,3 @@ La verità sul lavoro che ti aspetta
 Nessuna di queste fonti ti darà la coppia "già allineata nella stessa posa" — quello lo dovrai fare tu, immagine per immagine: prendi lo scheletro da una fonte, l'aspetto da un'altra, e li adatti/tagli/ruoti finché non sono ragionevolmente coerenti come inquadratura. È esattamente il lavoro "da scervellarsi" che volevi evitare, ma non c'è scorciatoia reale — è la natura stessa di costruire un dataset ad-hoc per un task che nessuno ha mai affrontato prima in questo modo specifico.
 
 Un'alternativa che ti taglierebbe drasticamente il lavoro, se vuoi valutarla: invece di foto reali per l'aspetto (B), potresti usare illustrazioni scientifiche standardizzate (es. da field guide/atlanti zoologici) — spesso hanno già pose laterali standard coerenti tra specie diverse, il che risolve gran parte del problema di allineamento. Il compromesso è che il tuo modello imparerebbe uno "stile illustrativo" invece che fotorealismo, ma per un esame è assolutamente difendibile e ti fa risparmiare settimane.
-
-
-
-PER ALTRE INFO QUESTA LA CHAT CON CLAUDE
-
-https://claude.ai/share/f621ff4f-3fd1-4c0b-a83b-7f01649d466e

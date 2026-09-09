@@ -38,11 +38,11 @@ def rimuovi_sfondo(img_bgr):
         rgb = cv2.cvtColor(rgba[:, :, :3], cv2.COLOR_RGB2BGR)
         return (rgb * alpha).astype(np.uint8)
     except ImportError:
-        print("[preprocess] 'rembg' non installato, uso il fallback GrabCut "
-              "(meno preciso: aggiungi 'rembg' a requirements.txt per un risultato migliore).")
+        print("[preprocess] 'rembg' not installed, using the GrabCut fallback "
+              "(less accurate: add 'rembg' to requirements.txt for a better result).")
         return _rimuovi_sfondo_grabcut(img_bgr)
     except Exception as e:
-        print(f"[preprocess] Rimozione sfondo fallita ({e}), uso l'immagine originale.")
+        print(f"[preprocess] Background removal failed ({e}), using the original image.")
         return img_bgr
 
 
@@ -78,7 +78,7 @@ def prepara_immagine_target(input_path, output_path, target_size=512,
                              rimuovi_sfondo_flag=False, canonicalizza_flag=False):
     img = cv2.imread(input_path)
     if img is None:
-        print(f"Errore: Impossibile caricare l'immagine da {input_path}")
+        print(f"Error: could not load the image from {input_path}")
         return None
 
     if rimuovi_sfondo_flag:
@@ -97,7 +97,7 @@ def prepara_immagine_target(input_path, output_path, target_size=512,
     canvas[y_offset:y_offset + new_h, x_offset:x_offset + new_w] = img_resized
 
     cv2.imwrite(output_path, canvas)
-    print(f"Immagine pre-processata salvata in: {output_path}")
+    print(f"Preprocessed image saved to: {output_path}")
     return output_path
 
 

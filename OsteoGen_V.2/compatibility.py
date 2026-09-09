@@ -158,21 +158,24 @@ def genera_report_compatibilita(coords_target, db, fattore_calibrazione_cranio=N
 
 
 def stampa_report(report):
-    print("\n--- COMPATIBILITA' COMPLESSIVA (sagoma intera) ---")
-    for r in report["ranking_specie"]:
-        print(f"  {r['animale']:<25} {r['compatibilita_pct']:5.1f}%  "
-              f"(punti condivisi: {r['punti_comuni']})")
+    from display_names import species_name, segment_name
 
-    print("\n--- MIGLIOR DONATORE PER SEGMENTO ANATOMICO ---")
+    print("\n--- OVERALL COMPATIBILITY (whole shape) ---")
+    for r in report["ranking_specie"]:
+        print(f"  {species_name(r['animale']):<25} {r['compatibilita_pct']:5.1f}%  "
+              f"(shared points: {r['punti_comuni']})")
+
+    print("\n--- BEST DONOR PER ANATOMICAL SEGMENT ---")
     for parte, dati in report["per_segmento"].items():
+        etichetta = segment_name(parte).upper()
         if not dati["presente_nel_target"]:
-            print(f"  {parte.upper()}: assente nel target.")
+            print(f"  {etichetta}: absent in target.")
             continue
         if not dati["donatori"]:
-            print(f"  {parte.upper()}: nessun donatore compatibile trovato.")
+            print(f"  {etichetta}: no compatible donor found.")
             continue
         top = dati["donatori"][0]
-        print(f"  {parte.upper()}: {top['animale']} ({top['compatibilita_pct']:.1f}%)")
+        print(f"  {etichetta}: {species_name(top['animale'])} ({top['compatibilita_pct']:.1f}%)")
 
 
 if __name__ == "__main__":
@@ -183,7 +186,7 @@ if __name__ == "__main__":
     pesi = os.path.join(_base_dir, "training_outputs_2", "Weights", "best_keypoint_detector.pth")
     db_path = os.path.join(_base_dir, "data", "processed", "geometric_database.json")
 
-    print("Estrazione coordinate del target in corso...")
+    print("Extracting target coordinates...")
     coords_target = estrai_coordinate(target_path, pesi, threshold=0.20)
 
     db, fattore_cranio = carica_database(db_path)

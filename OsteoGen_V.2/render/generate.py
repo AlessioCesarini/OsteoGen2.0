@@ -9,9 +9,9 @@ con un rendering via diffusione locale, condizionato da:
   vincola posa e proporzioni al fossile reale.
 - IP-Adapter sulle foto dei migliori donatori (report["ranking_specie"]):
   da' al modello un riferimento visivo di texture/colore, pesato per
-  compatibilita' - la stessa idea dell'esperimento manuale con ChatGPT
-  (es. 50% aquila + 30% pollo + 20% altro), ma con pesi aperti eseguiti
-  in locale, niente API a pagamento.
+  compatibilita' - la stessa idea del primo esperimento manuale fatto con
+  un tool di generazione immagini generico (es. 50% eagle + 30% chicken +
+  20% altro), ma con pesi aperti eseguiti in locale, niente API a pagamento.
 - Un prompt testuale costruito automaticamente dal report, come guida
   aggiuntiva (debole rispetto a ControlNet+IP-Adapter, ma aiuta lo stile).
 
@@ -44,9 +44,14 @@ MAX_IMMAGINI_MEDIA_PESATA = 10    # quante copie totali nella lista "pesata per 
 def costruisci_prompt(report, max_specie=3):
     """Prompt testuale di supporto: da solo non basta a garantire coerenza
     (per quello ci sono ControlNet e IP-Adapter), ma aiuta lo stile
-    complessivo e da' un fallback leggibile se IP-Adapter non e' disponibile."""
+    complessivo e da' un fallback leggibile se IP-Adapter non e' disponibile.
+
+    Il prompt va in inglese (SD1.5 e' addestrato su caption inglesi: un
+    prompt italiano peggiora l'adesione del modello), quindi i nomi delle
+    specie del DB (in italiano) sono tradotti con display_names."""
+    from display_names import species_name
     top = report["ranking_specie"][:max_specie]
-    mix = ", ".join(f"{r['compatibilita_pct']:.0f}% {os.path.splitext(r['animale'])[0]}" for r in top)
+    mix = ", ".join(f"{r['compatibilita_pct']:.0f}% {species_name(r['animale'])}" for r in top)
     prompt = (
         f"a photorealistic reconstruction of a prehistoric animal, anatomical and textural "
         f"blend of {mix}, detailed skin/feather/scale texture, natural daylight, "
@@ -138,8 +143,8 @@ def genera_render(coords_target, report, db, pipeline=None, device="cuda",
     if immagini_riferimento:
         pipe.set_ip_adapter_scale(ip_adapter_scale)
     else:
-        print("[render] Nessuna immagine di riferimento disponibile per IP-Adapter: "
-              "il render si basera' solo su ControlNet + prompt testuale.")
+        print("[render] No reference image available for IP-Adapter: "
+              "the render will rely on ControlNet + text prompt only.")
 
     prompt, negative_prompt = costruisci_prompt(report)
 
@@ -166,7 +171,7 @@ def genera_render(coords_target, report, db, pipeline=None, device="cuda",
 def salva_render(immagine, output_path):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     immagine.save(output_path)
-    print(f"Render salvato in: {output_path}")
+    print(f"Render saved to: {output_path}")
     return output_path
 
 
@@ -190,8 +195,8 @@ if __name__ == "__main__":
     from inference import estrai_coordinate
     from compatibility import carica_database, genera_report_compatibilita
 
-    parser = argparse.ArgumentParser(description="Genera il render finale da un fossile.")
-    parser.add_argument("--fossile", required=True, help="Immagine del fossile/scheletro (gia' preprocessata)")
+    parser = argparse.ArgumentParser(description="Generate the final render from a fossil.")
+    parser.add_argument("--fossile", required=True, help="Fossil/skeleton image (already preprocessed)")
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--seed", type=int, default=None)
     args = parser.parse_args()

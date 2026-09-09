@@ -61,17 +61,17 @@ def estrai_coordinate(image_path, model_path, img_size=512, threshold=0.2, ritor
     return coordinate_estratte
 
 if __name__ == "__main__":
-    # Percorsi di test
+    # Test paths
     _base_dir = os.path.dirname(os.path.abspath(__file__))
     pesi = os.path.join(_base_dir, "training_outputs_2", "Weights", "best_keypoint_detector.pth")
 
-    # Scegli una foto di uno scheletro a caso dal dataset per testare
+    # Pick a random skeleton photo from the dataset to test with
     immagine_test = os.path.join(_base_dir, "data", "processed", "input_x", "aquila.png")
-    
+
     if os.path.exists(immagine_test) and os.path.exists(pesi):
         coords = estrai_coordinate(immagine_test, pesi)
-        print("Coordinate estratte dalla rete:")
+        print("Coordinates extracted by the network:")
         for punto, val in coords.items():
             print(f"{punto}: {val}")
     else:
-        print("Inserisci il nome di un'immagine di test valida nel percorso.")
+        print("Point to a valid test image path.")
