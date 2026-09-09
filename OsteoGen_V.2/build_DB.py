@@ -20,6 +20,14 @@ from geometry import (
 from dataset_paths import to_relative
 
 
+# Extinct/target species kept in input_x + Labels_X only to give the
+# keypoint DETECTOR a few more body plans to train on (see train.py):
+# they are never real "donors" (no living photo, no texture to blend),
+# so they must stay out of the retrieval database and out of the
+# skull/torso calibration statistic below.
+ESCLUSI_DAL_DB = {"trex.png", "brachiosauro.png"}
+
+
 def costruisci_database():
     _base_dir = os.path.dirname(os.path.abspath(__file__))
     img_dir_x = os.path.join(_base_dir, "data", "processed", "input_x")
@@ -27,7 +35,8 @@ def costruisci_database():
     json_dir_x = os.path.join(_base_dir, "data", "processed", "Labels_X")
     out_json = os.path.join(_base_dir, "data", "processed", "geometric_database.json")
 
-    immagini = sorted(f for f in os.listdir(img_dir_x) if f.endswith(('.png', '.jpg')))
+    immagini = sorted(f for f in os.listdir(img_dir_x)
+                       if f.endswith(('.png', '.jpg')) and f not in ESCLUSI_DAL_DB)
     database = {}
     saltati = []
 
