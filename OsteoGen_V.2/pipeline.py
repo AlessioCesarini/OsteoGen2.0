@@ -27,6 +27,26 @@ Steps:
 import os
 import sys
 
+# Windows: a duplicate OpenMP runtime (PyTorch's bundled copy clashing with
+# another package's, e.g. numpy/matplotlib) makes Intel's runtime abort the
+# whole process with "OMP: Error #15" - right after the render, before the
+# final report/comparison get shown. This is the standard workaround; it
+# must be set before torch/numpy/matplotlib are imported anywhere in the
+# process, so it has to happen here, before any of pipeline.py's own imports.
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+
+if sys.platform == "win32":
+    # Legacy Windows consoles (PowerShell, Anaconda Prompt) often use a
+    # non-UTF-8 codepage, which garbles rich's Unicode box-drawing table
+    # into mojibake. Force UTF-8 for both the console and Python's own
+    # stdout/stderr.
+    os.system("chcp 65001 >nul")
+    for _stream in (sys.stdout, sys.stderr):
+        try:
+            _stream.reconfigure(encoding="utf-8")
+        except Exception:
+            pass
+
 _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, _BASE_DIR)
 
