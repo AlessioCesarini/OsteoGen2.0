@@ -1,0 +1,581 @@
+RIEPILOGO TECNICO DI OSTEOGEN_V.2
+================================
+
+OsteoGen_V.2 e' una pipeline sperimentale che parte dall'immagine di uno scheletro o fossile e produce:
+
+1. i 14 keypoint anatomici principali;
+2. un confronto geometrico con gli animali presenti nel database;
+3. un report in formato JSON e HTML;
+4. opzionalmente, una ricostruzione generativa dell'animale tramite Stable Diffusion, ControlNet e IP-Adapter.
+
+Le percentuali prodotte dal sistema non sono probabilita' biologiche e non sono classificazioni tassonomiche. Rappresentano similarita' geometriche tra sagome normalizzate.
+
+
+1. PIPELINE COMPLETA
+====================
+
+Il flusso principale e' definito in pipeline.py:
+
+    immagine fossile
+        -> preprocessing
+        -> rilevamento keypoint
+        -> normalizzazione geometrica
+        -> confronto con il database
+        -> report JSON/HTML
+        -> render generativo opzionale
+
+Esempio di esecuzione:
+
+    python pipeline.py --fossile input/mio_fossile.jpg --no-render
+
+Con l'opzione --no-render vengono generati solo i report. Non servono i modelli di Stable Diffusion e non e' necessaria una GPU NVIDIA.
+
+L'entry point pipeline.py esegue questi passaggi:
+
+1. prepara l'immagine target;
+2. estrae i keypoint con la rete neurale;
+3. confronta il target con il database geometrico;
+4. salva il report JSON;
+5. genera una pagina HTML leggibile;
+6. se richiesto, genera il render finale.
+
+I percorsi predefiniti sono:
+
+- pesi della rete: training_outputs_2/Weights/best_keypoint_detector.pth;
+- database: data/processed/geometric_database.json;
+- output: outputs/.
+
+
+2. DATASET
+==========
+
+Il dataset principale contiene circa 65 animali e comprende:
+
+- data/processed/input_x/: immagini degli scheletri;
+- data/processed/target_y/: immagini degli animali vivi, usate come riferimento visivo;
+- data/processed/Labels_X/: annotazioni JSON dei keypoint;
+- data/processed/Heatmap_Checks/: controlli visivi delle heatmap;
+- data/processed/geometric_database.json: database derivato per il retrieval.
+
+Per ogni animale esiste quindi una relazione tra:
+
+    scheletro + annotazione geometrica + immagine dell'animale vivo
+
+Il file metadata.csv documenta soprattutto fonti e categorie, ma non viene utilizzato direttamente dalla pipeline principale.
+
+La cartella 0.preliminar_Dataset/ contiene strumenti della fase preliminare:
+
+- separazione dei file;
+- preprocessing delle immagini;
+- vecchio dataset paired X/Y.
+
+
+3. ANNOTAZIONE DEI KEYPOINT
+===========================
+
+Il modulo keypoints.py permette di annotare manualmente 14 punti anatomici:
+
+1. punta_muso;
+2. retro_cranio;
+3. base_collo;
+4. spalla;
+5. gomito_ant_1;
+6. gomito_ant_2;
+7. zampa_ant;
+8. dorso;
+9. anca;
+10. ginocchio_post_1;
+11. ginocchio_post_2;
+12. zampa_post;
+13. base_coda;
+14. punta_coda.
+
+Un punto vicino all'origine dell'immagine viene interpretato come assente e salvato come null. Questo consente di rappresentare animali senza coda, arti mancanti o anatomie incomplete.
+
+Le annotazioni vengono salvate in file JSON nella cartella data/processed/Labels_X/.
+
+Limiti dell'annotazione:
+
+- non viene verificato automaticamente che tutti i 14 click siano stati inseriti;
+- non esiste una validazione completa delle coordinate fuori immagine;
+- la gestione del flip orizzontale puo' avere una differenza di un pixel rispetto alla convenzione ideale;
+- non viene controllata la coerenza anatomica dei punti.
+
+
+4. PREPROCESSING
+================
+
+Il modulo preprocess_target.py prepara le immagini esterne per l'inferenza.
+
+Le operazioni disponibili sono:
+
+- rimozione dello sfondo tramite rembg;
+- fallback con OpenCV GrabCut se rembg non e' disponibile;
+- canonicalizzazione tramite bordi Canny;
+- ridimensionamento mantenendo le proporzioni;
+- letterboxing su una tela nera da 512x512 pixel.
+
+Il letterboxing evita di deformare lo scheletro. L'immagine viene ridimensionata in modo che il lato maggiore sia 512 pixel e poi centrata su uno sfondo nero.
+
+Rimozione dello sfondo
+----------------------
+
+Se rembg e' installato, viene usato per isolare il soggetto. Altrimenti viene usato GrabCut, che assume che il soggetto sia centrato e occupi quasi tutta l'immagine.
+
+Il fallback GrabCut puo' fallire con:
+
+- fotografie museali complesse;
+- fossili con sfondi irregolari;
+- soggetti decentrati;
+- immagini in cui lo sfondo e il soggetto hanno colori simili.
+
+Canonicalizzazione Canny
+------------------------
+
+La canonicalizzazione fonde l'immagine originale con i suoi bordi Canny. L'obiettivo e' ridurre la differenza tra fotografie reali e immagini stilizzate usate nel training.
+
+Questa trasformazione puo' essere applicata anche durante il training come augmentation.
+
+
+5. DATASET PYTORCH E HEATMAP
+============================
+
+Il modulo heatmap.py definisce SkeletonKeypointDataset.
+
+Per ogni immagine il dataset:
+
+- carica il file JSON corrispondente;
+- applica eventualmente augmentation;
+- ridimensiona l'immagine a 512x512;
+- converte l'immagine in tensore;
+- normalizza i canali RGB con media 0.5 e deviazione standard 0.5;
+- converte ogni keypoint in una heatmap gaussiana.
+
+Dimensioni dei tensori:
+
+    immagine: [3, 512, 512]
+    heatmap:  [14, 512, 512]
+
+Ogni keypoint valido genera una gaussiana con sigma=5. I punti mancanti generano un canale completamente vuoto.
+
+Le augmentation disponibili sono:
+
+- flip orizzontale;
+- variazioni di luminosita', contrasto e saturazione;
+- desaturazione;
+- blend occasionale con i bordi Canny.
+
+Il modulo check_heatmap.py somma i 14 canali e li sovrappone all'immagine per verificare visivamente l'allineamento delle annotazioni.
+
+Il controllo aggregato e' utile per vedere la forma generale, ma non consente di verificare separatamente ogni keypoint.
+
+
+6. RETE NEURALE
+===============
+
+Il modulo resnet.py definisce ResNet18KeypointDetector.
+
+L'architettura comprende:
+
+- encoder ResNet18 pretrained su ImageNet;
+- rimozione del pooling globale e del classificatore;
+- decoder composto da cinque ConvTranspose2d;
+- output finale con 14 canali.
+
+Il percorso delle risoluzioni e':
+
+    512x512 -> 256x256 -> 128x128 -> 64x64 -> 32x32 -> 16x16
+
+L'encoder produce feature 16x16x512. Il decoder ricostruisce una predizione con shape:
+
+    [batch, 14, 512, 512]
+
+La rete genera una heatmap per ciascun keypoint.
+
+Discrepanza importante
+----------------------
+
+La documentazione descrive una Sigmoid finale, ma il codice attuale non la usa. L'ultimo layer produce valori grezzi, non necessariamente compresi tra 0 e 1.
+
+Questo rende meno solida la soglia di confidenza 0.2 usata durante l'inferenza, perche' il valore non ha una vera interpretazione probabilistica.
+
+
+7. TRAINING
+===========
+
+Il training e' implementato in train.py.
+
+Configurazione principale:
+
+- batch size: 16;
+- massimo: 400 epoche;
+- optimizer: AdamW;
+- learning rate: 1e-4;
+- weight decay: 1e-4;
+- scheduler: ReduceLROnPlateau;
+- gradient clipping: massimo 1.0;
+- early stopping: pazienza 25.
+
+Weighted MSE Loss
+-----------------
+
+La loss assegna un peso maggiore ai pixel che appartengono alle gaussiane dei keypoint:
+
+- peso 50 sui pixel con heatmap > 0.05;
+- peso 1 sugli altri pixel.
+
+L'obiettivo e' evitare che la rete impari una soluzione banale in cui predice quasi tutto sfondo.
+
+Output del training
+-------------------
+
+Vengono salvati:
+
+- training_outputs_2/Weights/best_keypoint_detector.pth;
+- training_outputs_2/Weights/checkpoint_latest.pth;
+- render di confronto per le epoche migliori;
+- training_outputs_2/loss_curve.png.
+
+Il checkpoint contiene modello, optimizer, epoca, loss migliore e storico della loss.
+
+Limiti del training
+-------------------
+
+- non esiste un vero validation set;
+- scheduler ed early stopping osservano solo la loss sul training set;
+- la generalizzazione non viene misurata;
+- il dataset e' piccolo;
+- non viene calcolato un errore medio in pixel;
+- non viene calcolata una metrica PCK;
+- il checkpoint non salva lo stato dello scheduler;
+- il resume puo' creare problemi cambiando dispositivo;
+- i pesi ResNet pretrained richiedono un download iniziale;
+- le augmentation casuali rendono il training meno riproducibile.
+
+
+8. INFERENZA
+============
+
+Il modulo inference.py carica la rete e analizza un'immagine.
+
+Per ciascuna heatmap:
+
+1. trova il valore massimo;
+2. salva il massimo come confidenza;
+3. considera il punto valido se supera threshold=0.2;
+4. converte la posizione da coordinate (y,x) a (x,y);
+5. rimappa la coordinata dalla griglia 512x512 alle dimensioni originali.
+
+Il modulo puo' restituire sia le coordinate sia le confidenze.
+
+Limiti dell'inferenza:
+
+- argmax trova comunque un punto anche quando la heatmap e' piatta o rumorosa;
+- la soglia 0.2 non e' calibrata come probabilita' perche' manca la Sigmoid;
+- non viene verificata la coerenza anatomica dell'intero scheletro;
+- non vengono rilevati punti geometricamente impossibili;
+- non viene calcolata l'incertezza spaziale;
+- non esiste un controllo automatico sulla qualita' della predizione;
+- saltare il preprocessing su immagini non quadrate puo' alterare la geometria.
+
+
+9. NORMALIZZAZIONE GEOMETRICA
+=============================
+
+Il modulo geometry.py e' la fonte comune per la struttura anatomica.
+
+I punti sono divisi in cinque segmenti:
+
+- testa;
+- torso;
+- arto anteriore;
+- arto posteriore;
+- coda.
+
+La normalizzazione esegue questi passaggi:
+
+1. trasla l'origine alla base del collo;
+2. usa come scala la distanza base_collo -> base_coda;
+3. se il torso non e' disponibile, usa la lunghezza del cranio;
+4. converte il cranio in un torso equivalente tramite un fattore medio calcolato dal dataset.
+
+In questo modo animali di dimensioni e immagini differenti diventano confrontabili.
+
+Le lunghezze dei segmenti vengono calcolate sommando i collegamenti tra keypoint consecutivi, invece di usare solo la distanza diretta tra gli estremi.
+
+Questo e' importante soprattutto per il torso: la distanza diretta collo-coda sarebbe quasi sempre uguale alla scala scelta e quindi poco discriminante. La catena completa riflette invece la curvatura e la forma del dorso.
+
+
+10. DATABASE GEOMETRICO
+======================
+
+Il modulo build_DB.py costruisce data/processed/geometric_database.json.
+
+Il database usa le annotazioni manuali e non le predizioni della rete. Questa scelta evita di introdurre rumore negli animali gia' annotati.
+
+Per ogni animale vengono salvati:
+
+- percorso dell'immagine dello scheletro;
+- percorso dell'immagine texture;
+- coordinate grezze;
+- coordinate normalizzate;
+- tipo di ancora usata per la scala;
+- segmentazione anatomica;
+- lunghezze dei segmenti.
+
+Il file contiene anche il fattore di calibrazione cranio/torso:
+
+    {
+      "_meta": {
+        "fattore_calibrazione_cranio": 0.5165
+      },
+      "animali": {}
+    }
+
+Problema dei percorsi
+---------------------
+
+Il database attuale puo' contenere percorsi riferiti alla vecchia directory OsteoGen_2, mentre il progetto attuale usa OsteoGen_V.2.
+
+Questo puo' impedire di trovare:
+
+- texture degli animali;
+- immagini per le thumbnail HTML;
+- immagini per IP-Adapter;
+- immagini per la guida grezza.
+
+Il database dovrebbe essere rigenerato prima di usare in modo affidabile il rendering.
+
+
+11. COMPATIBILITA' GEOMETRICA
+=============================
+
+Il modulo compatibility.py svolge due confronti distinti.
+
+Compatibilita' dell'intero animale
+----------------------------------
+
+La funzione compatibilita_specie:
+
+- normalizza i keypoint del target;
+- confronta i punti condivisi con ogni animale;
+- calcola una distanza RMS;
+- richiede almeno 3 punti comuni;
+- converte le distanze in percentuali tramite softmax;
+- restituisce il ranking.
+
+La temperatura predefinita e' 0.08.
+
+Il report finale conserva i primi 8 animali del ranking globale.
+
+Compatibilita' per segmento
+---------------------------
+
+La funzione compatibilita_per_segmento confronta separatamente:
+
+- testa;
+- torso;
+- arto anteriore;
+- arto posteriore;
+- coda.
+
+Per ogni segmento calcola quali animali hanno proporzioni piu' simili e li usa come possibili donatori di texture.
+
+Struttura del risultato
+-----------------------
+
+    {
+      "ranking_specie": [],
+      "n_animali_confrontati": 65,
+      "per_segmento": {}
+    }
+
+Problema della softmax
+----------------------
+
+La funzione usa direttamente:
+
+    exp(-distanza / temperatura)
+
+Con distanze elevate o temperature basse puo' verificarsi underflow numerico. In quel caso tutti i pesi diventano zero e il codice restituisce una distribuzione uniforme.
+
+Con 65 animali, una distribuzione uniforme vale circa 1.54% per animale.
+
+Di conseguenza, un ranking puo' apparire ordinato ma avere percentuali non realmente informative.
+
+
+12. REPORT
+==========
+
+Il modulo report.py genera:
+
+- report JSON;
+- pagina HTML autonoma.
+
+Il JSON contiene i dati grezzi del retrieval.
+
+La pagina HTML:
+
+- mostra l'immagine del fossile;
+- visualizza le barre delle compatibilita';
+- mostra i migliori donatori per segmento;
+- incorpora le immagini in Base64;
+- puo' essere aperta senza server o dipendenze esterne.
+
+Se una texture manca, il report non si interrompe: mostra un riquadro vuoto.
+
+Il report specifica correttamente che i valori sono similarita' geometriche e non classificazioni scientifiche.
+
+Limiti del report:
+
+- non mostra la confidenza dei keypoint;
+- non mostra quanti punti mancano per segmento;
+- non segnala quando il ranking e' diventato uniforme per underflow;
+- non espone temperatura e scala usate;
+- i nomi derivati dai file non vengono HTML-escaped;
+- i percorsi obsoleti del database fanno sparire le thumbnail.
+
+
+13. CONTROL MAP E VECCHIO WARPING
+=================================
+
+Il modulo render/control_map.py produce una mappa dello scheletro:
+
+- sfondo nero;
+- linee bianche;
+- punti bianchi;
+- polilinee costruite secondo i cinque segmenti anatomici.
+
+Questa immagine e' destinata a ControlNet.
+
+Il modulo conserva anche genera_guida_grezza, che applica il vecchio metodo basato su:
+
+- maschere tubolari;
+- estimateAffinePartial2D;
+- warping affine;
+- composizione delle texture.
+
+Questo collage non e' piu' considerato il risultato finale. E' solo un'eventuale immagine iniziale per img2img.
+
+Il vecchio approccio produceva frammenti incollati perche' una trasformazione affine su pochi punti non e' sufficiente a ricostruire coerentemente un corpo intero.
+
+
+14. RENDER GENERATIVO
+=====================
+
+Il modulo render/generate.py e' lo stadio generativo.
+
+Usa:
+
+- Stable Diffusion 1.5;
+- ControlNet Scribble;
+- IP-Adapter;
+- immagini degli animali donatori;
+- prompt automatico basato sul ranking geometrico.
+
+ControlNet riceve la control map dello scheletro e vincola:
+
+- posa;
+- proporzioni;
+- struttura generale.
+
+IP-Adapter riceve le immagini dei migliori animali compatibili e influenza:
+
+- texture;
+- colore;
+- stile visivo.
+
+Il peso dei donatori viene approssimato ripetendo piu' volte le immagini con compatibilita' maggiore nella lista passata all'IP-Adapter.
+
+Il prompt puo' diventare, per esempio:
+
+    a photorealistic reconstruction ...
+    blend of 50% aquila, 30% pollo, ...
+
+Requisiti del rendering:
+
+- GPU CUDA o acceleratore compatibile;
+- modelli scaricati da Hugging Face;
+- diversi gigabyte di spazio;
+- compatibilita' tra diffusers, PyTorch e IP-Adapter.
+
+Il codice non e' stato verificato end-to-end su una GPU NVIDIA, quindi questa e' la parte piu' sperimentale del progetto.
+
+Possibili problemi:
+
+- firma di load_ip_adapter variabile tra versioni;
+- uso di ip_adapter_image potenzialmente dipendente dalla versione;
+- pipe.to(device) e enable_model_cpu_offload() possono essere ridondanti;
+- il prompt contiene nomi italiani che il modello potrebbe interpretare male;
+- non esiste una metrica automatica di fedelta' allo scheletro;
+- l'IP-Adapter usa riferimenti visivi globali e non texture realmente segmentate.
+
+
+15. STRUMENTI PER AMPLIARE IL DATASET
+=====================================
+
+Il modulo dataset_tools/fetch_wikimedia.py permette di:
+
+- cercare immagini su Wikimedia Commons;
+- visualizzare autore, licenza e dimensioni;
+- scaricare manualmente un'immagine scelta;
+- preprocessarla;
+- registrarla in attributions.csv.
+
+Il download non e' completamente automatico per consentire il controllo manuale di licenze e attribuzioni.
+
+
+16. OUTPUT PRESENTI
+===================
+
+Nella cartella outputs/ sono presenti esempi come:
+
+- immagine preprocessata;
+- report JSON;
+- report HTML;
+- render generativo;
+- control map;
+- heatmap diagnostica.
+
+Nella cartella training_outputs_2/ sono presenti:
+
+- pesi migliori;
+- checkpoint;
+- render delle epoche;
+- curva della loss.
+
+La cartella tests/ contiene immagini di prova come horse.jpg e t-rex.jpg, ma non risultano test automatici con pytest o test numerici completi.
+
+
+17. VALUTAZIONE FINALE
+======================
+
+La parte piu' solida della V.2 e':
+
+    annotazioni
+        -> heatmap
+        -> training keypoint
+        -> normalizzazione geometrica
+        -> retrieval
+        -> report
+
+La parte piu' fragile e':
+
+    predizioni del modello
+        -> percentuali di compatibilita'
+        -> render generativo
+
+Problemi principali:
+
+- database con percorsi obsoleti;
+- modello senza Sigmoid nonostante la documentazione la dichiari;
+- soglia di confidenza non calibrata;
+- assenza di validation set;
+- percentuali softmax potenzialmente uniformi;
+- nessun controllo anatomico delle predizioni;
+- nessun test automatico;
+- rendering generativo non validato su GPU;
+- immagini texture non segmentate realmente per parte anatomica;
+- risultato finale non valutato automaticamente rispetto allo scheletro.
+
+In sintesi, OsteoGen_V.2 e' una prova di concetto completa. La parte di analisi geometrica e' implementata e strutturata, mentre la ricostruzione visiva tramite diffusione e' ancora un prototipo da calibrare e verificare.
