@@ -112,7 +112,7 @@ Finally, the visual reconstruction is handled by an optional generative renderin
 \begin{figure}[htbp]
     \centering
     % Prima immagine (sopra)
-    \begin{overpic}[width=0.99\linewidth]{./Output_Without_prompt.png}
+    \begin{overpic}[width=0.99\linewidth]{./Output_Without_Prompt.png}
     \end{overpic}
     \caption{ControlNet output generated unconditionally (without a text prompt).}
     \label{fig:ablation_no_prompt}
@@ -120,7 +120,7 @@ Finally, the visual reconstruction is handled by an optional generative renderin
     \vspace{0.5cm}
 
     % Seconda immagine (sotto)
-    \begin{overpic}[width=0.99\linewidth]{./Output_With_prompt.png}
+    \begin{overpic}[width=0.99\linewidth]{./Output_With_Prompt.png}
     \end{overpic}
     \caption{ControlNet output generated with a generic text prompt.}
     \label{fig:ablation_with_prompt}
@@ -138,7 +138,7 @@ Finally, the visual reconstruction is handled by an optional generative renderin
 
 \begin{figure}[htbp]
     \centering
-    \begin{overpic}[width=0.99\linewidth]{./controlNET-Depth.png}
+    \begin{overpic}[width=0.99\linewidth]{./ControlNET-Depth.png}
     \end{overpic}
     \caption{Depth-conditioned outputs from the Version 1 ControlNet pipeline.}
     \label{fig:controlnet_depth}
@@ -150,22 +150,6 @@ Finally, the visual reconstruction is handled by an optional generative renderin
     \end{overpic}
     \caption{Final generative rendering of a T-Rex using the Version 2 geometric pipeline.}
     \label{fig:trex_render_v2}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \begin{overpic}[width=0.99\linewidth]{./MAE.png}
-    \end{overpic}
-    \caption{Mean Absolute Error (L1 Loss) convergence for the Version 0 U-Net baseline.}
-    \label{fig:mae_v0}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \begin{overpic}[width=0.99\linewidth]{./ControlNET_V0.png}
-    \end{overpic}
-    \caption{Training loss curve for the Version 0 unconditional ControlNet.}
-    \label{fig:loss_controlnet_v0}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -222,6 +206,22 @@ The research team directed this engineering work, reviewed and tested every chan
 
 \section*{Appendix}
 %
-In case you need an appendix, this is the right place to append it.
+Loss curves for the two Version 0 baselines that were superseded by Version 2 (Section~\ref{sec:method}), kept here rather than in the main body since they document abandoned intermediate steps rather than the final method.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{overpic}[width=0.99\linewidth]{./MAE.png}
+    \end{overpic}
+    \caption{Mean Absolute Error (L1 Loss) convergence for the Version 0 U-Net baseline.}
+    \label{fig:mae_v0}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{overpic}[width=0.99\linewidth]{./ControlNET_V0.png}
+    \end{overpic}
+    \caption{Training loss curve for the Version 0 unconditional ControlNet.}
+    \label{fig:loss_controlnet_v0}
+\end{figure}
 
 \end{document}
