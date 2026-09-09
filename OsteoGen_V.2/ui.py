@@ -173,7 +173,7 @@ def show_final_comparison(panels, output_dir):
 # Set this to a Hugging Face Hub model repo id (e.g. "username/osteogen-keypoint-detector")
 # to have the trained weights download automatically on any machine with
 # internet access. Left empty until the weights are hosted somewhere.
-WEIGHTS_HF_REPO = os.environ.get("OSTEOGEN_WEIGHTS_REPO", "")
+WEIGHTS_HF_REPO = os.environ.get("OSTEOGEN_WEIGHTS_REPO", "markcst/osteogen-keypoint-detector")
 
 
 def resolve_weights_path(default_path):
