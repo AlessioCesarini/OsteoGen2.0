@@ -25,7 +25,7 @@ from dataset_paths import to_relative
 # they are never real "donors" (no living photo, no texture to blend),
 # so they must stay out of the retrieval database and out of the
 # skull/torso calibration statistic below.
-ESCLUSI_DAL_DB = {"trex.png", "brachiosauro.png"}
+ESCLUSI_DAL_DB = {"trex.png", "brachiosauro.png", "triceratops.png"}
 
 
 def costruisci_database():

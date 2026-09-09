@@ -1,0 +1,52 @@
+{
+    "punta_muso": [
+        435,
+        235
+    ],
+    "retro_cranio": [
+        235,
+        130
+    ],
+    "base_collo": [
+        175,
+        170
+    ],
+    "spalla": [
+        115,
+        165
+    ],
+    "gomito_ant_1": [
+        55,
+        210
+    ],
+    "gomito_ant_2": [
+        45,
+        295
+    ],
+    "zampa_ant": [
+        45,
+        380
+    ],
+    "dorso": [
+        140,
+        145
+    ],
+    "anca": [
+        215,
+        200
+    ],
+    "ginocchio_post_1": [
+        205,
+        280
+    ],
+    "ginocchio_post_2": [
+        200,
+        345
+    ],
+    "zampa_post": [
+        198,
+        400
+    ],
+    "base_coda": null,
+    "punta_coda": null
+}
