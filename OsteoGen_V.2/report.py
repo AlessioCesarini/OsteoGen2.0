@@ -65,6 +65,7 @@ footer { margin-top:2.5rem; font-size:.75rem; color:#777; }
 
 def genera_report_html(report, db, fossile_path, output_path, titolo="OsteoGen compatibility report"):
     from display_names import species_name, segment_name
+    from dataset_paths import resolve_dataset_path
 
     fossile_b64 = _thumbnail_base64(fossile_path, max_size=220)
 
@@ -90,7 +91,8 @@ def genera_report_html(report, db, fossile_path, output_path, titolo="OsteoGen c
         donatori_html = []
         for d in dati["donatori"][:5]:
             info = db.get(d["animale"], {})
-            img_b64 = _thumbnail_base64(info.get("path_texture"))
+            texture_path = resolve_dataset_path(info.get("path_texture"), "target_y", d["animale"])
+            img_b64 = _thumbnail_base64(texture_path)
             img_tag = f'<img src="{img_b64}">' if img_b64 else '<div style="width:70px;height:70px;background:#000;border-radius:6px;"></div>'
             nome = species_name(d["animale"])
             donatori_html.append(f"""

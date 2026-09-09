@@ -97,6 +97,8 @@ def genera_guida_grezza(donatori_per_segmento, db, target_coords, target_shape):
     migliore, es. report['per_segmento'][parte]['donatori'][0]['animale']).
     Ritorna un canvas BGR: collage grezzo, SOLO come init-image per
     render/generate.py, non come output finale."""
+    from dataset_paths import resolve_dataset_path
+
     h, w = target_shape[:2]
     canvas = np.zeros((h, w, 3), dtype=np.uint8)
 
@@ -104,7 +106,7 @@ def genera_guida_grezza(donatori_per_segmento, db, target_coords, target_shape):
         if nome_animale is None or nome_animale not in db:
             continue
         dati_animale = db[nome_animale]
-        img_path_y = dati_animale["path_texture"]
+        img_path_y = resolve_dataset_path(dati_animale.get("path_texture"), "target_y", nome_animale)
         if not os.path.exists(img_path_y):
             continue
 

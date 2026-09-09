@@ -17,6 +17,7 @@ from geometry import (
     NOMI_PUNTI, SEGMENTI, normalizza_keypoints, lunghezze_segmenti,
     stima_fattore_calibrazione_cranio,
 )
+from dataset_paths import to_relative
 
 
 def costruisci_database():
@@ -72,8 +73,12 @@ def costruisci_database():
         lunghezze = lunghezze_segmenti(coords)
 
         database[img_name] = {
-            "path_scheletro": path_x,
-            "path_texture": path_y,
+            # Relative to the project root (forward-slash, portable across
+            # OSes/machines) - never an absolute path: geometric_database.json
+            # is committed to the repo and read on whatever machine runs the
+            # pipeline, not just the one that built it.
+            "path_scheletro": to_relative(path_x),
+            "path_texture": to_relative(path_y),
             "coordinate_grezze": coords,
             "coordinate_normalizzate": coords_normalizzati,
             "ancora_scala": ancora,

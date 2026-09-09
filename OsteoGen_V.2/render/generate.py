@@ -83,9 +83,11 @@ def _lista_donatori_pesata(report, db, max_donatori=MAX_DONATORI_IP_ADAPTER,
     pesi = pesi / pesi.sum()
     ripetizioni = np.maximum(1, np.round(pesi * max_immagini).astype(int))
 
+    from dataset_paths import resolve_dataset_path
+
     immagini = []
     for r, n in zip(top, ripetizioni):
-        path = db[r["animale"]]["path_texture"]
+        path = resolve_dataset_path(db[r["animale"]].get("path_texture"), "target_y", r["animale"])
         if not os.path.exists(path):
             continue
         img = Image.open(path).convert("RGB")
@@ -145,6 +147,11 @@ def genera_render(coords_target, report, db, pipeline=None, device="cuda",
     else:
         print("[render] No reference image available for IP-Adapter: "
               "the render will rely on ControlNet + text prompt only.")
+        # carica_pipeline() always loads IP-Adapter, so without this the
+        # UNet still expects image embeds on every call and pipe(...) below
+        # crashes with "argument of type 'NoneType' is not iterable" the
+        # moment there is nothing to condition it on.
+        pipe.unload_ip_adapter()
 
     prompt, negative_prompt = costruisci_prompt(report)
 
