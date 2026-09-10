@@ -133,13 +133,14 @@ def main(image_path, controlnet_path, output_dir):
     plt.tight_layout()
     output_path = os.path.join(output_dir, "ablation_study_results.png")
     plt.savefig(output_path, dpi=300)
-    plt.close()
 
     # Full-resolution single images too.
     image_zero_shot.save(os.path.join(output_dir, "zero_shot_raw.png"))
     image_guided.save(os.path.join(output_dir, "guided_raw.png"))
 
     print(f"Done! Results saved to: {output_dir}/")
+    plt.show()  # opens the comparison grid, same as Version 0's main.py
+                # (used to be plt.close() here, so no window ever appeared)
 
 
 if __name__ == "__main__":
