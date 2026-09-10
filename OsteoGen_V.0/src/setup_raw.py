@@ -25,4 +25,4 @@ for filepath in SRC_DIR.iterdir():
 x_count = len(list(RAW_X.glob("*.png")))
 y_count = len(list(RAW_Y.glob("*.png")))
 
-print(f"Dataset organizzato: {x_count} scheletri in X | {y_count} rendering in Y")
+print(f"Dataset organized: {x_count} skeletons in X | {y_count} renders in Y")

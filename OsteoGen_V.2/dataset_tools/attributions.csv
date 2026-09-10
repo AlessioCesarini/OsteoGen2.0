@@ -1,2 +1,2 @@
-file,tipo,fonte_url,autore,licenza,data_aggiunta,note
-triceratops.png,input_x (solo training keypoint detector, escluso dal DB retrieval),https://commons.wikimedia.org/wiki/File:LA-Triceratops_mount-2.jpg,Allie_Caulfield (foto originale); MathKnight/FunkMonk (derivato),CC BY-SA 3.0,2026-09-09,Sfondo rimosso e letterbox 512x512 via preprocess_target.py; keypoint stimati visivamente e verificati con overlay (non con lo strumento keypoints.py)
+file,type,source_url,author,license,date_added,notes
+triceratops.png,"input_x (keypoint-detector training only, excluded from the retrieval DB)",https://commons.wikimedia.org/wiki/File:LA-Triceratops_mount-2.jpg,Allie_Caulfield (original photo); MathKnight/FunkMonk (derivative),CC BY-SA 3.0,2026-09-09,"Background removed and letterboxed to 512x512 via preprocess_target.py; keypoints estimated visually and verified with an overlay (not with the keypoints.py tool)"

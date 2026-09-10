@@ -1,18 +1,19 @@
 """
 dataset_tools/fetch_wikimedia.py
 
-Aiuto semi-automatico per ampliare input_x/target_y da Wikimedia Commons
-(fonte a licenza aperta verificabile per-immagine). Deliberatamente NON
-scarica nulla in automatico durante la ricerca: elenca i candidati con
-licenza e autore, la scelta di quale scaricare resta manuale.
+Semi-automatic helper to expand input_x/target_y from Wikimedia Commons
+(a source with per-image verifiable open licensing). Deliberately does NOT
+download anything automatically while searching: it lists candidates with
+their license and author, and which one to actually download stays a
+manual decision.
 
-Uso:
-    python dataset_tools/fetch_wikimedia.py cerca "elephant skeleton"
-    python dataset_tools/fetch_wikimedia.py scarica \\
+Usage:
+    python dataset_tools/fetch_wikimedia.py search "elephant skeleton"
+    python dataset_tools/fetch_wikimedia.py download \\
         --url "https://upload.wikimedia.org/.../Elephant_skeleton.jpg" \\
-        --dest ../data/processed/input_x/elefante.png --tipo scheletro \\
-        --autore "Nome Autore" --licenza "CC BY-SA 4.0" \\
-        --fonte-pagina "https://commons.wikimedia.org/wiki/File:..."
+        --dest ../data/processed/input_x/elefante.png --type skeleton \\
+        --author "Author Name" --license "CC BY-SA 4.0" \\
+        --source-page "https://commons.wikimedia.org/wiki/File:..."
 """
 import argparse
 import csv
@@ -44,12 +45,12 @@ def cerca(query, limit=10):
         info = (p.get("imageinfo") or [{}])[0]
         meta = info.get("extmetadata", {})
         risultati.append({
-            "titolo": p.get("title", ""),
-            "url_immagine": info.get("url", ""),
-            "pagina_descrizione": info.get("descriptionurl", ""),
-            "licenza": meta.get("LicenseShortName", {}).get("value", "sconosciuta"),
-            "autore": meta.get("Artist", {}).get("value", "sconosciuto"),
-            "dimensioni": f"{info.get('width', '?')}x{info.get('height', '?')}",
+            "title": p.get("title", ""),
+            "image_url": info.get("url", ""),
+            "description_page": info.get("descriptionurl", ""),
+            "license": meta.get("LicenseShortName", {}).get("value", "unknown"),
+            "author": meta.get("Artist", {}).get("value", "unknown"),
+            "size": f"{info.get('width', '?')}x{info.get('height', '?')}",
         })
     return risultati
 
@@ -71,37 +72,37 @@ def scarica_e_registra(url, dest_path, tipo, fonte_pagina, autore, licenza,
     with open(csv_path, 'a', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         if scrivi_header:
-            writer.writerow(["file", "tipo", "fonte_url", "autore", "licenza", "data_aggiunta", "note"])
+            writer.writerow(["file", "type", "source_url", "author", "license", "date_added", "notes"])
         writer.writerow([os.path.basename(dest_path), tipo, fonte_pagina, autore, licenza,
                           datetime.date.today().isoformat(), ""])
 
-    print(f"Salvato: {dest_path}\nRegistrato in: {csv_path}")
+    print(f"Saved: {dest_path}\nLogged in: {csv_path}")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="comando", required=True)
 
-    p_cerca = sub.add_parser("cerca", help="Elenca candidati su Wikimedia Commons (non scarica nulla).")
+    p_cerca = sub.add_parser("search", help="List candidates on Wikimedia Commons (downloads nothing).")
     p_cerca.add_argument("query")
     p_cerca.add_argument("--limit", type=int, default=10)
 
-    p_scarica = sub.add_parser("scarica", help="Scarica un'immagine gia' scelta e la registra in attributions.csv.")
-    p_scarica.add_argument("--url", required=True, help="URL diretto del file (campo url_immagine di 'cerca').")
-    p_scarica.add_argument("--dest", required=True, help="Percorso di destinazione, es. ../data/processed/input_x/elefante.png")
-    p_scarica.add_argument("--tipo", choices=["scheletro", "animale_vivo"], required=True)
-    p_scarica.add_argument("--autore", default="sconosciuto")
-    p_scarica.add_argument("--licenza", default="sconosciuta")
-    p_scarica.add_argument("--fonte-pagina", default="")
+    p_scarica = sub.add_parser("download", help="Download a chosen image and log it in attributions.csv.")
+    p_scarica.add_argument("--url", required=True, help="Direct file URL (the 'image_url' field from 'search').")
+    p_scarica.add_argument("--dest", required=True, help="Destination path, e.g. ../data/processed/input_x/elefante.png")
+    p_scarica.add_argument("--type", dest="tipo", choices=["skeleton", "living_animal"], required=True)
+    p_scarica.add_argument("--author", dest="autore", default="unknown")
+    p_scarica.add_argument("--license", dest="licenza", default="unknown")
+    p_scarica.add_argument("--source-page", dest="fonte_pagina", default="")
 
     args = parser.parse_args()
 
-    if args.comando == "cerca":
+    if args.comando == "search":
         for r in cerca(args.query, args.limit):
-            print(f"- {r['titolo']} [{r['licenza']}] {r['dimensioni']}")
-            print(f"    autore: {r['autore']}")
-            print(f"    immagine: {r['url_immagine']}")
-            print(f"    pagina:   {r['pagina_descrizione']}\n")
-    elif args.comando == "scarica":
+            print(f"- {r['title']} [{r['license']}] {r['size']}")
+            print(f"    author: {r['author']}")
+            print(f"    image:  {r['image_url']}")
+            print(f"    page:   {r['description_page']}\n")
+    elif args.comando == "download":
         scarica_e_registra(args.url, args.dest, args.tipo, args.fonte_pagina,
                             args.autore, args.licenza)
