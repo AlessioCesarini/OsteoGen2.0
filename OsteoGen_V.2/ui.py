@@ -231,7 +231,15 @@ def resolve_weights_path(default_path):
             return default_path
         except Exception as e:
             if not os.path.isfile(default_path):
-                print(f"[setup] Could not reach Hugging Face Hub ({e}).")
+                msg = str(e)
+                if "401" in msg or "gated" in type(e).__name__.lower() or "gated" in msg.lower() or "restricted" in msg.lower():
+                    print(f"[setup] The Hugging Face repo ({WEIGHTS_HF_REPO}) appears to be "
+                          "private or gated, so it can't be downloaded without logging in. "
+                          "This is a repository-visibility setting on huggingface.co, not "
+                          "something wrong on this machine - whoever manages that repo needs "
+                          "to set it to Public.")
+                else:
+                    print(f"[setup] Could not reach Hugging Face Hub ({e}).")
             # Otherwise offline/unreachable: fall through silently and use
             # the local copy below - better than failing a run over a
             # freshness check that simply couldn't be made.

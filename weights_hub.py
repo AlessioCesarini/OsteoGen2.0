@@ -28,6 +28,25 @@ import shutil
 HF_REPO = "markcst/osteogen-keypoint-detector"
 
 
+def _describe_hf_error(e):
+    """Turns a huggingface_hub download failure into an actionable message.
+    A 401/"gated"/"restricted" error specifically means the repo's
+    visibility is set to private or gated on Hugging Face - a setting only
+    the repo owner can fix, and unrelated to anything on this machine, so
+    it gets called out explicitly instead of leaving a raw 401 traceback
+    for whoever is running this to puzzle over."""
+    msg = str(e)
+    if "401" in msg or "gated" in type(e).__name__.lower() or "gated" in msg.lower() or "restricted" in msg.lower():
+        return (
+            f"the Hugging Face repo ({HF_REPO}) appears to be private or "
+            "gated, so it can't be downloaded without logging in. This is a "
+            "repository-visibility setting on huggingface.co, not something "
+            "wrong on this machine - whoever manages that repo needs to set "
+            "it to Public (Settings -> Change repository visibility)."
+        )
+    return msg
+
+
 def resolve_file(remote_path, local_path):
     """remote_path: path inside the HF repo, e.g. "v0/best_simple_UNET.pth".
     local_path: where the local copy should end up. Returns local_path."""
@@ -48,9 +67,8 @@ def resolve_file(remote_path, local_path):
         if os.path.isfile(local_path):
             return local_path
         raise FileNotFoundError(
-            f"Could not find or download {os.path.basename(local_path)} "
-            f"(tried {HF_REPO}/{remote_path}): {e}"
-        )
+            f"Could not find or download {os.path.basename(local_path)}: {_describe_hf_error(e)}"
+        ) from e
 
 
 def resolve_folder(remote_subfolder, local_dir):
@@ -74,6 +92,5 @@ def resolve_folder(remote_subfolder, local_dir):
         if os.path.isdir(local_dir) and os.listdir(local_dir):
             return local_dir
         raise FileNotFoundError(
-            f"Could not find or download the weights folder "
-            f"(tried {HF_REPO}/{remote_subfolder}): {e}"
-        )
+            f"Could not find or download the weights folder: {_describe_hf_error(e)}"
+        ) from e

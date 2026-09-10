@@ -14,9 +14,42 @@ this through the top-level run.py - no manual setup needed either way.
 Usage:
     python main.py --image path/to/skeleton.jpg
 """
-import argparse
 import os
 import sys
+
+# Windows: a duplicate OpenMP runtime (PyTorch's bundled copy clashing with
+# another package's) makes Intel's runtime abort the whole process with
+# "OMP: Error #15". Must be set before torch/numpy/matplotlib are imported
+# anywhere in the process, so it has to happen here, first.
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+
+if sys.platform == "win32":
+    # Legacy Windows consoles often use a non-UTF-8 codepage, which garbles
+    # non-ASCII console output. Force UTF-8 for both the console and
+    # Python's own stdout/stderr.
+    os.system("chcp 65001 >nul")
+    for _stream in (sys.stdout, sys.stderr):
+        try:
+            _stream.reconfigure(encoding="utf-8")
+        except Exception:
+            pass
+
+_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+_ROOT_DIR = os.path.dirname(_BASE_DIR)
+sys.path.insert(0, _BASE_DIR)
+sys.path.insert(0, _ROOT_DIR)
+
+from bootstrap import ensure_packages
+
+ensure_packages([
+    ("torch", "torch"), ("torchvision", "torchvision"), ("cv2", "opencv-python"),
+    ("matplotlib", "matplotlib"), ("PIL", "Pillow"), ("tqdm", "tqdm"),
+    ("diffusers", "diffusers"), ("transformers", "transformers"),
+    ("accelerate", "accelerate"), ("safetensors", "safetensors"),
+    ("huggingface_hub", "huggingface_hub"),
+], "Version 0 (ablation study)")
+
+import argparse
 
 import torch
 import cv2
@@ -27,9 +60,6 @@ from diffusers import StableDiffusionControlNetPipeline, ControlNetModel, UniPCM
 
 from image_to_image import SimpleUNet as BaselineUNet
 from PatchGan import SimpleUNet as GANGenerator
-
-_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.dirname(_BASE_DIR))
 from weights_hub import resolve_file
 
 

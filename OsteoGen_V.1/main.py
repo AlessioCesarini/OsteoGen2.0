@@ -15,11 +15,37 @@ no manual setup needed either way.
 Usage:
     python main.py --image path/to/skeleton.jpg
 """
-import argparse
 import os
 import sys
 
 os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")  # avoids a CPU-library crash on Windows
+
+if sys.platform == "win32":
+    # Legacy Windows consoles often use a non-UTF-8 codepage, which garbles
+    # non-ASCII console output. Force UTF-8 for both the console and
+    # Python's own stdout/stderr.
+    os.system("chcp 65001 >nul")
+    for _stream in (sys.stdout, sys.stderr):
+        try:
+            _stream.reconfigure(encoding="utf-8")
+        except Exception:
+            pass
+
+_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+_ROOT_DIR = os.path.dirname(_BASE_DIR)
+sys.path.insert(0, _BASE_DIR)
+sys.path.insert(0, _ROOT_DIR)
+
+from bootstrap import ensure_packages
+
+ensure_packages([
+    ("torch", "torch"), ("matplotlib", "matplotlib"), ("PIL", "Pillow"),
+    ("diffusers", "diffusers"), ("transformers", "transformers"),
+    ("accelerate", "accelerate"), ("safetensors", "safetensors"),
+    ("huggingface_hub", "huggingface_hub"),
+], "Version 1")
+
+import argparse
 
 import torch
 import matplotlib.pyplot as plt
@@ -30,8 +56,6 @@ from diffusers import (
     UniPCMultistepScheduler,
 )
 
-_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.dirname(_BASE_DIR))
 from weights_hub import resolve_folder
 
 BASE_MODEL_ID = "runwayml/stable-diffusion-v1-5"
