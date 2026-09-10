@@ -10,6 +10,7 @@ Degrades cleanly if something is missing:
 - no display available -> the final comparison is saved to a file instead
   of being shown on screen.
 """
+import filecmp
 import os
 import pathlib
 import shutil
@@ -197,15 +198,46 @@ WEIGHTS_HF_REPO = os.environ.get("OSTEOGEN_WEIGHTS_REPO", "markcst/osteogen-keyp
 
 
 def resolve_weights_path(default_path):
-    """Finds the trained keypoint-detector weights (.pth). Tries, in
-    order: the default project path, a few common local folders, an
-    optional Hugging Face Hub repo, and finally an interactive prompt -
-    whatever is found gets copied into the default path so later runs
-    never have to ask again."""
+    """Finds the trained keypoint-detector weights (.pth).
+
+    When a Hugging Face Hub repo is configured, that is checked FIRST and
+    takes priority over whatever already sits at default_path:
+    huggingface_hub's own cache does a cheap freshness check (an ETag
+    lookup) and only downloads the full file if the repo actually has a
+    newer version, so this stays fast when nothing changed but still
+    picks up updated weights automatically. A plain "use it if it already
+    exists locally" check would instead keep using a stale local copy
+    forever once one exists - which is exactly what happened the first
+    time this shipped: a machine that had already run the pipeline once
+    kept using pre-fine-tuning weights even after better ones were
+    uploaded, silently, with no indication anything was stale.
+
+    Falls back, in this order, to: the existing local copy (e.g. offline
+    or Hub unreachable), a few common local folders, and finally an
+    interactive prompt - whatever is found that way gets copied into
+    default_path so later runs (still) don't have to ask again."""
+    filename = os.path.basename(default_path)
+
+    if WEIGHTS_HF_REPO:
+        try:
+            from huggingface_hub import hf_hub_download
+            downloaded = hf_hub_download(repo_id=WEIGHTS_HF_REPO, filename=filename)
+            had_local_copy = os.path.isfile(default_path)
+            if had_local_copy and filecmp.cmp(downloaded, default_path, shallow=False):
+                return default_path  # already up to date, nothing to do
+            print(f"[setup] {'Updated' if had_local_copy else 'Downloaded'} the trained "
+                  f"weights from {WEIGHTS_HF_REPO}.")
+            _save_as_default(downloaded, default_path)
+            return default_path
+        except Exception as e:
+            if not os.path.isfile(default_path):
+                print(f"[setup] Could not reach Hugging Face Hub ({e}).")
+            # Otherwise offline/unreachable: fall through silently and use
+            # the local copy below - better than failing a run over a
+            # freshness check that simply couldn't be made.
+
     if os.path.isfile(default_path):
         return default_path
-
-    filename = os.path.basename(default_path)
 
     candidates = [
         os.path.join(os.getcwd(), filename),
@@ -216,16 +248,6 @@ def resolve_weights_path(default_path):
         if os.path.isfile(candidate):
             _save_as_default(candidate, default_path)
             return default_path
-
-    if WEIGHTS_HF_REPO:
-        try:
-            from huggingface_hub import hf_hub_download
-            print(f"[setup] Downloading trained weights from {WEIGHTS_HF_REPO} (one-time)...")
-            downloaded = hf_hub_download(repo_id=WEIGHTS_HF_REPO, filename=filename)
-            _save_as_default(downloaded, default_path)
-            return default_path
-        except Exception as e:
-            print(f"[setup] Automatic download failed ({e}).")
 
     if not sys.stdin.isatty():
         raise FileNotFoundError(
