@@ -79,7 +79,21 @@ def load_image_for_custom_models(image_path, device):
 
 def main(test_image_path, weights_dir):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    # float16 has no efficient kernels on CPU (some ops are unsupported,
+    # others fall back to a very slow emulated path) - use it only on CUDA.
+    dtype = torch.float16 if device.type == "cuda" else torch.float32
     print(f"Running inference on: {device}")
+    if device.type == "cpu":
+        print("[setup] No CUDA GPU detected by PyTorch - the render stage will be "
+              "much slower on CPU (many minutes instead of a couple of minutes). "
+              "If this machine has an NVIDIA GPU, this usually means the installed "
+              "PyTorch build has no CUDA support (a plain 'pip install torch' can "
+              "silently install a CPU-only build if one was already present, or if "
+              "the GPU is newer than that build supports). Check with:\n"
+              "    python -c \"import torch; print(torch.__version__, torch.version.cuda, torch.cuda.is_available())\"\n"
+              "and, if torch.version.cuda is None, reinstall PyTorch with the "
+              "correct CUDA build for this GPU/driver from "
+              "https://pytorch.org/get-started/locally/")
 
     # --- Resolve and load the custom models (U-Net & GAN) ---
     unet_path = resolve_file("v0/best_simple_UNET.pth", os.path.join(weights_dir, "best_simple_UNET.pth"))
@@ -97,13 +111,13 @@ def main(test_image_path, weights_dir):
     controlnet_path = resolve_file("v0/best_controlnet.pth", os.path.join(weights_dir, "best_controlnet.pth"))
     controlnet = ControlNetModel.from_single_file(
         controlnet_path,
-        torch_dtype=torch.float16,
+        torch_dtype=dtype,
     )
 
     pipe = StableDiffusionControlNetPipeline.from_pretrained(
         "runwayml/stable-diffusion-v1-5",  # base foundation model, not the ControlNet path
         controlnet=controlnet,
-        torch_dtype=torch.float16,
+        torch_dtype=dtype,
         safety_checker=None,
     ).to(device)
     pipe.scheduler = UniPCMultistepScheduler.from_config(pipe.scheduler.config)

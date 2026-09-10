@@ -83,12 +83,23 @@ _DB_DEFAULT = os.path.join(_BASE_DIR, "data", "processed", "geometric_database.j
 _OUTPUT_DIR = os.path.join(_BASE_DIR, "outputs")
 
 
+def _no_cuda_hint():
+    print("[setup] No CUDA GPU detected by PyTorch - the render stage will be much "
+          "slower on CPU. If this machine has an NVIDIA GPU, check with:\n"
+          "    python -c \"import torch; print(torch.__version__, torch.version.cuda, torch.cuda.is_available())\"\n"
+          "and, if torch.version.cuda is None, reinstall PyTorch with the correct "
+          "CUDA build from https://pytorch.org/get-started/locally/")
+
+
 def _pick_device(richiesto):
     import torch
     if richiesto == "auto":
-        return "cuda" if torch.cuda.is_available() else "cpu"
+        if torch.cuda.is_available():
+            return "cuda"
+        _no_cuda_hint()
+        return "cpu"
     if richiesto == "cuda" and not torch.cuda.is_available():
-        print("[setup] No CUDA GPU available: falling back to CPU (the render stage will be slower).")
+        _no_cuda_hint()
         return "cpu"
     return richiesto
 

@@ -72,6 +72,12 @@ PROMPT_GUIDED = ("A full-body three-quarter view photo of a Tyrannosaurus Rex di
 def main(image_path, controlnet_path, output_dir):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     dtype = torch.bfloat16 if device.type == "cuda" else torch.float32
+    if device.type == "cpu":
+        print("[setup] No CUDA GPU detected by PyTorch - this will be much slower on "
+              "CPU. If this machine has an NVIDIA GPU, check with:\n"
+              "    python -c \"import torch; print(torch.__version__, torch.version.cuda, torch.cuda.is_available())\"\n"
+              "and, if torch.version.cuda is None, reinstall PyTorch with the correct "
+              "CUDA build from https://pytorch.org/get-started/locally/")
     os.makedirs(output_dir, exist_ok=True)
 
     print("Loading the trained ControlNet...")
