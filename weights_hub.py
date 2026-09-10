@@ -13,7 +13,8 @@ Layout in that repo:
     v0/best_simple_UNET.pth
     v0/best_generator_PatchGAN.pth
     v0/best_controlnet.pth
-    v1/controlnet_best_model/...    <- a whole diffusers-format folder
+    v1/config.json                  <- Version 1's ControlNet, as a flat
+    v1/diffusion_pytorch_model.safetensors   diffusers-format folder
 
 Same "always check Hugging Face first" rule as OsteoGen_V.2/ui.py's
 resolve_weights_path (see that file for the full rationale): a plain "use
@@ -72,13 +73,23 @@ def resolve_file(remote_path, local_path):
 
 
 def resolve_folder(remote_subfolder, local_dir):
-    """remote_subfolder: folder path inside the HF repo, e.g.
-    "v1/controlnet_best_model". local_dir: where its contents should end
-    up locally. Returns local_dir."""
+    """remote_subfolder: folder path inside the HF repo, e.g. "v1"
+    (Version 1's ControlNet ships as a flat diffusers folder directly
+    under v1/, not in a further subfolder - see the layout above).
+    local_dir: where its contents should end up locally. Returns local_dir."""
     try:
         from huggingface_hub import snapshot_download
         snapshot_dir = snapshot_download(repo_id=HF_REPO, allow_patterns=f"{remote_subfolder}/*")
         source = os.path.join(snapshot_dir, remote_subfolder)
+        if not os.path.isdir(source):
+            # snapshot_download "succeeds" even when allow_patterns matches
+            # nothing (0 files), leaving no such directory in the cache -
+            # fail clearly here instead of letting shutil.copytree crash
+            # with a confusing "path not found" a few lines down.
+            raise FileNotFoundError(
+                f"no files found under '{remote_subfolder}/' in {HF_REPO} "
+                "(the repo's folder layout may not match what this script expects)"
+            )
         if os.path.abspath(source) != os.path.abspath(local_dir):
             parent = os.path.dirname(local_dir)
             if parent:

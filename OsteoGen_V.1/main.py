@@ -81,7 +81,7 @@ def main(image_path, controlnet_path, output_dir):
     os.makedirs(output_dir, exist_ok=True)
 
     print("Loading the trained ControlNet...")
-    controlnet_path = resolve_folder("v1/controlnet_best_model", controlnet_path)
+    controlnet_path = resolve_folder("v1", controlnet_path)
     controlnet = ControlNetModel.from_pretrained(controlnet_path, torch_dtype=dtype).to(device)
 
     print("Assembling the full pipeline...")
