@@ -126,12 +126,12 @@ Finally, an optional generative rendering pipeline handles the visual reconstruc
 
 \begin{figure}[H]
     \centering
-    \begin{overpic}[width=0.5\linewidth]{./t-rex_render.png}
+    \begin{overpic}[width=0.4\linewidth]{./t-rex_render.png}
     \end{overpic}
 
     \vspace{0.2cm}
 
-    \begin{overpic}[width=0.99\linewidth]{./Version-2.png}
+    \begin{overpic}[width=0.88\linewidth]{./Version-2.png}
     \end{overpic}
     \caption{Top: Version 2's final generative T-Rex rendering. Bottom: its keypoint heatmap predictions on a held-out horse skeleton.}
     \label{fig:v2_results}
@@ -143,7 +143,7 @@ Trained on only 65 (later 68, see Section~\ref{sec:ai-use}) skeleton images, the
 This gain did not generalize beyond the added examples' pose and style: a held-out \textit{Allosaurus} photograph (different pose, cluttered background) reproduced the original failure (confidence 0.38), matching the small-sample-size challenge cited in Section~\ref{sec:intro} \cite{AI_Paleontology} -- three examples help similar inputs, not broad generalization.
 
 \section{Discussion and Conclusions}
-Although the project has yielded promising results, its paleobiological assumptions are inherently limited -- developed by Computer Science students, not domain experts -- and the rapid, few-month timeframe leaves some imperfections evident. We nonetheless view \textit{OsteoGen} as a proof-of-concept for uncovering latent morphological affinities between dinosaurs and extant or recently extinct species.
+\textit{OsteoGen} deliberately scopes a compact, hand-annotated dataset -- 65 species, later 68 -- to test how far purely geometric retrieval could go without a large training set. Results are encouraging: differentiated rankings and a measurable generalization gain (Section~\ref{sec:experimental-results}) from just a few added extinct-species examples. The paleobiological assumptions remain a simplification: we are Computer Science students, not domain experts. We view \textit{OsteoGen} as a proof-of-concept for uncovering dinosaurs' latent morphological affinities with living or recently extinct relatives.
 
 \textit{Welcome to PyTorch Park.}
 
