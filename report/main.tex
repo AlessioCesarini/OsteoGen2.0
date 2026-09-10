@@ -6,6 +6,7 @@
 \usepackage{hyperref}
 \usepackage{overpic}
 \usepackage{amssymb}
+\usepackage{float}
 
 \usepackage[accepted]{dlaiml2026}
 
@@ -22,31 +23,31 @@
 
 \begin{dlaiauthorlist}
 %%% STUDENTS: FILL IN WITH YOUR OWN INFORMATION
-\dlaiauthor{Alessio Cesarini 1938932, Marco Castellani 1718717}{}
+\dlaiauthor{Alessio Cesarini 1938932, Marco Castellani 1718187}{}
 \end{dlaiauthorlist}
 
 %%% STUDENTS: FILL IN WITH YOUR OWN INFORMATION
-\dlaicorrespondingauthor{Alessio Cesarini 1938932, Marco Castellani 1718717}{cesarini.1938932@studenti.uniroma1.it , castellani.1718717@studenti.uniroma1.it}
+\dlaicorrespondingauthor{Alessio Cesarini 1938932, Marco Castellani 1718187}{cesarini.1938932@studenti.uniroma1.it , castellani.1718187@studenti.uniroma1.it}
 
 \vskip 0.3in
 ]
 
 
 \begin{abstract}
-Morphological reconstruction in paleobiology has historically been a manual process subject to speculation or subjective interpretation. Fossils provide the geometry, but extrapolating musculature and appearance from living relatives is a complex and difficult task. OsteoGen addresses this limitation by providing a framework for computational paleontology based on neural networks, designed to automate and quantify phenotypic similarities between extinct species and a reference dataset. In the first phase, the system recognizes a skeletal structure model and its pose as input, extracting 14 main anatomical keypoints[cite: 1]. Once this is done, the target is geometrically compared with metrics extracted from a dataset of approximately 65 living animals[cite: 1]. The model, developed in PyTorch, uses a ResNet18 encoder pre-trained on ImageNet coupled with a decoder to generate keypoint heatmaps, employing the AdamW optimizer and a Weighted MSE Loss function[cite: 1]. OsteoGen produces geometric similarity rankings and an optional generative visual reconstruction using Stable Diffusion, ControlNet, and IP-Adapter to blend the textures of the most compatible donor animals[cite: 1]. The system outputs a geometric comparison report in JSON and HTML formats, explicitly noting that the resulting percentages represent geometric similarities between normalized silhouettes rather than taxonomic or biological probabilities[cite: 1]. Further assumptions or considerations will be left to experts in the field.
+Morphological reconstruction in paleobiology has historically been a manual process subject to speculation or subjective interpretation. Fossils provide the geometry, but extrapolating musculature and appearance from living relatives is a complex and difficult task. OsteoGen addresses this limitation by providing a framework for computational paleontology based on neural networks, designed to automate and quantify phenotypic similarities between extinct species and a reference dataset. In the first phase, the system recognizes a skeletal structure model and its pose as input, extracting 14 main anatomical keypoints. Once this is done, the target is geometrically compared with metrics extracted from a dataset of approximately 65 living animals. The model, developed in PyTorch, uses a ResNet18 encoder pre-trained on ImageNet coupled with a decoder to generate keypoint heatmaps, employing the AdamW optimizer and a Weighted MSE Loss function. OsteoGen produces geometric similarity rankings and an optional generative visual reconstruction using Stable Diffusion, ControlNet, and IP-Adapter to blend the textures of the most compatible donor animals. The system outputs a geometric comparison report in JSON and HTML formats, explicitly noting that the resulting percentages represent geometric similarities between normalized silhouettes rather than taxonomic or biological probabilities. Further assumptions or considerations will be left to experts in the field.
 \end{abstract}
 
 % ------------------------------------------------------------------------------
 
 \section{Introduction}
 \label{sec:intro}
-Computational Paleontology, often referred to as Virtual Paleontology following the advent of 3D visualization technologies, relies on a biological framework known as Extant Phylogenetic Bracketing (EPB) to infer the traits of extinct organisms from their living relatives. \textit{OsteoGen} represents the automated evolution of this concept: a deep learning-driven system designed for morphological and soft-tissue reconstruction \cite{Paleogical_3D_reconstruction}.
+Computational Paleontology -- Virtual Paleontology following the advent of 3D visualization technologies -- relies on Extant Phylogenetic Bracketing (EPB) to infer extinct organisms' traits from their living relatives. \textit{OsteoGen} is the automated evolution of this concept: a deep learning-driven system for morphological and soft-tissue reconstruction \cite{Paleogical_3D_reconstruction}.
 
-\textit{OsteoGen} constitutes a significant advancement over standard methodologies in the literature. Rather than merely classifying skeletal remains based on superficial similarities, this neural network isolates the subject using background removal tools and canonicalizes it via Canny edges before extracting specific anatomical keypoints[cite: 1]. The system normalizes the geometry by translating the origin to the base of the neck, and scaling based on the torso or skull length, making different animals geometrically comparable[cite: 1].
+Rather than merely classifying skeletal remains by superficial similarity, \textit{OsteoGen} isolates the subject via background removal and Canny-edge canonicalization before extracting anatomical keypoints, then normalizes the geometry by translating the origin to the neck base and scaling by torso or skull length, making different animals geometrically comparable.
 
-Historically, the virtual reconstruction of extinct fauna required digitizing fossilized bones, followed by the manual application of geometric primitives (such as cylinders and spheres) to estimate muscle volumes. Today, however, the literature heavily emphasizes automation. Leveraging architectures such as Convolutional Neural Networks (CNNs), U-Net, and ResNet34, artificial intelligence is now employed to denoise CT scan data, isolate fossils from the surrounding rock matrix via semantic segmentation, and classify skeletal elements.
+Historically, virtual reconstruction of extinct fauna required digitizing fossilized bones and manually applying geometric primitives (cylinders, spheres) to estimate muscle volumes. Today, CNN- and ResNet-based architectures instead denoise CT scan data, segment fossils from the surrounding rock matrix, and classify skeletal elements automatically.
 
-A persistent challenge for machine learning in vertebrate paleobiology remains the inherently small sample size, dictated by the scarcity of complete fossil specimens. Nevertheless, recent studies published in \textit{Paleobiology} demonstrate that by utilizing transfer learning and pre-trained models, neural networks can achieve accuracies approaching 99\%, even when constrained by datasets of merely 200 to 500 images per class \cite{AI_Paleontology}. In \textit{OsteoGen}, this limitation is managed by utilizing an experimental pipeline that matches the geometric proportions of the target's segments (head, torso, forelimb, hindlimb, and tail) against the 65 animals in the database to find the most suitable texture donors[cite: 1].
+Machine learning in vertebrate paleobiology faces a persistent small-sample-size challenge, given the scarcity of complete fossil specimens; recent work nonetheless reports accuracies approaching 99\% via transfer learning on datasets of merely 200 to 500 images per class \cite{AI_Paleontology}. \textit{OsteoGen} manages this by matching the geometric proportions of the target's segments (head, torso, forelimb, hindlimb, tail) against the 65 database animals to find the most suitable texture donors.
 
 
 \section{Related Works}
@@ -54,45 +55,44 @@ A persistent challenge for machine learning in vertebrate paleobiology remains t
 The theoretical foundation of this project lies at the intersection of evolutionary paleobiology and conditional generative computer vision.
 
 \subsection{Paleobiological and Phylogenetic Foundations}
-In recent years, groundbreaking scientific discoveries have profoundly altered the understanding of dinosaur biology, establishing clear molecular and morphological links between extinct fauna and extant species. Studies on protein sequencing extracted from fossilized remains have demonstrated a direct phylogenetic similarity between the \textit{Tyrannosaurus rex} and modern avians, such as the chicken \cite{asara2007protein, organ2008molecular}. Furthermore, the widely documented discovery of primitive plumage in both non-avian theropods and basal ornithischians, corroborated by exceptionally preserved specimens in amber \cite{xing2016feathered, godefroit2014jurassic}, has solidified the consensus that soft-tissue traits were broadly distributed across dinosaur lineages. These paleobiological milestones support the core hypothesis of this work: if extinct species belong to or share ancestry with extant macrocategories such as modern birds, careful computational analysis of their skeletal structures can reveal latent morphological correlations invisible to the human eye.
+Recent discoveries have established clear molecular and morphological links between extinct fauna and extant species: protein sequencing from fossilized remains shows a direct phylogenetic similarity between \textit{Tyrannosaurus rex} and modern avians such as the chicken \cite{asara2007protein, organ2008molecular}, while primitive plumage found in both non-avian theropods and basal ornithischians, corroborated by specimens preserved in amber \cite{xing2016feathered, godefroit2014jurassic}, shows soft-tissue traits were broadly distributed across dinosaur lineages. This supports the core hypothesis of this work: if extinct species share ancestry with extant macrocategories such as modern birds, computational analysis of their skeletal structures can reveal latent morphological correlations invisible to the human eye.
 
 \subsection{Conditioned Image Synthesis}
-To translate these structural similarities into visual reconstructions, this project builds upon established methodologies in image-to-image translation and conditioned rendering. The fundamental approach to pixel-wise translation was defined by the introduction of conditional adversarial networks (e.g., Pix2Pix) and the PatchGAN discriminator \cite{isola2017image}, which demonstrated the ability to preserve high-frequency local details by evaluating image patches rather than global structures. More recently, the synthesis of spatially constrained images has been revolutionized by the introduction of ControlNet \cite{zhang2023adding}. By utilizing "zero convolutions" to lock the structural input (such as keypoint maps or skeletal edges) while exploiting the pre-trained generative capabilities of diffusion models, ControlNet provides the essential computational framework required to map a reference structural pose to a photorealistic output without losing anatomical coherence.
+This project builds on established image-to-image translation and conditioned rendering methods: conditional adversarial networks (e.g., Pix2Pix) and the PatchGAN discriminator \cite{isola2017image} preserve high-frequency local detail by evaluating image patches rather than global structure, while ControlNet \cite{zhang2023adding} uses "zero convolutions" to lock a structural input (keypoint maps, skeletal edges) while exploiting a pre-trained diffusion model's generative capabilities -- the framework this project relies on to map a structural pose to a photorealistic, anatomically coherent output.
 
 
 \section{Method}
 \label{sec:method}
-The approach to drafting the project, and the models trained entirely locally for the experimental results, changed three times: from a U-Net taught to extract skeletal features directly, to a prompt-conditioned ControlNet fine-tuned on the 65 selected species, and finally to a method that identifies poses and bone types via keypoints with a ResNet18. Each is detailed in its own subsection below.
-Using three programs, skeleton and living-animal images obtained from the internet were isolated and placed on a black background, then resized to 512$\times$512 as required by the chosen models. The project was divided into three sequential parts based on the final outputs of each phase.
+The approach, and the locally-trained models behind the experimental results, changed three times: from a U-Net extracting skeletal features directly, to a prompt-conditioned ControlNet fine-tuned on the 65 selected species, and finally to a keypoint-based method using a ResNet18 -- each detailed in its own subsection below. Skeleton and living-animal images obtained from the internet were isolated, placed on a black background, and resized to 512$\times$512 as required by the chosen models.
 
 \subsection{Version 0}
 The initial experimental phase functioned as an ablation study, evaluating three distinct image-to-image translation architectures to establish a generative baseline.
 
-The first model was a simple U-Net trained from scratch using pure pixel-by-pixel regression via an L1 Loss (Mean Absolute Error) function. This served as scientific proof that minimizing absolute error without a discriminator inherently produces blurry, averaged textures when multiple plausible phenotypic solutions exist.
+The first model, a simple U-Net trained from scratch via pixel-wise L1 (Mean Absolute Error) regression, served as proof that minimizing absolute error without a discriminator inherently produces blurry, averaged textures when multiple plausible phenotypic solutions exist.
 
-To counter this blurring effect, the second model adopted a complete Pix2Pix Conditional GAN architecture. This paired a deeper, 6-level U-Net Generator with a PatchGAN Discriminator. The discriminator evaluated local 70$\times$70 pixel patches rather than the entire image, providing an adversarial signal that penalized unrealistic textures, which was combined with a scaled L1 loss (multiplied by a factor of 100) to maintain structural fidelity.
+To counter this, the second model adopted a full Pix2Pix Conditional GAN: a deeper, 6-level U-Net Generator paired with a PatchGAN Discriminator that evaluates local 70$\times$70 pixel patches rather than the whole image, penalizing unrealistic textures; this adversarial signal was combined with a scaled ($\times$100) L1 loss to preserve structural fidelity.
 
-The third model shifted to a Latent Diffusion approach using ControlNet and Stable Diffusion 1.5. To prevent catastrophic forgetting, the pre-trained Foundation Model (VAE, U-Net, and text encoder) was entirely frozen, and only the ControlNet weights were updated using an AdamW optimizer. Crucially, this model was trained unconditionally using an empty prompt[cite: 6]. This forced the cross-attention layers to process a semantically empty tensor, guaranteeing that the network generated the phenotype based exclusively on the injected skeletal geometry rather than semantic text hints.
+The third model shifted to a Latent Diffusion approach with ControlNet and Stable Diffusion 1.5: to prevent catastrophic forgetting, the pre-trained Foundation Model (VAE, U-Net, text encoder) was entirely frozen and only the ControlNet weights were updated (AdamW), trained unconditionally on an empty prompt so the cross-attention layers process a semantically empty tensor -- forcing the network to generate the phenotype from the injected skeletal geometry alone, rather than semantic text hints.
 
-Early stopping was implemented for all three model training runs to prevent overfitting. Since ControlNet's results were initially the most promising, we tested it again on a lion (a similar feline is in the dataset), comparing an unconditional generation to one with a generic prompt; the results remained unsatisfactory.
+Early stopping was used for all three training runs to prevent overfitting. Since ControlNet's results were initially most promising, we re-tested it on a lion (a similar feline is in the dataset) with both unconditional and generic-prompt generation; results remained unsatisfactory.
 
 \subsection{Version 1}
-After a thorough analysis of the outputs and a comparison with various types of artificial intelligence, we refined the ControlNet approach by radically changing how the dataset fed textual information to the network.
+After analyzing the outputs and comparing several AI approaches, we refined ControlNet by radically changing how the dataset fed textual information to the network.
 
-The \texttt{OsteoDataset} class was upgraded to dynamically generate highly descriptive semantic prompts for each skeleton. Using a static offline translation map to convert Italian filenames to English, the dataset constructed the following string: \textit{"A full-body three-quarter view photo of a \$nome\_animale\_eng, featuring highly detailed, photorealistic textures, 8K resolution, studio lighting, and fully isolated against a pure black background."}
+The \texttt{OsteoDataset} class was upgraded to dynamically generate highly descriptive semantic prompts for each skeleton. Using a static offline translation map to convert Italian filenames to English, the dataset constructed the following string: \textit{"A full-body three-quarter view photo of a \texttt{<animal\_name>}, featuring highly detailed, photorealistic textures, 8K resolution, studio lighting, and fully isolated against a pure black background."}
 
-To prevent the model from ignoring the skeletal geometry and relying entirely on these strong textual cues, we implemented a stochastic "prompt dropout" technique. During the training loop, there was a 10\% probability that the prompt would be replaced by an empty string. This exposed the network to both conditioned and unconditioned states, enabling Classifier-Free Guidance during inference and forcing the network to retain its ability to interpret raw bone structures.
+To prevent the model from ignoring the skeletal geometry in favor of these strong textual cues, we added a stochastic "prompt dropout": a 10\% chance per training step of replacing the prompt with an empty string, exposing the network to both conditioned and unconditioned states, enabling Classifier-Free Guidance at inference and preserving its ability to interpret raw bone structure.
 
-Although this led to modest improvements, results remained unpresentable. Testing the T-Rex skeleton with two contrasting prompts (\textit{``unknown biological animal''} versus an explicit \textit{``Tyrannosaurus Rex dinosaur... reptilian skin''}) produced highly erratic outputs, alternating between sensible images and biologically illogical artifacts -- confirming that direct end-to-end generative AI could not reliably deduce extinct phenotypes without strict geometric constraints.
+Although this led to modest improvements, results remained unpresentable: testing the T-Rex skeleton with contrasting prompts (\textit{``unknown biological animal''} vs. an explicit \textit{``Tyrannosaurus Rex dinosaur... reptilian skin''}) produced highly erratic outputs, alternating between sensible images and biologically illogical artifacts -- confirming that end-to-end generative AI could not reliably deduce extinct phenotypes without strict geometric constraints.
 
 \subsection{Version 2}
-The final version stems from a complete reversal of the analytical approach, abandoning direct image-to-image translation in favor of a structural and geometric pipeline. Instead of relying on a network to blindly generate a complete image from a skeleton, Version 2 isolates the anatomical data by extracting 14 main keypoints (such as the snout, neck base, shoulders, and joints).
+Version 2 reverses the analytical approach entirely, abandoning direct image-to-image translation for a structural and geometric pipeline: instead of a network blindly generating a complete image from a skeleton, it isolates the anatomical data by extracting 14 main keypoints (snout, neck base, shoulders, joints, etc.).
 
 The image preprocessing first isolates the subject using background removal tools and canonicalizes it via Canny edges, applying a letterboxing technique to fit a 512$\times$512 canvas without deforming the original skeletal proportions. The core architecture is a \textit{ResNet18KeypointDetector}, which utilizes a ResNet18 encoder pre-trained on ImageNet coupled with a decoder consisting of five ConvTranspose2d layers. The decoder outputs raw, unactivated logits (no final Sigmoid or ReLU) so that the Weighted MSE loss described below is computed directly on them, producing 14 distinct spatial heatmaps. Training is optimized using AdamW and a Weighted MSE Loss, which assigns a significantly higher penalty (a weight of 50) to the pixels belonging to the keypoint Gaussian distributions, preventing the network from defaulting to background prediction.
 
 During inference, the extracted keypoints undergo a geometric normalization process: the origin is translated to the base of the neck, and the scale is determined by the torso length or, if unavailable, the skull length. This normalization allows the system to accurately compare the geometric proportions of the target's five main segments (head, torso, forelimb, hindlimb, and tail) against the 65 animals in the database using Root Mean Square (RMS) distances. These distances are subsequently converted into geometric similarity percentages using a softmax function, establishing a ranking of the most structurally compatible species.
 
-Finally, the visual reconstruction is handled by an optional generative rendering pipeline. A structural control map, composed of specific lines and points, is generated to guide ControlNet, ensuring strict structural adherence to the input pose. Concurrently, Stable Diffusion 1.5 employs an IP-Adapter to ingest the reference images of the highest-ranking donor animals from the geometric retrieval phase. This constraint effectively blends the textures, colors, and visual styles of the compatible living species into the final output, producing a coherent and geometrically constrained reconstruction.
+Finally, an optional generative rendering pipeline handles the visual reconstruction: a structural control map of specific lines and points guides ControlNet, ensuring strict adherence to the input pose, while Stable Diffusion 1.5's IP-Adapter ingests the highest-ranking donor animals' reference images from the geometric retrieval phase -- blending their textures, colors, and visual styles into a coherent, geometrically constrained final output.
 
 
 \section{Experimental Results}
@@ -108,31 +108,26 @@ Finally, the visual reconstruction is handled by an optional generative renderin
 \end{figure}
 
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \begin{overpic}[width=0.99\linewidth]{./t-rex_render.png}
+    \begin{overpic}[width=0.5\linewidth]{./t-rex_render.png}
     \end{overpic}
-    \caption{Final generative rendering of a T-Rex using the Version 2 geometric pipeline.}
-    \label{fig:trex_render_v2}
-\end{figure}
 
-\begin{figure}[htbp]
-    \centering
+    \vspace{0.2cm}
+
     \begin{overpic}[width=0.99\linewidth]{./Version-2.png}
     \end{overpic}
-    \caption{Experimental heatmap predictions generated by the Version 2 keypoint pipeline.}
-    \label{fig:heatmap_v2}
+    \caption{Top: Version 2's final generative T-Rex rendering. Bottom: its keypoint heatmap predictions on a held-out horse skeleton.}
+    \label{fig:v2_results}
 \end{figure}
 
 \subsection{Generalization beyond the training distribution}
-Trained on only 65 (later 68, see Section~\ref{sec:ai-use}) skeleton images, the keypoint detector generalizes poorly to body plans absent from that set. On three added extinct-species examples (\textit{T.\ rex}, \textit{Brachiosaurus}, \textit{Triceratops}), average confidence rose from 0.36--0.51 to 0.83--0.89 after a short fine-tuning run, with previously collapsed keypoints resolving into 13--14 distinct locations out of 14 and retrieval moving from a near-uniform, uninformative ranking ($\approx$1.5\% per candidate) to a differentiated one, with no loss of accuracy on the original species.
+Trained on only 65 (later 68, see Section~\ref{sec:ai-use}) skeleton images, the keypoint detector generalizes poorly to unfamiliar body plans. On three added extinct-species examples (\textit{T.\ rex}, \textit{Brachiosaurus}, \textit{Triceratops}), average confidence rose from 0.36--0.51 to 0.83--0.89 after a short fine-tuning run: collapsed keypoints resolved into 13--14 distinct locations out of 14, and retrieval moved from a near-uniform ranking ($\approx$1.5\% per candidate) to a differentiated one, without degrading accuracy on the original species.
 
-This gain did not generalize beyond the added examples' pose and style: a held-out \textit{Allosaurus} photograph (different pose, cluttered background) reproduced the original failure (confidence 0.38). This matches the small-sample-size challenge cited in Section~\ref{sec:intro} \cite{AI_Paleontology}: three examples help inputs resembling them, not the hundreds per class broad generalization would require.
+This gain did not generalize beyond the added examples' pose and style: a held-out \textit{Allosaurus} photograph (different pose, cluttered background) reproduced the original failure (confidence 0.38), matching the small-sample-size challenge cited in Section~\ref{sec:intro} \cite{AI_Paleontology} -- three examples help similar inputs, not broad generalization.
 
 \section{Discussion and Conclusions}
-Although the project has yielded highly promising results, the paleobiological assumptions underlying the dataset are inherently limited, given that the models were developed by Computer Science master's students rather than domain experts in paleontology. Furthermore, considering the rapid development timeframe of just a few months, certain architectural and generative imperfections remain evident.
-
-We view this project as a foundational proof-of-concept for future research aimed at uncovering latent morphological affinities between dinosaurs and extant or recently extinct species. This computational approach has the potential to provide greater clarity regarding their phenotypic composition, which remains a subject of ongoing debate and uncertainty.
+Although the project has yielded promising results, its paleobiological assumptions are inherently limited -- developed by Computer Science students, not domain experts -- and the rapid, few-month timeframe leaves some imperfections evident. We nonetheless view \textit{OsteoGen} as a proof-of-concept for uncovering latent morphological affinities between dinosaurs and extant or recently extinct species.
 
 \textit{Welcome to PyTorch Park.}
 
@@ -151,7 +146,8 @@ Separately from the modeling work above, an AI coding assistant (Claude, Anthrop
     \item diagnose, via real inference runs, why the keypoint detector produced near-uniform, uninformative retrieval results on the T-Rex/Brachiosaurus test images (average per-keypoint confidence of 0.36-0.51, with multiple distinct joints collapsing onto nearly the same pixel);
     \item source (from openly licensed collections, with attribution recorded in \texttt{dataset\_tools/attributions.csv}), visually annotate, and add three supplementary training images (T-Rex, Brachiosaurus, Triceratops) to the keypoint detector's training set, and run a short fine-tuning pass from the existing trained weights (the results are reported in Section~\ref{sec:experimental-results} and reflect real, measured before/after numbers, including the generalization limitation);
     \item fix a second concrete bug found once a co-author ran the pipeline independently: the weights-resolution logic checked only whether a local copy already existed, so a machine that had run the pipeline once kept silently reusing pre-fine-tuning weights even after improved ones were published - now the Hugging Face Hub copy is always checked first;
-    \item audit and clean up the whole repository: remove duplicated dataset copies, intermediate working files, and superseded draft documentation (355MB, verified beforehand to be unused by any code or by this report), translate every remaining Italian string/comment/CLI flag in Version 0, 1 and 2 to English, remove machine-specific absolute paths from Version 0/1's scripts, and write a new top-level README.
+    \item audit and clean up the whole repository: remove duplicated dataset copies, intermediate working files, and superseded draft documentation (355MB, verified beforehand to be unused by any code or by this report), translate every remaining Italian string/comment/CLI flag in Version 0, 1 and 2 to English, remove machine-specific absolute paths from Version 0/1's scripts, and write a new top-level README;
+    \item as a final pre-submission pass, remove further uncited planning files and stale pipeline-run outputs left over from earlier development, and proofread this report end-to-end against the actual code and figures - fixing a caption/content mismatch in a figure, relabeling remaining Italian text baked into result plots, removing leftover citation-placeholder artifacts, and trimming the body to the page limit required by the course guidelines.
 \end{itemize}
 The keypoints for these three supplementary images were estimated visually by the AI assistant from the reference photograph (rather than through the project's own interactive point-and-click annotation tool used for the original 65 species) and checked by rendering them back onto the image; the team reviewed this before it was used for training. This is a methodological difference from the rest of the dataset's provenance and is disclosed here for that reason.
 
@@ -163,7 +159,7 @@ The research team directed this engineering work, reviewed and tested every chan
 
 \section*{Appendix}
 %
-Visual outputs and training loss curves for all three versions: kept here rather than in the main body since they document training diagnostics and abandoned intermediate steps (Version 0 and Version 1, Section~\ref{sec:method}) rather than the final visual results shown in Section~\ref{sec:experimental-results}.
+This appendix collects supporting figures moved out of the main body for space: Figures~\ref{fig:ablation_no_prompt}-\ref{fig:controlnet_depth} and \ref{fig:mae_v0}-\ref{fig:loss_controlnet_v0} are training diagnostics and intermediate outputs from Version 0 and Version 1 (Section~\ref{sec:method}), superseded by Version 2 and shown here only for completeness, while Figure~\ref{fig:loss_resnet_v2} is the Version 2 keypoint detector's own training loss curve.
 
 \begin{figure}[htbp]
     \centering

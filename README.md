@@ -21,10 +21,11 @@ read that before anything else if you're grading this.
 
 ```
 OsteoGen_V.2/   <- THE deliverable. Run this. Everything below is about it.
-OsteoGen_V.1/   <- earlier iteration (prompt-conditioned ControlNet), kept as
-OsteoGen_V.0/   <- historical/reference material - both are described and
-                   compared against V.2 in the report, not meant to be re-run
-                   (see "About V.0 and V.1" below).
+OsteoGen_V.1/   <- earlier iteration (prompt-conditioned ControlNet)
+OsteoGen_V.0/   <- earliest iteration (U-Net / PatchGAN / unconditional
+                   ControlNet baseline) - both kept as historical/reference
+                   material, described and compared against V.2 in the
+                   report; not meant to be re-run (see "About V.0 and V.1").
 report/         <- the report itself: main.tex + main.pdf, self-contained
                    (figures, references, style files all included).
 ```
