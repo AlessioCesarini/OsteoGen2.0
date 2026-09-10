@@ -187,7 +187,3 @@ you want to reproduce them yourself.
 keypoint detector, see the report). Sources and licenses for anything added
 beyond the original set are logged in
 `OsteoGen_V.2/dataset_tools/attributions.csv`.
-
----
-
-A Dinosaur Project
