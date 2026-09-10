@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99e (TeX Live 2026/Arch Linux)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: dlaiml2026.bst
+Database file #1: references.bib
+You've used 8 entries,
+            2773 wiz_defined-function locations,
+            654 strings with 7045 characters,
+and the built_in function-call counts, 5728 in all, are:
+= -- 490
+> -- 464
+< -- 3
++ -- 155
+- -- 147
+* -- 530
+:= -- 878
+add.period$ -- 27
+call.type$ -- 8
+change.case$ -- 72
+chr.to.int$ -- 8
+cite$ -- 16
+duplicate$ -- 209
+empty$ -- 362
+format.name$ -- 155
+if$ -- 1185
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 8
+newline$ -- 51
+num.names$ -- 32
+pop$ -- 138
+preamble$ -- 1
+purify$ -- 64
+quote$ -- 0
+skip$ -- 195
+stack$ -- 0
+substring$ -- 235
+swap$ -- 45
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 88
+warning$ -- 0
+while$ -- 40
+width$ -- 0
+write$ -- 117
