@@ -1,26 +1,26 @@
 """
 render/generate.py
 
-Lo stadio generativo vero e proprio: sostituisce il collage a warping
-rigido (render/control_map.py, che ora produce solo materiale di supporto)
-con un rendering via diffusione locale, condizionato da:
+The actual generative stage: replaces the rigid-warping collage
+(render/control_map.py, which now only produces supporting material) with
+a local-diffusion render, conditioned on:
 
-- ControlNet sulla control map dello scheletro target (disegna_control_map):
-  vincola posa e proporzioni al fossile reale.
-- IP-Adapter sulle foto dei migliori donatori (report["ranking_specie"]):
-  da' al modello un riferimento visivo di texture/colore, pesato per
-  compatibilita' - la stessa idea del primo esperimento manuale fatto con
-  un tool di generazione immagini generico (es. 50% eagle + 30% chicken +
-  20% altro), ma con pesi aperti eseguiti in locale, niente API a pagamento.
-- Un prompt testuale costruito automaticamente dal report, come guida
-  aggiuntiva (debole rispetto a ControlNet+IP-Adapter, ma aiuta lo stile).
+- ControlNet on the target skeleton's control map (disegna_control_map):
+  constrains pose and proportions to the real fossil.
+- IP-Adapter on the best donors' photos (report["ranking_specie"]): gives
+  the model a visual texture/color reference, weighted by compatibility -
+  the same idea as the first manual experiment done with a generic image
+  generation tool (e.g. 50% eagle + 30% chicken + 20% other), but with
+  open weights running locally, no paid API.
+- A text prompt automatically built from the report, as additional
+  guidance (weaker than ControlNet+IP-Adapter, but helps the style).
 
-ATTENZIONE: questo modulo richiede una GPU con CUDA (o comunque un
-acceleratore supportato da torch) e i pesi vengono scaricati da Hugging Face
-al primo utilizzo (qualche GB). Non e' stato eseguito end-to-end in fase di
-sviluppo di questo modulo: la macchina usata per scrivere il codice non ha
-una GPU NVIDIA. Vanno quindi previsti aggiustamenti minori (nomi di
-argomenti, versioni di `diffusers`) al primo run sulla RTX 5080.
+WARNING: this module requires a CUDA GPU (or any torch-supported
+accelerator) and the weights are downloaded from Hugging Face on first use
+(a few GB). It was not run end-to-end while developing this module: the
+machine used to write the code has no NVIDIA GPU. Minor adjustments
+(argument names, `diffusers` versions) should be expected on the first run
+on the RTX 5080.
 """
 import os
 import sys
@@ -37,18 +37,18 @@ MODEL_IP_ADAPTER_REPO = "h94/IP-Adapter"
 MODEL_IP_ADAPTER_SUBFOLDER = "models"
 MODEL_IP_ADAPTER_WEIGHT = "ip-adapter_sd15.bin"
 
-MAX_DONATORI_IP_ADAPTER = 4       # quanti animali del ranking_specie usare come riferimento visivo
-MAX_IMMAGINI_MEDIA_PESATA = 10    # quante copie totali nella lista "pesata per ripetizione" (vedi sotto)
+MAX_DONATORI_IP_ADAPTER = 4       # how many animals from ranking_specie to use as visual reference
+MAX_IMMAGINI_MEDIA_PESATA = 10    # total copies in the "weighted by repetition" list (see below)
 
 
 def costruisci_prompt(report, max_specie=3):
-    """Prompt testuale di supporto: da solo non basta a garantire coerenza
-    (per quello ci sono ControlNet e IP-Adapter), ma aiuta lo stile
-    complessivo e da' un fallback leggibile se IP-Adapter non e' disponibile.
+    """Supporting text prompt: on its own it doesn't guarantee coherence
+    (that's what ControlNet and IP-Adapter are for), but it helps the
+    overall style and gives a readable fallback if IP-Adapter is unavailable.
 
-    Il prompt va in inglese (SD1.5 e' addestrato su caption inglesi: un
-    prompt italiano peggiora l'adesione del modello), quindi i nomi delle
-    specie del DB (in italiano) sono tradotti con display_names."""
+    The prompt is in English (SD1.5 is trained on English captions: an
+    Italian prompt hurts the model's adherence), so the DB's species names
+    (in Italian) are translated via display_names."""
     from display_names import species_name
     top = report["ranking_specie"][:max_specie]
     mix = ", ".join(f"{r['compatibilita_pct']:.0f}% {species_name(r['animale'])}" for r in top)
@@ -66,15 +66,16 @@ def costruisci_prompt(report, max_specie=3):
 
 def _lista_donatori_pesata(report, db, max_donatori=MAX_DONATORI_IP_ADAPTER,
                             max_immagini=MAX_IMMAGINI_MEDIA_PESATA):
-    """Costruisce la lista di immagini da passare a IP-Adapter ripetendo
-    ogni donatore in proporzione al suo peso di compatibilita'.
+    """Builds the list of images to pass to IP-Adapter, repeating each
+    donor in proportion to its compatibility weight.
 
-    E' un modo robusto (non dipende da API interne di diffusers che
-    cambiano tra versioni) di approssimare una media pesata degli embedding:
-    IP-Adapter fa gia' la media delle embedding quando riceve una lista di
-    immagini, quindi ripetere un'immagine 5 volte su 10 invece di 1 volta
-    su 10 la pesa circa 5x nella media finale. Per un controllo esatto
-    (media pesata analitica sugli embedding) vedi la nota in fondo al file."""
+    This is a robust way (doesn't depend on diffusers internal APIs that
+    change between versions) to approximate a weighted average of the
+    embeddings: IP-Adapter already averages the embeddings when given a
+    list of images, so repeating an image 5 times out of 10 instead of 1
+    out of 10 weighs it about 5x in the final average. For exact control
+    (an analytic weighted average over the embeddings) see the note at the
+    bottom of the file."""
     top = [r for r in report["ranking_specie"][:max_donatori] if r["animale"] in db]
     if not top:
         return []
@@ -96,10 +97,10 @@ def _lista_donatori_pesata(report, db, max_donatori=MAX_DONATORI_IP_ADAPTER,
 
 
 def carica_pipeline(device="cuda", usa_offload=True):
-    """Carica base SD1.5 + ControlNet (scribble) + IP-Adapter. Import di
-    torch/diffusers fatto qui dentro (non in cima al file) cosi' il resto
-    del pacchetto render/ resta importabile anche su macchine senza questi
-    pacchetti pesanti installati (es. per testare solo control_map.py)."""
+    """Loads SD1.5 base + ControlNet (scribble) + IP-Adapter. torch/diffusers
+    are imported here (not at the top of the file) so the rest of the
+    render/ package stays importable even on machines without these heavy
+    packages installed (e.g. to test just control_map.py)."""
     import torch
     from diffusers import StableDiffusionControlNetPipeline, ControlNetModel, UniPCMultistepScheduler
 
@@ -115,8 +116,9 @@ def carica_pipeline(device="cuda", usa_offload=True):
 
     pipe = pipe.to(device)
     if device == "cuda" and usa_offload:
-        # Utile se in futuro si passa a SDXL o si gira con meno VRAM; su una
-        # 5080 con SD1.5 di norma non serve, ma non costa nulla lasciarlo.
+        # Useful if this ever moves to SDXL or runs with less VRAM; on a
+        # 5080 with SD1.5 it's normally unnecessary, but costs nothing to
+        # leave in.
         pipe.enable_model_cpu_offload()
     return pipe
 
@@ -125,14 +127,14 @@ def genera_render(coords_target, report, db, pipeline=None, device="cuda",
                    ip_adapter_scale=0.6, controlnet_scale=1.0,
                    num_inference_steps=30, guidance_scale=7.0,
                    seed=None, output_size=(512, 512)):
-    """Genera l'immagine finale dell'animale ricostruito.
+    """Generates the final image of the reconstructed animal.
 
-    coords_target: keypoint del fossile (da inference.estrai_coordinate).
-    report: output di compatibility.genera_report_compatibilita.
-    db: dict animali del database geometrico (da compatibility.carica_database).
-    pipeline: se None ne viene caricata una nuova (lento: pesa scaricare/
-        caricare i modelli). Passa una pipeline gia' caricata per generare
-        piu' render in sequenza senza ricaricare tutto ogni volta.
+    coords_target: the fossil's keypoints (from inference.estrai_coordinate).
+    report: output of compatibility.genera_report_compatibilita.
+    db: geometric database animal dict (from compatibility.carica_database).
+    pipeline: if None, a new one is loaded (slow: downloading/loading the
+        models is expensive). Pass an already-loaded pipeline to generate
+        several renders in sequence without reloading everything each time.
     """
     import torch
 
@@ -169,7 +171,7 @@ def genera_render(coords_target, report, db, pipeline=None, device="cuda",
         generator=generator,
     )
     if immagini_riferimento:
-        kwargs["ip_adapter_image"] = [immagini_riferimento]  
+        kwargs["ip_adapter_image"] = [immagini_riferimento]
 
     risultato = pipe(**kwargs)
     return risultato.images[0], control_image
@@ -183,18 +185,18 @@ def salva_render(immagine, output_path):
 
 
 # ---------------------------------------------------------------------------
-# Nota per un controllo piu' preciso dei pesi IP-Adapter
+# Note on more precise control of the IP-Adapter weights
 # ---------------------------------------------------------------------------
-# _lista_donatori_pesata approssima la media pesata ripetendo le immagini.
-# Se in `diffusers` (versione installata sulla macchina con la GPU) e'
-# disponibile `pipe.prepare_ip_adapter_image_embeds` con supporto a pesi
-# espliciti, si puo' sostituire con una media pesata analitica sugli
-# embedding invece che sulle immagini ripetute: la logica in
-# `_lista_donatori_pesata` va allora sostituita da una funzione che chiama
-# quella API con `report["ranking_specie"]` come pesi. Non l'ho implementata
-# di default perche' la firma di quella funzione e' cambiata piu' volte tra
-# le versioni di diffusers e non ho potuto verificarla contro un ambiente
-# con GPU in questa sessione.
+# _lista_donatori_pesata approximates the weighted average by repeating
+# images. If the `diffusers` version installed on the GPU machine has
+# `pipe.prepare_ip_adapter_image_embeds` with explicit weight support, it
+# could be replaced with an analytic weighted average over the embeddings
+# instead of repeated images: `_lista_donatori_pesata`'s logic would then
+# need to be replaced by a function that calls that API with
+# `report["ranking_specie"]` as weights. Not implemented by default because
+# that function's signature has changed multiple times across diffusers
+# versions and it wasn't possible to verify it against a GPU environment
+# in this session.
 
 
 if __name__ == "__main__":
@@ -203,7 +205,7 @@ if __name__ == "__main__":
     from compatibility import carica_database, genera_report_compatibilita
 
     parser = argparse.ArgumentParser(description="Generate the final render from a fossil.")
-    parser.add_argument("--fossile", required=True, help="Fossil/skeleton image (already preprocessed)")
+    parser.add_argument("--image", dest="fossile", required=True, help="Fossil/skeleton image (already preprocessed)")
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--seed", type=int, default=None)
     args = parser.parse_args()

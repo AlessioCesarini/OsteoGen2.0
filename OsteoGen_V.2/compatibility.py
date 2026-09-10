@@ -1,25 +1,25 @@
 """
 compatibility.py
 
-Sostituisce match_dinosauro.py: da un semplice "vince il piu' vicino" a un
-vero report di compatibilita' percentuale.
+Replaces match_dinosauro.py: from a simple "closest wins" to a real
+percentage compatibility report.
 
-Due livelli di similarita', entrambi calcolati sui keypoint normalizzati
-(vedi geometry.normalizza_keypoints, invarianti a scala/posizione):
+Two levels of similarity, both computed on normalized keypoints (see
+geometry.normalizza_keypoints, invariant to scale/position):
 
-1. compatibilita_specie: quanto l'intera sagoma del target assomiglia a
-   quella di ciascun animale del DB (per il report "il tuo fossile e' per
-   il 50% aquila, 30% pollo, ...").
-2. compatibilita_per_segmento: per ciascuna delle 5 parti del corpo, quali
-   animali sono i donatori di texture piu' plausibili (serve al renderer).
+1. compatibilita_specie: how much the target's whole silhouette resembles
+   each animal in the DB (for the report "your fossil is 50% eagle, 30%
+   chicken, ...").
+2. compatibilita_per_segmento: for each of the 5 body parts, which animals
+   are the most plausible texture donors (used by the renderer).
 
-Le distanze sono convertite in percentuali con una softmax: piu' un animale
-e' vicino geometricamente al target, piu' peso riceve, ma tutti gli animali
-compatibili concorrono al punteggio (non solo il primo classificato). Le
-temperature di default sono calibrate empiricamente sul dataset delle 65
-specie (vedi note nel repo/plan): con target=un animale del DB stesso, il
-suo self-match resta intorno al 50-100% e i vicini piu' plausibili si
-piazzano subito dopo, invece di un ranking quasi uniforme.
+Distances are converted to percentages with a softmax: the closer an
+animal is geometrically to the target, the more weight it gets, but every
+compatible animal contributes to the score (not just the top match).
+Default temperatures are empirically calibrated on the 65-species dataset
+(see notes in the repo/plan): with target = one of the DB animals itself,
+its self-match stays around 50-100% and the next most plausible neighbors
+land right after, instead of an almost-uniform ranking.
 """
 import json
 import os
@@ -34,20 +34,20 @@ TEMPERATURE_SEGMENTO_DEFAULT = 0.06
 
 
 def carica_database(path):
-    """Ritorna (animali, fattore_calibrazione_cranio). `animali` e' il dict
-    nome_file -> dati geometrici; il fattore serve a normalizzare il target
-    in modo coerente con il DB quando gli manca il torso (vedi geometry.py)."""
+    """Returns (animali, fattore_calibrazione_cranio). `animali` is the dict
+    filename -> geometric data; the factor is used to normalize the target
+    consistently with the DB when it lacks a torso (see geometry.py)."""
     with open(path, 'r', encoding='utf-8') as f:
         raw = json.load(f)
     meta = raw.get("_meta", {})
-    animali = raw.get("animali", raw)  # retrocompatibilita' con vecchi DB piatti
+    animali = raw.get("animali", raw)  # backward-compat with old flat DBs
     return animali, meta.get("fattore_calibrazione_cranio")
 
 
 def _distanza_normalizzata(vec_a, vec_b, min_punti_comuni):
-    """RMS della distanza tra i keypoint normalizzati condivisi da due
-    entita'. Ritorna (distanza, n_punti_comuni); distanza=None se i punti
-    in comune sono troppo pochi per un confronto affidabile."""
+    """RMS distance between the normalized keypoints shared by two
+    entities. Returns (distance, n_shared_points); distance=None if too
+    few points are shared for a reliable comparison."""
     diffs_sq = []
     for nome in NOMI_PUNTI:
         pa, pb = vec_a.get(nome), vec_b.get(nome)
@@ -61,9 +61,8 @@ def _distanza_normalizzata(vec_a, vec_b, min_punti_comuni):
 
 
 def _softmax_percentuali(coppie_nome_distanza, temperature):
-    """coppie_nome_distanza: lista di (nome, distanza). Ritorna lista di
-    (nome, pct, distanza) ordinata per pct decrescente, pct che sommano
-    a 100."""
+    """coppie_nome_distanza: list of (name, distance). Returns a list of
+    (name, pct, distance) sorted by descending pct, pct summing to 100."""
     if not coppie_nome_distanza:
         return []
     distanze = np.array([d for _, d in coppie_nome_distanza])
@@ -77,15 +76,15 @@ def _softmax_percentuali(coppie_nome_distanza, temperature):
 
 def compatibilita_specie(coords_target, db, fattore_calibrazione_cranio=None,
                           temperature=TEMPERATURE_SPECIE_DEFAULT, min_punti_comuni=3):
-    """Ranking di compatibilita' dell'intero target contro ogni animale del
-    DB. temperature piu' bassa = distribuzione piu' 'piccata' su pochi
-    animali; piu' alta = punteggi piu' spalmati."""
+    """Compatibility ranking of the whole target against every animal in
+    the DB. Lower temperature = a more 'peaked' distribution on fewer
+    animals; higher = scores spread out more."""
     vec_target, ancora = normalizza_keypoints(coords_target, fattore_calibrazione_cranio)
     if ancora is None:
         raise ValueError(
-            "Il target non ha un'ancora di scala valida (mancano sia il "
-            "torso base_collo->base_coda sia il cranio punta_muso->retro_cranio): "
-            "impossibile calcolare la compatibilita'."
+            "The target has no valid scale anchor (missing both the "
+            "torso base_collo->base_coda and the skull punta_muso->retro_cranio): "
+            "cannot compute compatibility."
         )
 
     coppie = []
@@ -107,15 +106,15 @@ def compatibilita_specie(coords_target, db, fattore_calibrazione_cranio=None,
 
 def compatibilita_per_segmento(coords_target, db, fattore_calibrazione_cranio=None,
                                 temperature=TEMPERATURE_SEGMENTO_DEFAULT):
-    """Per ciascun segmento anatomico presente nel target, ranking % dei
-    donatori piu' compatibili in termini di proporzione rispetto al
-    torso/cranio (non di forma assoluta: un piccione e uno struzzo possono
-    avere ali proporzionalmente simili pur essendo di taglia diversissima)."""
+    """For each anatomical segment present in the target, a % ranking of
+    the most compatible donors in terms of proportion relative to the
+    torso/skull (not absolute shape: a pigeon and an ostrich can have
+    proportionally similar wings despite being wildly different sizes)."""
     vec_target, ancora = normalizza_keypoints(coords_target, fattore_calibrazione_cranio)
     if ancora is None:
         raise ValueError(
-            "Il target non ha un'ancora di scala valida: impossibile calcolare "
-            "la compatibilita' per segmento."
+            "The target has no valid scale anchor: cannot compute "
+            "per-segment compatibility."
         )
     prop_target = lunghezze_segmenti_normalizzate(vec_target)
 
@@ -145,9 +144,8 @@ def compatibilita_per_segmento(coords_target, db, fattore_calibrazione_cranio=No
 
 
 def genera_report_compatibilita(coords_target, db, fattore_calibrazione_cranio=None, top_k_specie=8):
-    """Combina i due livelli di similarita' in un'unica struttura, pronta
-    per report.py (visualizzazione) e render/generate.py (pesi per le
-    IP-Adapter reference)."""
+    """Combines both similarity levels into a single structure, ready for
+    report.py (display) and render/generate.py (IP-Adapter reference weights)."""
     ranking_specie = compatibilita_specie(coords_target, db, fattore_calibrazione_cranio)
     per_segmento = compatibilita_per_segmento(coords_target, db, fattore_calibrazione_cranio)
     return {

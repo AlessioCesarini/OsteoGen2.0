@@ -1,21 +1,20 @@
 """
 preprocess_target.py
 
-Prepara un'immagine "grezza" (scaricata da internet, o una vera foto di
-fossile) per l'inferenza, in 3 passi opzionali:
+Prepares a "raw" image (downloaded from the internet, or a real fossil
+photo) for inference, in 3 optional steps:
 
-1. rimuovi_sfondo: isola il soggetto da uno sfondo non nero (una vera foto
-   di scavo/museo non arriva mai gia' su sfondo nero come le illustrazioni
-   di training). Usa `rembg` se installato (rete U2Net, buona qualita'),
-   altrimenti un fallback euristico grezzo via GrabCut.
-2. canonicalizza_bordi: riduce il divario di dominio tra le illustrazioni
-   stilizzate del training set e una fotografia reale, enfatizzando i
-   contorni ossei invece dei dettagli fotografici (illuminazione, texture
-   della pietra, ecc.). Lo stesso tipo di trasformazione va applicato anche
-   in fase di training come augmentation (vedi heatmap.py) cosi' la rete
-   impara a riconoscere entrambi gli stili.
-3. prepara_immagine_target: il letterboxing gia' esistente (invariato),
-   sempre l'ultimo passo prima di salvare/passare il file alla rete.
+1. rimuovi_sfondo: isolates the subject from a non-black background (a
+   real excavation/museum photo never comes on a black background the way
+   the training illustrations do). Uses `rembg` if installed (U2Net
+   network, good quality), otherwise a rough heuristic fallback via GrabCut.
+2. canonicalizza_bordi: reduces the domain gap between the training set's
+   stylized illustrations and a real photograph, emphasizing bone outlines
+   over photographic detail (lighting, stone texture, etc.). The same kind
+   of transform is also applied during training as augmentation (see
+   heatmap.py) so the network learns to recognize both styles.
+3. prepara_immagine_target: the pre-existing letterboxing (unchanged),
+   always the last step before saving/feeding the file to the network.
 """
 import cv2
 import numpy as np
@@ -23,9 +22,9 @@ import os
 
 
 def rimuovi_sfondo(img_bgr):
-    """Ritorna un'immagine BGR con lo sfondo sostituito da nero. Se non
-    riesce a isolare un soggetto plausibile, ritorna l'immagine originale
-    invariata (meglio un fondo non pulito che un soggetto cancellato)."""
+    """Returns a BGR image with the background replaced by black. If it
+    can't isolate a plausible subject, returns the original image
+    unchanged (a messy background beats an erased subject)."""
     try:
         from rembg import remove
         import io
@@ -47,9 +46,9 @@ def rimuovi_sfondo(img_bgr):
 
 
 def _rimuovi_sfondo_grabcut(img_bgr):
-    """Fallback senza dipendenze extra: assume che il soggetto sia
-    approssimativamente centrato e occupi la porzione centrale
-    dell'inquadratura, inizializza GrabCut con quel rettangolo."""
+    """Dependency-free fallback: assumes the subject is roughly centered
+    and occupies the central portion of the frame, initializes GrabCut
+    with that rectangle."""
     h, w = img_bgr.shape[:2]
     mask = np.zeros((h, w), np.uint8)
     bgd_model = np.zeros((1, 65), np.float64)
@@ -65,9 +64,9 @@ def _rimuovi_sfondo_grabcut(img_bgr):
 
 
 def canonicalizza_bordi(img_bgr, alpha=0.5):
-    """Mescola l'immagine originale con la sua mappa dei bordi (Canny), per
-    avvicinare stilisticamente una foto reale alle illustrazioni vettoriali
-    del training set. alpha=0 -> immagine originale, alpha=1 -> soli bordi."""
+    """Blends the original image with its edge map (Canny), to stylistically
+    bring a real photo closer to the training set's vector illustrations.
+    alpha=0 -> original image, alpha=1 -> edges only."""
     gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
     bordi = cv2.Canny(gray, 60, 160)
     bordi_bgr = cv2.cvtColor(bordi, cv2.COLOR_GRAY2BGR)

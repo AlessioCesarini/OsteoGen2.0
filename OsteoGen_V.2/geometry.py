@@ -1,13 +1,13 @@
 """
 geometry.py
 
-Utilita' geometriche condivise tra build_DB.py, compatibility.py e render/.
-Definisce lo schema dei 14 keypoint anatomici, la segmentazione in 5 parti
-del corpo, e la normalizzazione (traslazione + scala) che rende i keypoint
-di due animali di taglia/inquadratura diverse confrontabili tra loro.
+Geometric utilities shared by build_DB.py, compatibility.py and render/.
+Defines the 14-anatomical-keypoint schema, the 5-body-part segmentation,
+and the normalization (translation + scale) that makes keypoints from two
+animals of different size/framing comparable to each other.
 
-Lo schema e' null-tolerant: un punto assente (arto mancante, coda assente,
-ecc.) e' rappresentato come None ovunque nella pipeline.
+The schema is null-tolerant: a missing point (absent limb, no tail, etc.)
+is represented as None everywhere in the pipeline.
 """
 import numpy as np
 
@@ -17,9 +17,9 @@ NOMI_PUNTI = [
     "ginocchio_post_1", "ginocchio_post_2", "zampa_post", "base_coda", "punta_coda"
 ]
 
-# Segmentazione anatomica: nome_parte -> lista ordinata di keypoint che la
-# compongono. L'ordine e' usato anche da render/control_map.py per tracciare
-# i segmenti ossei come una polilinea.
+# Anatomical segmentation: part name -> ordered list of the keypoints that
+# make it up. The order is also used by render/control_map.py to draw the
+# bone segments as a polyline.
 SEGMENTI = {
     "testa": ["punta_muso", "retro_cranio", "base_collo"],
     "torso": ["base_collo", "spalla", "dorso", "anca", "base_coda"],
@@ -28,29 +28,29 @@ SEGMENTI = {
     "coda": ["base_coda", "punta_coda"],
 }
 
-# Unita' di scala preferita: la lunghezza del torso (base_collo->base_coda).
-# Quando manca (anatomie senza coda annotata: rana, serpente, tartaruga,
-# scimpanze, uomo, pipistrello...) si stima un "torso equivalente" dalla
-# lunghezza del cranio (punta_muso->retro_cranio), corretta per il rapporto
-# medio cranio/torso osservato sul resto del dataset (vedi
-# stima_fattore_calibrazione_cranio) — senza questa correzione, un'unita'
-# "1 cranio" e un'unita' "1 torso" non sono confrontabili tra loro e le
-# distanze tra le due popolazioni esplodono artificialmente.
-RAPPORTO_CRANIO_TORSO_DEFAULT = 0.35  # usato solo se il DB non fornisce una stima calibrata
+# Preferred scale unit: torso length (base_collo->base_coda). When missing
+# (anatomies with no annotated tail: frog, snake, turtle, chimpanzee,
+# human, bat...) an "equivalent torso" is estimated from skull length
+# (punta_muso->retro_cranio), corrected by the average skull/torso ratio
+# observed over the rest of the dataset (see
+# stima_fattore_calibrazione_cranio) - without this correction, a "1
+# skull" unit and a "1 torso" unit aren't comparable and distances between
+# the two populations explode artificially.
+RAPPORTO_CRANIO_TORSO_DEFAULT = 0.35  # used only if the DB doesn't provide a calibrated estimate
 
 
 def dist(p1, p2):
-    """Distanza euclidea tra due punti (x, y); None se uno dei due manca."""
+    """Euclidean distance between two (x, y) points; None if either is missing."""
     if p1 is None or p2 is None:
         return None
     return float(np.linalg.norm(np.array(p1, dtype=float) - np.array(p2, dtype=float)))
 
 
 def stima_fattore_calibrazione_cranio(elenco_coords):
-    """Rapporto medio lunghezza_cranio/lunghezza_torso calcolato sugli
-    animali del dataset che hanno ENTRAMBE le misure (la maggioranza).
-    Usato per convertire lo scale-anchor 'cranio' in un torso equivalente
-    per gli animali che invece il torso non ce l'hanno."""
+    """Average skull_length/torso_length ratio computed over the dataset
+    animals that have BOTH measurements (the majority). Used to convert the
+    'skull' scale-anchor into an equivalent torso for animals that lack a
+    torso measurement."""
     rapporti = []
     for coords in elenco_coords:
         torso = dist(coords.get("base_collo"), coords.get("base_coda"))
@@ -61,17 +61,17 @@ def stima_fattore_calibrazione_cranio(elenco_coords):
 
 
 def trova_ancora_scala(coords, fattore_calibrazione_cranio=None):
-    """Determina origine e scala per normalizza_keypoints.
+    """Determines the origin and scale for normalizza_keypoints.
 
-    - Preferisce il torso (base_collo->base_coda): scala esatta, unita' 'torso'.
-    - In fallback usa il cranio (punta_muso->retro_cranio), riscalato al
-      torso equivalente tramite fattore_calibrazione_cranio, cosi' l'unita'
-      resta coerente con quella degli animali torso-anchored.
-    - L'origine e' sempre base_collo quando disponibile (anche se la scala
-      viene dal cranio), altrimenti punta_muso.
+    - Prefers the torso (base_collo->base_coda): exact scale, unit 'torso'.
+    - Falls back to the skull (punta_muso->retro_cranio), rescaled to an
+      equivalent torso via fattore_calibrazione_cranio, so the unit stays
+      consistent with torso-anchored animals.
+    - The origin is always base_collo when available (even if the scale
+      comes from the skull), otherwise punta_muso.
 
-    Ritorna (origine, scala, nome_ancora) oppure (None, None, None) se non
-    c'e' proprio nessuna misura utilizzabile.
+    Returns (origin, scale, anchor_name), or (None, None, None) if no
+    usable measurement exists at all.
     """
     fattore = fattore_calibrazione_cranio or RAPPORTO_CRANIO_TORSO_DEFAULT
     origine_collo = coords.get("base_collo")
@@ -91,14 +91,14 @@ def trova_ancora_scala(coords, fattore_calibrazione_cranio=None):
 
 def normalizza_keypoints(coords, fattore_calibrazione_cranio=None):
     """
-    Rende i keypoint invarianti a posizione e scala:
-    - trasla l'origine su base_collo (o punta_muso se il collo manca)
-    - scala per la lunghezza del torso, o per il suo equivalente stimato
-      dal cranio quando il torso non e' annotato
+    Makes the keypoints invariant to position and scale:
+    - translates the origin to base_collo (or punta_muso if the neck is missing)
+    - scales by torso length, or its skull-estimated equivalent when the
+      torso isn't annotated
 
-    Ritorna (dict {nome: (x,y) o None}, nome_ancora). Se non e' disponibile
-    nessuna misura di scala, ritorna tutti None (l'animale non e' comparabile
-    geometricamente e va escluso dal retrieval).
+    Returns (dict {name: (x,y) or None}, anchor_name). If no scale
+    measurement is available, returns all None (the animal isn't
+    geometrically comparable and must be excluded from retrieval).
     """
     origine, scala, nome_ancora = trova_ancora_scala(coords, fattore_calibrazione_cranio)
     if origine is None:
@@ -113,12 +113,11 @@ def normalizza_keypoints(coords, fattore_calibrazione_cranio=None):
 
 
 def lunghezza_catena(coords, punti):
-    """Lunghezza di una catena di keypoint come somma delle distanze tra
-    punti consecutivi (non la distanza diretta primo->ultimo): segue quindi
-    la reale articolazione dell'arto/tronco invece di tagliare in linea
-    retta. I link con un estremo mancante vengono saltati. Ritorna None se
-    non c'e' nessun link misurabile (es. torso di un serpente, quasi tutto
-    None)."""
+    """Length of a keypoint chain as the sum of distances between
+    consecutive points (not the direct first->last distance): this follows
+    the limb/torso's actual articulation instead of cutting a straight
+    line. Links with a missing endpoint are skipped. Returns None if no
+    link at all is measurable (e.g. a snake's torso, almost entirely None)."""
     lunghezza = 0.0
     almeno_un_link = False
     for p1, p2 in zip(punti, punti[1:]):
@@ -130,13 +129,12 @@ def lunghezza_catena(coords, punti):
 
 
 def lunghezze_segmenti(coords):
-    """Lunghezza 'base' di ciascun segmento (somma dei link della catena
-    ossea), in pixel assoluti. Usata per costruire il DB. NOTA: per il
-    segmento 'torso' questo valore coincide, per costruzione, con l'ancora
-    di scala quando e' disponibile (base_collo->base_coda diretta e' un
-    sotto-caso della catena) - vedi lunghezze_segmenti_normalizzate per il
-    motivo per cui il confronto per-donatore usa comunque la catena intera
-    e non il solo endpoint-to-endpoint."""
+    """'Base' length of each segment (sum of the bone chain's links), in
+    absolute pixels. Used to build the DB. NOTE: for the 'torso' segment
+    this value coincides, by construction, with the scale anchor when
+    available (a direct base_collo->base_coda is a sub-case of the chain) -
+    see lunghezze_segmenti_normalizzate for why the per-donor comparison
+    still uses the whole chain and not just endpoint-to-endpoint."""
     out = {}
     for parte, punti in SEGMENTI.items():
         d = lunghezza_catena(coords, punti)
@@ -145,18 +143,18 @@ def lunghezze_segmenti(coords):
 
 
 def lunghezze_segmenti_normalizzate(coords_normalizzati):
-    """Come lunghezze_segmenti, ma sui keypoint gia' normalizzati: il
-    risultato e' quindi direttamente una proporzione (lunghezza / scala
-    dell'ancora), invariante alla taglia assoluta dell'animale.
+    """Like lunghezze_segmenti, but on already-normalized keypoints: the
+    result is therefore directly a proportion (length / anchor scale),
+    invariant to the animal's absolute size.
 
-    Per il segmento 'torso' la catena passa anche per spalla/dorso/anca, non
-    solo per gli estremi base_collo/base_coda: se usassimo la sola distanza
-    diretta tra gli estremi otterremmo sempre ~1.0 per qualunque animale
-    ancorato sul torso (e' letteralmente la definizione della scala), un
-    confronto inutile. Sommando i link intermedi il valore riflette invece
-    quanto e' 'arcuato'/allungato il dorso, che varia da animale ad animale.
+    For the 'torso' segment the chain also passes through spalla/dorso/anca,
+    not just the base_collo/base_coda endpoints: using only the direct
+    distance between the endpoints would always give ~1.0 for any
+    torso-anchored animal (that's literally the definition of the scale),
+    a useless comparison. Summing the intermediate links instead reflects
+    how 'arched'/elongated the back is, which varies animal to animal.
 
-    None per i segmenti dove non c'e' nessun link misurabile nel target.
+    None for segments where no link is measurable in the target.
     """
     out = {}
     for parte, punti in SEGMENTI.items():

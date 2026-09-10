@@ -1,13 +1,12 @@
 """
 report.py
 
-Trasforma l'output di compatibility.genera_report_compatibilita in due
-formati consumabili:
-- un JSON grezzo (per uso programmatico / da passare a render/generate.py)
-- una pagina HTML autonoma (grafico a barre delle specie compatibili,
-  thumbnail dei donatori per segmento) da aprire in un browser qualunque,
-  senza server e senza dipendenze esterne (le immagini sono incorporate
-  come base64).
+Turns compatibility.genera_report_compatibilita's output into two
+consumable formats:
+- a raw JSON (for programmatic use / to pass to render/generate.py)
+- a self-contained HTML page (bar chart of compatible species, per-segment
+  donor thumbnails) to open in any browser, no server and no external
+  dependencies (images are embedded as base64).
 """
 import base64
 import io
@@ -18,9 +17,9 @@ from PIL import Image
 
 
 def _thumbnail_base64(path, max_size=160):
-    """Ritorna una data-URI base64 di una thumbnail JPEG, o None se il file
-    non esiste o non e' leggibile (il report deve poter degradare senza
-    rompersi se manca una texture)."""
+    """Returns a base64 data-URI for a JPEG thumbnail, or None if the file
+    doesn't exist or isn't readable (the report must degrade gracefully,
+    not break, if a texture is missing)."""
     if not path or not os.path.exists(path):
         return None
     try:

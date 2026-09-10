@@ -1,21 +1,20 @@
 """
 render/control_map.py
 
-Ex warp_dinosauro.py. Il warping rigido a base di convexHull/estimateAffine2D
-NON produce piu' l'immagine finale (i frammenti triangolari incollati in
-outputs/trex_chimera_render.jpg ne sono la prova: non e' un animale
-coerente). Resta pero' utile come generatore di due input per lo stadio
-generativo in render/generate.py:
+Formerly warp_dinosauro.py. Rigid convexHull/estimateAffine2D warping no
+longer produces the final image (the triangular texture fragments glued
+together in outputs/trex_chimera_render.jpg are proof: not a coherent
+animal). It's still useful, though, to generate two inputs for the
+generative stage in render/generate.py:
 
-1. disegna_control_map: una mappa di controllo linea-bianca-su-nero dello
-   scheletro target, da dare in pasto a un ControlNet (scribble/lineart) -
-   vincola il render generato a rispettare la posa/proporzioni reali del
-   fossile.
-2. genera_guida_grezza: lo stesso collage a blocchi di texture di prima, ma
-   usato solo come immagine di partenza (init image) per un img2img a bassa
-   "strength": da' al modello di diffusione un punto di partenza cromatico
-   plausibile (dove sono grosso modo le zampe, il muso, ecc.) invece di
-   puro rumore, senza pretendere che il collage stesso sia il risultato.
+1. disegna_control_map: a white-line-on-black control map of the target
+   skeleton, fed to a ControlNet (scribble/lineart) - constrains the
+   generated render to respect the fossil's real pose/proportions.
+2. genera_guida_grezza: the same texture-block collage as before, but used
+   only as a starting image (init image) for a low-"strength" img2img: it
+   gives the diffusion model a plausible color starting point (roughly
+   where the legs, snout, etc. are) instead of pure noise, without
+   expecting the collage itself to be the result.
 """
 import cv2
 import numpy as np
@@ -23,19 +22,19 @@ import os
 import json
 import sys
 
-# Permette sia `python render/control_map.py` sia `import render.control_map`
-# da OsteoGen_2/, riusando geometry.py che vive a livello di progetto (non
-# e' stato spacchettato in render/ perche' serve anche a build_DB.py e
-# compatibility.py fuori da questo package).
+# Allows both `python render/control_map.py` and `import render.control_map`
+# from the project root, reusing geometry.py which lives at the project
+# level (not packaged under render/ since build_DB.py and compatibility.py
+# also need it, outside this package).
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from geometry import SEGMENTI
 
 
 def disegna_control_map(coords, size=(512, 512), spessore=6):
-    """Disegna lo scheletro del target come polilinee bianche su sfondo
-    nero: una condizione di controllo semplice, indipendente dallo stile
-    (funziona sia per illustrazioni sia per foto di fossili reali) perche'
-    dipende solo dalle coordinate dei keypoint, non dai pixel originali."""
+    """Draws the target skeleton as white polylines on a black background:
+    a simple control condition, style-independent (works for both
+    illustrations and real fossil photos) because it depends only on the
+    keypoint coordinates, not on the original pixels."""
     h, w = size[1], size[0]
     canvas = np.zeros((h, w), dtype=np.uint8)
 
@@ -50,14 +49,14 @@ def disegna_control_map(coords, size=(512, 512), spessore=6):
         if p is not None:
             cv2.circle(canvas, tuple(np.int32(p)), spessore, 255, -1)
 
-    return canvas  # singolo canale, il caller lo converte come serve (RGB per ControlNet)
+    return canvas  # single channel; the caller converts as needed (RGB for ControlNet)
 
 
 def _applica_texture_parte(img_src, canvas_dst, punti_src_raw, punti_dst_raw):
-    """Isola la texture del donatore lungo la catena ossea (maschera
-    'tubolare' attorno a ogni link) e la deforma sui punti del target con
-    una trasformazione affine parziale. Solo per la guida grezza (v. sopra),
-    non per l'output finale."""
+    """Isolates the donor's texture along the bone chain (a 'tubular' mask
+    around each link) and warps it onto the target's points with a partial
+    affine transform. Only for the rough guide (see above), not for the
+    final output."""
     p_src_clean = [p for p, d in zip(punti_src_raw, punti_dst_raw) if p is not None and d is not None]
     p_dst_clean = [d for p, d in zip(punti_src_raw, punti_dst_raw) if p is not None and d is not None]
 
@@ -93,10 +92,10 @@ def _applica_texture_parte(img_src, canvas_dst, punti_src_raw, punti_dst_raw):
 
 
 def genera_guida_grezza(donatori_per_segmento, db, target_coords, target_shape):
-    """donatori_per_segmento: dict parte -> nome_animale (il donatore
-    migliore, es. report['per_segmento'][parte]['donatori'][0]['animale']).
-    Ritorna un canvas BGR: collage grezzo, SOLO come init-image per
-    render/generate.py, non come output finale."""
+    """donatori_per_segmento: dict part -> animal_name (the best donor,
+    e.g. report['per_segmento'][parte]['donatori'][0]['animale']).
+    Returns a BGR canvas: a rough collage, ONLY as an init-image for
+    render/generate.py, not as the final output."""
     from dataset_paths import resolve_dataset_path
 
     h, w = target_shape[:2]
@@ -120,7 +119,7 @@ def genera_guida_grezza(donatori_per_segmento, db, target_coords, target_shape):
 
 
 if __name__ == "__main__":
-    # Smoke test: disegna solo la control map (non richiede texture donatori)
+    # Smoke test: draws only the control map (doesn't need donor textures).
     _base_dir = os.path.dirname(os.path.abspath(__file__))
     esempio_json = os.path.join(_base_dir, "..", "data", "processed", "Labels_X", "cavallo.json")
     with open(esempio_json, encoding='utf-8') as f:
@@ -130,4 +129,4 @@ if __name__ == "__main__":
     out_path = os.path.join(_base_dir, "..", "outputs", "control_map_test.png")
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     cv2.imwrite(out_path, mappa)
-    print(f"Control map di test salvata in {out_path}")
+    print(f"Test control map saved to {out_path}")

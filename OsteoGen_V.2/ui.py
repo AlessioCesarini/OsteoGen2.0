@@ -253,7 +253,7 @@ def resolve_weights_path(default_path):
         raise FileNotFoundError(
             f"Trained weights not found at {default_path}, no local copy found, "
             f"and no download source configured (OSTEOGEN_WEIGHTS_REPO). "
-            f"Pass --pesi <path> or run interactively to be prompted for it."
+            f"Pass --weights <path> or run interactively to be prompted for it."
         )
 
     print(f"\nCould not find the trained keypoint-detector weights ({filename}).")

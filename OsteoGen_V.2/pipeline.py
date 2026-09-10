@@ -5,16 +5,16 @@ Single end-to-end CLI: from a fossil/skeleton to a compatibility report +
 generative render.
 
     python pipeline.py                                  # interactive: asks for the image
-    python pipeline.py --fossile input/my_fossil.jpg
-    python pipeline.py --fossile input/my_fossil.jpg --no-render   # report only, no GPU needed
+    python pipeline.py --image input/my_fossil.jpg
+    python pipeline.py --image input/my_fossil.jpg --no-render   # report only, no GPU needed
 
-Without --fossile the script asks interactively for the image path (meant
+Without --image the script asks interactively for the image path (meant
 for a one-off run or a demo, not just for people used to a command line):
 it shows a short summary of what the pipeline is about to do, a progress
 indicator per stage, and opens the report and the produced images at the
 end. Missing dependencies and the trained weights file are resolved
 automatically wherever possible (see bootstrap.py / ui.resolve_weights_path).
-With --fossile the behaviour stays scriptable/silent as before, for tests
+With --image the behaviour stays scriptable/silent as before, for tests
 and automation.
 
 Steps:
@@ -162,23 +162,24 @@ def esegui_pipeline(fossile_path, pesi_path=_PESI_DEFAULT, db_path=_DB_DEFAULT,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="OsteoGen 2.0: from a fossil to a compatibility report + render.")
-    parser.add_argument("--fossile", default=None,
+    parser.add_argument("--image", dest="fossile", default=None,
                          help="Path to the fossil/skeleton image. If omitted, it is asked interactively.")
-    parser.add_argument("--pesi", default=_PESI_DEFAULT,
+    parser.add_argument("--weights", dest="pesi", default=_PESI_DEFAULT,
                          help="Path to the trained keypoint-detector weights (.pth). "
                               "If missing, it is resolved automatically or asked interactively.")
     parser.add_argument("--db", default=_DB_DEFAULT)
-    parser.add_argument("--rimuovi-sfondo", action="store_true", help="Remove the background before preprocessing.")
-    parser.add_argument("--canonicalizza", action="store_true",
+    parser.add_argument("--remove-background", dest="rimuovi_sfondo", action="store_true",
+                         help="Remove the background before preprocessing.")
+    parser.add_argument("--canonicalize", dest="canonicalizza", action="store_true",
                          help="Blend in Canny edges to bring real photos closer to the training set's style.")
-    parser.add_argument("--salta-preprocess", action="store_true",
+    parser.add_argument("--skip-preprocess", dest="salta_preprocess", action="store_true",
                          help="Use the image as-is (must already be 512x512 on a black background).")
     parser.add_argument("--no-render", action="store_true", help="Report only, skip the diffusers stage (no GPU needed).")
     parser.add_argument("--device", default="auto", help="'auto' (default), 'cuda' or 'cpu'.")
     parser.add_argument("--seed", type=int, default=None)
     args = parser.parse_args()
 
-    # Interactive mode: no --fossile given on the command line. Ask for the
+    # Interactive mode: no --image given on the command line. Ask for the
     # path and, since the generative render is the heaviest stage (GPU +
     # first-time weight downloads), ask for explicit confirmation instead
     # of launching it as a surprise.

@@ -15,19 +15,19 @@ from preprocess_target import canonicalizza_bordi
 
 class SkeletonKeypointDataset(Dataset):
     """
-    augment=True attiva un set di trasformazioni pensate per ridurre il
-    divario di dominio tra le illustrazioni stilizzate del training set e
-    foto reali di fossili (che vedra' solo in inferenza, mai in training):
-    - flip orizzontale (i 14 keypoint non distinguono destra/sinistra, sono
-      tutti sul profilo visibile, quindi il flip e' geometricamente sicuro
-      e basta ribaltare la coordinata x)
-    - color jitter e desaturazione occasionale (le foto reali hanno
-      illuminazione/colore molto piu' vari delle illustrazioni)
-    - blend occasionale con i bordi (Canny), la stessa trasformazione che
-      preprocess_target.py puo' applicare a un fossile vero in inferenza:
-      addestrando anche su questa variante la rete generalizza meglio a
-      quello stile.
-    Da usare solo in train.py; per build_DB.py/inferenza augment=False.
+    augment=True enables a set of transforms meant to reduce the domain gap
+    between the training set's stylized illustrations and real fossil
+    photos (which it will only see at inference time, never in training):
+    - horizontal flip (the 14 keypoints don't distinguish left/right, they
+      are all on the visible profile, so the flip is geometrically safe
+      and only needs the x coordinate mirrored)
+    - color jitter and occasional desaturation (real photos have much more
+      varied lighting/color than the illustrations)
+    - occasional blending with edges (Canny), the same transform that
+      preprocess_target.py can apply to a real fossil at inference time:
+      training on this variant too helps the network generalize better to
+      that style.
+    Use only in train.py; for build_DB.py/inference use augment=False.
     """
     def __init__(self, img_dir, json_dir, img_size=512, sigma=5.0, augment=False):
         self.img_dir = img_dir
@@ -61,9 +61,9 @@ class SkeletonKeypointDataset(Dataset):
         return len(self.img_names)
 
     def _applica_augmentation(self, image, coords, orig_w):
-        """image: PIL.Image. coords: dict nome->[x,y] o None, in pixel
-        dell'immagine ORIGINALE (prima del resize a img_size). Ritorna
-        (image_augmentata, coords_augmentate)."""
+        """image: PIL.Image. coords: dict name->[x,y] or None, in pixels of
+        the ORIGINAL image (before resizing to img_size). Returns
+        (augmented_image, augmented_coords)."""
         if random.random() < 0.5:
             image = ImageOps.mirror(image)
             coords = {
@@ -122,12 +122,12 @@ if __name__ == "__main__":
     dataset = SkeletonKeypointDataset(img_dir=img_dir, json_dir=json_dir, img_size=512, sigma=5.0, augment=True)
     dataloader = DataLoader(dataset, batch_size=8, shuffle=True, num_workers=2)
 
-    print(f"Dataset caricato: {len(dataset)} campioni.")
+    print(f"Dataset loaded: {len(dataset)} samples.")
 
     immagini, heatmaps = next(iter(dataloader))
 
-    print(f"Shape tensore Input (Immagini): {immagini.shape}")
-    print(f"Shape tensore Target (Heatmaps): {heatmaps.shape}")
+    print(f"Input tensor shape (images): {immagini.shape}")
+    print(f"Target tensor shape (heatmaps): {heatmaps.shape}")
 
     img_vis = immagini[0].numpy().transpose(1, 2, 0)
     img_vis = (img_vis * 0.5) + 0.5
@@ -136,12 +136,12 @@ if __name__ == "__main__":
 
     fig, ax = plt.subplots(1, 2, figsize=(12, 6))
     ax[0].imshow(img_vis)
-    ax[0].set_title("Tensore Input (512x512, con augmentation)")
+    ax[0].set_title("Input tensor (512x512, with augmentation)")
     ax[0].axis("off")
 
     ax[1].imshow(img_vis)
     ax[1].imshow(heatmap_vis, cmap="jet", alpha=0.5)
-    ax[1].set_title("Tensore Target (14 Heatmap aggregate)")
+    ax[1].set_title("Target tensor (14 stacked heatmaps)")
     ax[1].axis("off")
 
     plt.tight_layout()

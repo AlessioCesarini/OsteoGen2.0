@@ -6,15 +6,15 @@ from torchvision import transforms
 from resnet import ResNet18KeypointDetector
 
 def estrai_coordinate(image_path, model_path, img_size=512, threshold=0.2, ritorna_confidenza=False):
-    # Setup del device
+    # Device setup
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
-    # Inizializza e carica il modello
+
+    # Initialize and load the model
     model = ResNet18KeypointDetector(num_keypoints=14).to(device)
     model.load_state_dict(torch.load(model_path, map_location=device))
     model.eval()
 
-    # Pre-processing identico al training
+    # Preprocessing identical to training
     transform = transforms.Compose([
         transforms.Resize((img_size, img_size)),
         transforms.ToTensor(),
@@ -41,20 +41,20 @@ def estrai_coordinate(image_path, model_path, img_size=512, threshold=0.2, ritor
     for i, nome in enumerate(nomi_punti):
         heatmap = heatmaps[i]
 
-        # Trova il valore massimo e la sua posizione
+        # Find the peak value and its position
         max_val = np.max(heatmap)
         confidenze[nome] = float(max_val)
         if max_val > threshold:
-            # np.unravel_index converte l'indice 1D in coordinate 2D (y, x)
+            # np.unravel_index converts the 1D index into 2D (y, x) coordinates
             y, x = np.unravel_index(np.argmax(heatmap), heatmap.shape)
 
-            # Riproporziona le coordinate alla dimensione originale dell'immagine
+            # Rescale the coordinates back to the original image size
             x_orig = int((x / img_size) * original_size[0])
             y_orig = int((y / img_size) * original_size[1])
 
             coordinate_estratte[nome] = (x_orig, y_orig)
         else:
-            coordinate_estratte[nome] = None # Punto non trovato o assente
+            coordinate_estratte[nome] = None  # point not found / absent
 
     if ritorna_confidenza:
         return coordinate_estratte, confidenze
