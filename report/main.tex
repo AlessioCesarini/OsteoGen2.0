@@ -1,5 +1,13 @@
 \documentclass{article}
 
+% T1/UTF-8 explicitly declared (rather than relying on defaults) because
+% dlaiml2026.sty pulls in the classic PostScript "times" package: without
+% an explicit font encoding, dash/quote ligatures can render inconsistently
+% across different TeX distributions (observed: an en-dash from "--"
+% compiling correctly here but showing as a comma-like glyph elsewhere).
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{amsmath}
@@ -9,6 +17,14 @@
 \usepackage{float}
 
 \usepackage[accepted]{dlaiml2026}
+
+% dlaiml2026.sty sets \flushbottom, which stretches whichever column has
+% less natural content so both columns of a page end at the same height -
+% with a short figure like Figure 1's, that stretch lands as one big empty
+% gap around the figure instead of being spread evenly. \raggedbottom lets
+% a shorter column just end early instead, which looks far better with
+% figures of uneven size.
+\raggedbottom
 
 %%% STUDENTS: FILL IN WITH YOUR OWN INFORMATION
 \dlaititlerunning{OsteoGen: Welcome to PyTorch Park}
