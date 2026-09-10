@@ -6,16 +6,18 @@ twice - once with a generic ("unknown biological animal") prompt, once
 with an explicit T-Rex prompt - and saves the comparison. This is what
 produced the "zero-shot vs guided" figures cited in the report.
 
-Requires a trained ControlNet checkpoint (a diffusers-format folder, not
-included in the repo - too large for git; see README.md for how these are
-hosted, if at all):
-    Training_Osteogen_Controlnet/controlnet_best_model/
+Requires a trained ControlNet checkpoint (a diffusers-format folder). Not
+included in the repo (too large for git): auto-downloaded from the "v1/"
+folder of the shared Hugging Face repo on first run (see
+../weights_hub.py), same as running this through the top-level run.py -
+no manual setup needed either way.
 
 Usage:
     python main.py --image path/to/skeleton.jpg
 """
 import argparse
 import os
+import sys
 
 os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")  # avoids a CPU-library crash on Windows
 
@@ -29,6 +31,9 @@ from diffusers import (
 )
 
 _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.dirname(_BASE_DIR))
+from weights_hub import resolve_folder
+
 BASE_MODEL_ID = "runwayml/stable-diffusion-v1-5"
 
 # The two prompts for the thesis's ablation study.
@@ -46,6 +51,7 @@ def main(image_path, controlnet_path, output_dir):
     os.makedirs(output_dir, exist_ok=True)
 
     print("Loading the trained ControlNet...")
+    controlnet_path = resolve_folder("v1/controlnet_best_model", controlnet_path)
     controlnet = ControlNetModel.from_pretrained(controlnet_path, torch_dtype=dtype).to(device)
 
     print("Assembling the full pipeline...")
@@ -112,7 +118,8 @@ if __name__ == "__main__":
                          help="Skeleton image to condition on.")
     parser.add_argument("--controlnet-dir",
                          default=os.path.join(_BASE_DIR, "Training_Osteogen_Controlnet", "controlnet_best_model"),
-                         help="Trained ControlNet checkpoint folder (diffusers format).")
+                         help="Trained ControlNet checkpoint folder (diffusers format). "
+                              "Auto-downloaded here if missing.")
     parser.add_argument("--output-dir", default=os.path.join(_BASE_DIR, "results"))
     args = parser.parse_args()
     main(args.image, args.controlnet_dir, args.output_dir)

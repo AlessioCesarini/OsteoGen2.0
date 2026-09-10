@@ -6,17 +6,17 @@ three Version 0 baselines (Simple U-Net, PatchGAN generator, ControlNet)
 and saves a side-by-side comparison figure - this is what produced
 ablation_study_inference.png, cited in the report's Experimental Results.
 
-Requires trained weights for all three models (not included in the repo,
-too large for git - see README.md for how these are hosted, if at all):
-    models/best_simple_UNET.pth
-    models/best_generator_PatchGAN.pth
-    models/best_controlnet.pth
+Requires trained weights for all three models. Not included in the repo
+(too large for git): auto-downloaded from the "v0/" folder of the shared
+Hugging Face repo on first run (see ../weights_hub.py), same as running
+this through the top-level run.py - no manual setup needed either way.
 
 Usage:
     python main.py --image path/to/skeleton.jpg
 """
 import argparse
 import os
+import sys
 
 import torch
 import cv2
@@ -29,6 +29,8 @@ from image_to_image import SimpleUNet as BaselineUNet
 from PatchGan import SimpleUNet as GANGenerator
 
 _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.dirname(_BASE_DIR))
+from weights_hub import resolve_file
 
 
 def load_image_for_custom_models(image_path, device):
@@ -49,21 +51,22 @@ def main(test_image_path, weights_dir):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Running inference on: {device}")
 
-    # --- Load the custom models (U-Net & GAN) ---
+    # --- Resolve and load the custom models (U-Net & GAN) ---
+    unet_path = resolve_file("v0/best_simple_UNET.pth", os.path.join(weights_dir, "best_simple_UNET.pth"))
     unet_model = BaselineUNet().to(device)
-    unet_model.load_state_dict(torch.load(os.path.join(weights_dir, "best_simple_UNET.pth"),
-                                           map_location=device))
+    unet_model.load_state_dict(torch.load(unet_path, map_location=device))
     unet_model.eval()
 
+    gan_path = resolve_file("v0/best_generator_PatchGAN.pth", os.path.join(weights_dir, "best_generator_PatchGAN.pth"))
     gan_generator = GANGenerator().to(device)
-    gan_generator.load_state_dict(torch.load(os.path.join(weights_dir, "best_generator_PatchGAN.pth"),
-                                              map_location=device))
+    gan_generator.load_state_dict(torch.load(gan_path, map_location=device))
     gan_generator.eval()
 
     # --- Load the ControlNet (diffusers) ---
     # A single .pth file (not a diffusers folder), hence from_single_file.
+    controlnet_path = resolve_file("v0/best_controlnet.pth", os.path.join(weights_dir, "best_controlnet.pth"))
     controlnet = ControlNetModel.from_single_file(
-        os.path.join(weights_dir, "best_controlnet.pth"),
+        controlnet_path,
         torch_dtype=torch.float16,
     )
 
@@ -132,6 +135,6 @@ if __name__ == "__main__":
                          help="Skeleton image to run through all three baselines.")
     parser.add_argument("--weights-dir", default=os.path.join(_BASE_DIR, "models"),
                          help="Folder containing best_simple_UNET.pth, best_generator_PatchGAN.pth, "
-                              "best_controlnet.pth.")
+                              "best_controlnet.pth. Auto-downloaded here if missing.")
     args = parser.parse_args()
     main(args.image, args.weights_dir)
